@@ -2,15 +2,18 @@
 #   docker compose up -d --build
 #
 # Then open:
-#   http://<server-ip>:8080          (app — all pages except the mic tuner)
+#   http://<server-ip>:8090          (app — all pages except the mic tuner)
 #   https://<server-ip>:8443         (tuner works here — accept the one-time cert warning)
+#
+# Note: 8080 is used by birdwatcher, so this uses 8090. Change the left-hand numbers
+# below if those collide with anything else on the host.
 services:
   guitarhero:
     build: .
     image: guitarhero:latest
     container_name: guitarhero
     ports:
-      - "8080:80"    # HTTP
+      - "8090:80"    # HTTP  (host 8090 -> container 80)
       - "8443:443"   # HTTPS (required for the microphone / tuner)
     environment:
       # Name baked into the self-signed cert. Set to your host if you use mDNS.

@@ -32,9 +32,12 @@ hostname -I          # find the server's LAN IP
 
 Then open:
 
-- `http://<server-ip>:8080` — the app (all pages **except** the mic tuner)
+- `http://<server-ip>:8090` — the app (all pages **except** the mic tuner)
 - `https://<server-ip>:8443` — everything **including the tuner** (accept the one-time
   self-signed-cert warning per device)
+
+(Ports are set in `docker-compose.yml`; change the left-hand numbers if they collide with
+another container.)
 
 **Why two ports / HTTPS?** The tuner uses the browser's microphone (`getUserMedia`), which
 browsers only allow on a *secure context*. Over the LAN that means HTTPS, so the container
