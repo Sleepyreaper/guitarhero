@@ -1,4 +1,4 @@
-import { Tuner, STRINGS } from '../lib/pitch.js';
+import { Tuner, STRINGS, freqToNote } from '../lib/pitch.js';
 import { listAudioInputs, activeDeviceId } from '../lib/devices.js';
 
 export default {
@@ -32,6 +32,7 @@ export default {
           <div id="needle" class="needle" style="left:50%"></div>
         </div>
         <div id="cents" class="faint" style="font-family:var(--mono)">&nbsp;</div>
+        <div id="debug" class="faint" style="font-family:var(--mono);font-size:.72rem;min-height:1em;opacity:.8"></div>
         <div id="err" class="faint" style="margin-top:.6rem;color:var(--red)"></div>
 
         <div class="string-row">
@@ -51,6 +52,7 @@ export default {
     const micSelect = root.querySelector('#mic-select');
     const levelFill = root.querySelector('#level-fill');
     const noSignal = root.querySelector('#no-signal');
+    const debugEl = root.querySelector('#debug');
     const strEls = [...root.querySelectorAll('.string-btn')];
 
     let lastSeen = 0;
@@ -59,13 +61,22 @@ export default {
     const clearStrings = () => strEls.forEach((e) => e.classList.remove('target', 'hit'));
 
     this.tuner = new Tuner((reading) => {
-      const { level, note } = reading;
+      const { level, note, raw } = reading;
 
       // Always-on input-level meter (proves audio is arriving even with no clear pitch).
       levelFill.style.width = `${Math.min(100, Math.round(level * 500))}%`;
       levelFill.classList.toggle('live', level > 0.01);
       if (level > 0.01) lastSignal = performance.now();
       noSignal.hidden = !(this.tuner.running && performance.now() - lastSignal > 2500);
+
+      // Live calibration readout: what the detector hears *before* the confidence gate.
+      if (this.tuner.running) {
+        debugEl.textContent = raw
+          ? `heard ${freqToNote(raw.freq).note}  ${raw.freq.toFixed(1)} Hz  ·  clarity ${raw.clarity.toFixed(2)}`
+          : 'heard: (nothing clear yet)';
+      } else {
+        debugEl.textContent = '';
+      }
 
       const now = performance.now();
       if (!note) {

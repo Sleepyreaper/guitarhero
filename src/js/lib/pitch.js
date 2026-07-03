@@ -90,7 +90,7 @@ export class Tuner {
     // Smoothing: recent valid pitches, median-filtered with octave-jump correction.
     this.history = [];
     this.lastDetect = 0;
-    this.minClarity = 0.9;
+    this.minClarity = 0.7; // confidence gate; too high = never locks, too low = jittery
     this.holdMs = 500; // keep showing the last note this long after signal drops
   }
 
@@ -146,12 +146,14 @@ export class Tuner {
 
     // Only feed the smoother clear, confident detections; noise/decay is dropped.
     const res = autoCorrelate(this.buf, this.audioCtx.sampleRate);
-    if (res && res.clarity >= this.minClarity && res.freq > 60 && res.freq < 1200) {
-      this._pushFreq(res.freq);
+    const raw = res && res.freq > 40 && res.freq < 2000 ? res : null;
+    if (raw && raw.clarity >= this.minClarity && raw.freq > 60 && raw.freq < 1200) {
+      this._pushFreq(raw.freq);
     }
     const stable = this._stableFreq();
     const note = stable ? freqToNote(stable) : null;
-    this.onReading({ level, note });
+    // `raw` is passed through un-gated so the UI can show what's being heard (for calibration).
+    this.onReading({ level, note, raw: raw ? { freq: raw.freq, clarity: raw.clarity } : null });
     this._raf = requestAnimationFrame(() => this._loop());
   }
 
