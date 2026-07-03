@@ -1,0 +1,24 @@
+# Host Campfire on a server (e.g. sleepycore) reachable from any browser on the LAN.
+#   docker compose up -d --build
+#
+# Then open:
+#   http://<server-ip>:8080          (app — all pages except the mic tuner)
+#   https://<server-ip>:8443         (tuner works here — accept the one-time cert warning)
+services:
+  guitarhero:
+    build: .
+    image: guitarhero:latest
+    container_name: guitarhero
+    ports:
+      - "8080:80"    # HTTP
+      - "8443:443"   # HTTPS (required for the microphone / tuner)
+    environment:
+      # Name baked into the self-signed cert. Set to your host if you use mDNS.
+      - TLS_CN=sleepycore.local
+    volumes:
+      # Persist the generated cert so you don't get a new warning on every restart.
+      - guitarhero_certs:/etc/nginx/certs
+    restart: unless-stopped
+
+volumes:
+  guitarhero_certs:

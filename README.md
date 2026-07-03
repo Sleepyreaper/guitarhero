@@ -19,6 +19,31 @@ python -m http.server 5173
 
 (That's exactly what the "campfire" config in `.claude/launch.json` runs.)
 
+## Host it on a server (Docker)
+
+To reach it from any browser on your LAN, run it as an nginx container:
+
+```bash
+git clone https://github.com/Sleepyreaper/guitarhero.git
+cd guitarhero
+docker compose up -d --build
+hostname -I          # find the server's LAN IP
+```
+
+Then open:
+
+- `http://<server-ip>:8080` — the app (all pages **except** the mic tuner)
+- `https://<server-ip>:8443` — everything **including the tuner** (accept the one-time
+  self-signed-cert warning per device)
+
+**Why two ports / HTTPS?** The tuner uses the browser's microphone (`getUserMedia`), which
+browsers only allow on a *secure context*. Over the LAN that means HTTPS, so the container
+auto-generates a self-signed cert on first run (see `deploy/`). The cert persists in a Docker
+volume, so you only click through the warning once per device.
+
+> The tuner uses the microphone of **whatever device you open it on** (your phone/laptop next to
+> the guitar) — not a mic attached to the server.
+
 ## What's inside
 
 - **🎯 Tuner** — real pitch detection from your microphone (autocorrelation), with a cents needle

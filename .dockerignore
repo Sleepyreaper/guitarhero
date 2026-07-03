@@ -1,0 +1,10 @@
+.git
+.gitignore
+.gitattributes
+.claude
+docs
+README.md
+CLAUDE.md
+certs
+node_modules
+*.log
