@@ -18,7 +18,7 @@ function autoCorrelate(buf, sampleRate) {
   let rms = 0;
   for (let i = 0; i < SIZE; i++) rms += buf[i] * buf[i];
   rms = Math.sqrt(rms / SIZE);
-  if (rms < 0.01) return -1; // too quiet — no confident pitch
+  if (rms < 0.01) return null; // too quiet — no confident pitch
 
   let r1 = 0;
   let r2 = SIZE - 1;
@@ -45,7 +45,7 @@ function autoCorrelate(buf, sampleRate) {
     if (c[i] > maxval) { maxval = c[i]; maxpos = i; }
   }
   let T0 = maxpos;
-  if (T0 <= 0) return -1;
+  if (T0 <= 0) return null;
 
   // Parabolic interpolation for sub-sample accuracy.
   const x1 = c[T0 - 1] || 0;
@@ -55,7 +55,10 @@ function autoCorrelate(buf, sampleRate) {
   const b = (x3 - x1) / 2;
   if (a) T0 -= b / (2 * a);
 
-  return sampleRate / T0;
+  // Clarity: how strongly periodic the signal is (peak vs. zero-lag energy), 0..1.
+  // Low clarity means noise / a decaying or muted note — we reject those upstream.
+  const clarity = c[0] > 0 ? maxval / c[0] : 0;
+  return { freq: sampleRate / T0, clarity };
 }
 
 export function freqToNote(freq) {
@@ -84,6 +87,34 @@ export class Tuner {
     this.stream = null;
     this.buf = null;
     this._raf = null;
+    // Smoothing: recent valid pitches, median-filtered with octave-jump correction.
+    this.history = [];
+    this.lastDetect = 0;
+    this.minClarity = 0.9;
+    this.holdMs = 500; // keep showing the last note this long after signal drops
+  }
+
+  _median() {
+    if (!this.history.length) return null;
+    const s = [...this.history].sort((a, b) => a - b);
+    return s[s.length >> 1];
+  }
+
+  _pushFreq(f) {
+    // Snap obvious octave errors onto the octave the string is already sitting in.
+    const m = this._median();
+    if (m) {
+      if (Math.abs(f / 2 - m) < m * 0.03) f /= 2;
+      else if (Math.abs(f * 2 - m) < m * 0.03) f *= 2;
+    }
+    this.history.push(f);
+    if (this.history.length > 12) this.history.shift();
+    this.lastDetect = performance.now();
+  }
+
+  _stableFreq() {
+    if (performance.now() - this.lastDetect > this.holdMs) { this.history = []; return null; }
+    return this.history.length >= 4 ? this._median() : null;
   }
 
   async start(deviceId) {
@@ -98,6 +129,8 @@ export class Tuner {
     this.analyser.fftSize = 2048;
     source.connect(this.analyser);
     this.buf = new Float32Array(this.analyser.fftSize);
+    this.history = [];
+    this.lastDetect = 0;
     this.running = true;
     this._loop();
   }
@@ -111,8 +144,13 @@ export class Tuner {
     for (let i = 0; i < this.buf.length; i++) sum += this.buf[i] * this.buf[i];
     const level = Math.sqrt(sum / this.buf.length);
 
-    const freq = autoCorrelate(this.buf, this.audioCtx.sampleRate);
-    const note = freq > 0 && freq < 2000 ? freqToNote(freq) : null;
+    // Only feed the smoother clear, confident detections; noise/decay is dropped.
+    const res = autoCorrelate(this.buf, this.audioCtx.sampleRate);
+    if (res && res.clarity >= this.minClarity && res.freq > 60 && res.freq < 1200) {
+      this._pushFreq(res.freq);
+    }
+    const stable = this._stableFreq();
+    const note = stable ? freqToNote(stable) : null;
     this.onReading({ level, note });
     this._raf = requestAnimationFrame(() => this._loop());
   }
