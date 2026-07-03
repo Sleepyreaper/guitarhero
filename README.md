@@ -32,7 +32,7 @@ hostname -I          # find the server's LAN IP
 
 Then open:
 
-- `http://<server-ip>:8090` — the app (all pages **except** the mic tuner)
+- `http://<server-ip>:8091` — the app (all pages **except** the mic tuner)
 - `https://<server-ip>:8443` — everything **including the tuner** (accept the one-time
   self-signed-cert warning per device)
 

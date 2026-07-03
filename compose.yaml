@@ -2,19 +2,20 @@
 #   docker compose up -d --build
 #
 # Then open:
-#   http://<server-ip>:8090          (app — all pages except the mic tuner)
+#   http://<server-ip>:8091          (app — all pages except the mic tuner)
 #   https://<server-ip>:8443         (tuner works here — accept the one-time cert warning)
 #
-# Note: 8080 is used by birdwatcher, so this uses 8090. Change the left-hand numbers
-# below if those collide with anything else on the host.
+# Ports already in use on sleepycore: 8080 (SleepyBirds), 8090 (BirdNET-Go) — so this
+# uses 8091. If you front it with Nginx Proxy Manager, NPM terminates HTTPS for the
+# tuner and you just point it at host port 8091.
 services:
   guitarhero:
     build: .
     image: guitarhero:latest
     container_name: guitarhero
     ports:
-      - "8090:80"    # HTTP  (host 8090 -> container 80)
-      - "8443:443"   # HTTPS (required for the microphone / tuner)
+      - "8091:80"    # HTTP  (host 8091 -> container 80)
+      - "8443:443"   # HTTPS (self-signed; only needed for direct-IP access, not via NPM)
     environment:
       # Name baked into the self-signed cert. Set to your host if you use mDNS.
       - TLS_CN=sleepycore.local
