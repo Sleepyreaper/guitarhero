@@ -13,52 +13,62 @@ export const STRINGS = [
   { name: 'E', label: 'High E (1st)', midi: 64 },
 ];
 
-function autoCorrelate(buf, sampleRate) {
+// Pitch detection via the McLeod Normalized Square Difference Function (NSDF),
+// restricted to the guitar's fundamental range. The range restriction + a large
+// analysis window (set in Tuner.start) are what make the LOW strings work: an 82 Hz
+// low-E wave is ~535 samples long, so a short buffer simply can't see enough of it.
+export function autoCorrelate(buf, sampleRate) {
   const SIZE = buf.length;
+
+  // Loudness gate — low strings are quieter, so keep this modest.
   let rms = 0;
   for (let i = 0; i < SIZE; i++) rms += buf[i] * buf[i];
   rms = Math.sqrt(rms / SIZE);
-  if (rms < 0.01) return null; // too quiet — no confident pitch
+  if (rms < 0.006) return null;
 
-  let r1 = 0;
-  let r2 = SIZE - 1;
-  const thres = 0.2;
-  for (let i = 0; i < SIZE / 2; i++) {
-    if (Math.abs(buf[i]) < thres) { r1 = i; break; }
-  }
-  for (let i = 1; i < SIZE / 2; i++) {
-    if (Math.abs(buf[SIZE - i]) < thres) { r2 = SIZE - i; break; }
-  }
+  const fMin = 65;  // just below low E (82.4 Hz)
+  const fMax = 520; // above high E (329.6 Hz), with headroom
+  const maxLag = Math.min(Math.floor(sampleRate / fMin), SIZE - 1);
+  const minLag = Math.max(2, Math.floor(sampleRate / fMax));
 
-  const trimmed = buf.slice(r1, r2);
-  const n = trimmed.length;
-  const c = new Array(n).fill(0);
-  for (let i = 0; i < n; i++) {
-    for (let j = 0; j < n - i; j++) c[i] += trimmed[j] * trimmed[j + i];
+  // NSDF over the candidate lags: nsdf[lag] ∈ [-1, 1], 1 = perfectly periodic.
+  const nsdf = new Float32Array(maxLag + 1);
+  let gmax = 0;
+  for (let lag = minLag; lag <= maxLag; lag++) {
+    let acf = 0;
+    let denom = 0;
+    for (let i = 0, n = SIZE - lag; i < n; i++) {
+      acf += buf[i] * buf[i + lag];
+      denom += buf[i] * buf[i] + buf[i + lag] * buf[i + lag];
+    }
+    const v = denom > 0 ? (2 * acf) / denom : 0;
+    nsdf[lag] = v;
+    if (v > gmax) gmax = v;
   }
+  if (gmax < 0.3) return null; // nothing convincingly periodic
 
-  let d = 0;
-  while (d < n - 1 && c[d] > c[d + 1]) d++;
-  let maxval = -1;
-  let maxpos = -1;
-  for (let i = d; i < n; i++) {
-    if (c[i] > maxval) { maxval = c[i]; maxpos = i; }
+  // Pick the FIRST key maximum that clears 90% of the global peak. Choosing the
+  // longest-period strong peak locks onto the fundamental, not an octave harmonic.
+  const threshold = gmax * 0.9;
+  let chosen = -1;
+  for (let lag = minLag + 1; lag < maxLag; lag++) {
+    if (nsdf[lag] > nsdf[lag - 1] && nsdf[lag] >= nsdf[lag + 1] && nsdf[lag] >= threshold) {
+      chosen = lag;
+      break;
+    }
   }
-  let T0 = maxpos;
-  if (T0 <= 0) return null;
+  if (chosen < 0) return null;
 
-  // Parabolic interpolation for sub-sample accuracy.
-  const x1 = c[T0 - 1] || 0;
-  const x2 = c[T0];
-  const x3 = c[T0 + 1] || 0;
+  // Parabolic interpolation around the peak for sub-sample (sub-cent) accuracy.
+  const x1 = nsdf[chosen - 1];
+  const x2 = nsdf[chosen];
+  const x3 = nsdf[chosen + 1];
   const a = (x1 + x3 - 2 * x2) / 2;
   const b = (x3 - x1) / 2;
-  if (a) T0 -= b / (2 * a);
+  let period = chosen;
+  if (a) period -= b / (2 * a);
 
-  // Clarity: how strongly periodic the signal is (peak vs. zero-lag energy), 0..1.
-  // Low clarity means noise / a decaying or muted note — we reject those upstream.
-  const clarity = c[0] > 0 ? maxval / c[0] : 0;
-  return { freq: sampleRate / T0, clarity };
+  return { freq: sampleRate / period, clarity: x2 };
 }
 
 export function freqToNote(freq) {
@@ -126,7 +136,8 @@ export class Tuner {
     this.stream = await navigator.mediaDevices.getUserMedia({ audio });
     const source = this.audioCtx.createMediaStreamSource(this.stream);
     this.analyser = this.audioCtx.createAnalyser();
-    this.analyser.fftSize = 2048;
+    // 4096 samples (~93 ms) so a full low-E period (~535 samples) fits several times over.
+    this.analyser.fftSize = 4096;
     source.connect(this.analyser);
     this.buf = new Float32Array(this.analyser.fftSize);
     this.history = [];
