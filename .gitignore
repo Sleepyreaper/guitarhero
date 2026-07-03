@@ -1,0 +1,16 @@
+# dependencies (only if we later add a Node toolchain)
+node_modules/
+dist/
+
+# python
+__pycache__/
+*.pyc
+
+# editor / os
+.DS_Store
+Thumbs.db
+.vscode/
+*.log
+
+# claude code — keep launch.json (how to run), ignore machine-local settings
+.claude/settings.local.json
