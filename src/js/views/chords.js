@@ -3,6 +3,7 @@ import { chordCard } from '../components/chordDiagram.js';
 import { strum } from '../lib/audio.js';
 import { ChordListener } from '../lib/listener.js';
 import { chordPitchClasses, evaluateChord, PC_NAMES, pcNames } from '../lib/chroma.js';
+import { listAudioInputs, activeDeviceId } from '../lib/devices.js';
 
 const GROUPS = [
   { key: 'first', title: 'Start here — your first two', sub: 'The two easiest shapes. Learn these and you can already change chords.' },
@@ -25,6 +26,12 @@ export default {
             <h2>Strum a chord — I'll tell you if it rings true</h2>
           </div>
           <button id="coach-toggle" class="btn btn-primary">🎤 Start listening</button>
+        </div>
+
+        <div id="coach-mic" class="mic-row" hidden>
+          <label class="mic-label">Mic
+            <select id="coach-mic-select"></select>
+          </label>
         </div>
 
         <div class="coach-pick" id="coach-pick">
@@ -64,6 +71,8 @@ export default {
     const cols = [...root.querySelectorAll('.chroma-col')]; // index === pitch class
     const bars = cols.map((c) => c.querySelector('.chroma-bar'));
     const pickBtns = [...root.querySelectorAll('#coach-pick button')];
+    const micRow = root.querySelector('#coach-mic');
+    const micSelect = root.querySelector('#coach-mic-select');
 
     let selected = CHORD_BY_NAME['C'] || CHORDS[0];
     let expectedPCs = [];
@@ -126,6 +135,24 @@ export default {
       }
     });
 
+    const populateMics = async () => {
+      const inputs = await listAudioInputs();
+      if (!inputs.length) return;
+      micSelect.innerHTML = inputs.map((d) => `<option value="${d.deviceId}">${d.label}</option>`).join('');
+      micSelect.value = activeDeviceId(this.listener.stream);
+      micRow.hidden = false;
+    };
+
+    micSelect.addEventListener('change', async () => {
+      if (!this.listener.running) return;
+      this.listener.stop();
+      try {
+        await this.listener.start(micSelect.value);
+      } catch {
+        errEl.textContent = "Couldn't switch to that mic.";
+      }
+    });
+
     toggle.addEventListener('click', async () => {
       if (this.listener.running) {
         this.listener.stop();
@@ -139,11 +166,12 @@ export default {
       }
       try {
         errEl.textContent = '';
-        await this.listener.start();
+        await this.listener.start(micSelect.value || undefined);
         toggle.textContent = '⏹ Stop';
         toggle.classList.remove('btn-primary');
         verdict.className = 'verdict idle';
         verdict.textContent = `Listening… strum your ${selected.name}.`;
+        await populateMics();
       } catch {
         errEl.textContent = 'Microphone blocked. Allow mic access and use an https:// (or localhost) address.';
       }

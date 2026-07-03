@@ -1,4 +1,5 @@
 import { Tuner, STRINGS } from '../lib/pitch.js';
+import { listAudioInputs, activeDeviceId } from '../lib/devices.js';
 
 export default {
   render(root) {
@@ -9,6 +10,21 @@ export default {
       <span style="color:var(--green)">green</span> and the needle sits in the middle.</p>
 
       <section class="panel" style="text-align:center">
+        <div class="btn-row" style="justify-content:center;margin-bottom:.6rem">
+          <button id="toggle" class="btn btn-primary">🎤 Start tuning</button>
+        </div>
+
+        <div id="mic-row" class="mic-row" hidden>
+          <label class="mic-label">Mic
+            <select id="mic-select"></select>
+          </label>
+          <div class="level-wrap" title="input level">
+            <span class="level-tag">level</span>
+            <div class="level-meter"><div id="level-fill" class="level-fill"></div></div>
+          </div>
+        </div>
+        <div id="no-signal" class="no-signal" hidden>No signal — is the right mic picked above, unmuted, and gain up?</div>
+
         <div id="note" class="tuner-note">–</div>
         <div id="freq" class="tuner-freq">play a string…</div>
         <div class="needle-wrap">
@@ -16,9 +32,6 @@ export default {
           <div id="needle" class="needle" style="left:50%"></div>
         </div>
         <div id="cents" class="faint" style="font-family:var(--mono)">&nbsp;</div>
-        <div class="btn-row" style="justify-content:center;margin-top:1rem">
-          <button id="toggle" class="btn btn-primary">🎤 Start tuning</button>
-        </div>
         <div id="err" class="faint" style="margin-top:.6rem;color:var(--red)"></div>
 
         <div class="string-row">
@@ -34,19 +47,32 @@ export default {
     const needle = root.querySelector('#needle');
     const toggle = root.querySelector('#toggle');
     const errEl = root.querySelector('#err');
+    const micRow = root.querySelector('#mic-row');
+    const micSelect = root.querySelector('#mic-select');
+    const levelFill = root.querySelector('#level-fill');
+    const noSignal = root.querySelector('#no-signal');
     const strEls = [...root.querySelectorAll('.string-btn')];
 
     let lastSeen = 0;
+    let lastSignal = 0;
 
     const clearStrings = () => strEls.forEach((e) => e.classList.remove('target', 'hit'));
 
     this.tuner = new Tuner((reading) => {
+      const { level, note } = reading;
+
+      // Always-on input-level meter (proves audio is arriving even with no clear pitch).
+      levelFill.style.width = `${Math.min(100, Math.round(level * 500))}%`;
+      levelFill.classList.toggle('live', level > 0.01);
+      if (level > 0.01) lastSignal = performance.now();
+      noSignal.hidden = !(this.tuner.running && performance.now() - lastSignal > 2500);
+
       const now = performance.now();
-      if (!reading) {
+      if (!note) {
         if (now - lastSeen > 400) {
           noteEl.textContent = '–';
           noteEl.className = 'tuner-note';
-          freqEl.textContent = 'listening…';
+          freqEl.textContent = this.tuner.running ? 'listening…' : 'stopped';
           centsEl.innerHTML = '&nbsp;';
           needle.style.left = '50%';
           needle.classList.remove('intune');
@@ -55,21 +81,40 @@ export default {
         return;
       }
       lastSeen = now;
-      const inTune = Math.abs(reading.cents) <= 5;
-      noteEl.textContent = reading.name;
-      noteEl.className = 'tuner-note ' + (inTune ? 'intune' : reading.cents < 0 ? 'flat' : 'sharp');
-      freqEl.textContent = `${reading.freq.toFixed(1)} Hz · ${reading.note}`;
-      centsEl.textContent = inTune ? 'in tune ✓' : `${reading.cents > 0 ? '+' : ''}${reading.cents} cents ${reading.cents < 0 ? '(tune up ↑)' : '(tune down ↓)'}`;
+      const inTune = Math.abs(note.cents) <= 5;
+      noteEl.textContent = note.name;
+      noteEl.className = 'tuner-note ' + (inTune ? 'intune' : note.cents < 0 ? 'flat' : 'sharp');
+      freqEl.textContent = `${note.freq.toFixed(1)} Hz · ${note.note}`;
+      centsEl.textContent = inTune
+        ? 'in tune ✓'
+        : `${note.cents > 0 ? '+' : ''}${note.cents} cents ${note.cents < 0 ? '(tune up ↑)' : '(tune down ↓)'}`;
 
-      // Needle: map ±50 cents to 0–100%.
-      const pos = Math.max(0, Math.min(100, 50 + reading.cents));
+      const pos = Math.max(0, Math.min(100, 50 + note.cents));
       needle.style.left = pos + '%';
       needle.classList.toggle('intune', inTune);
 
-      // Highlight the nearest string.
       clearStrings();
-      const idx = STRINGS.indexOf(reading.nearestString);
+      const idx = STRINGS.indexOf(note.nearestString);
       if (idx >= 0) strEls[idx].classList.add(inTune ? 'hit' : 'target');
+    });
+
+    // Populate the mic picker once we have permission (labels are hidden before that).
+    const populateMics = async () => {
+      const inputs = await listAudioInputs();
+      if (!inputs.length) return;
+      micSelect.innerHTML = inputs.map((d) => `<option value="${d.deviceId}">${d.label}</option>`).join('');
+      micSelect.value = activeDeviceId(this.tuner.stream);
+      micRow.hidden = false;
+    };
+
+    micSelect.addEventListener('change', async () => {
+      if (!this.tuner.running) return;
+      this.tuner.stop();
+      try {
+        await this.tuner.start(micSelect.value);
+      } catch {
+        errEl.textContent = "Couldn't switch to that mic.";
+      }
     });
 
     toggle.addEventListener('click', async () => {
@@ -78,16 +123,20 @@ export default {
         toggle.textContent = '🎤 Start tuning';
         toggle.classList.add('btn-primary');
         freqEl.textContent = 'stopped';
+        levelFill.style.width = '0%';
+        noSignal.hidden = true;
         clearStrings();
         return;
       }
       try {
         errEl.textContent = '';
-        await this.tuner.start();
+        await this.tuner.start(micSelect.value || undefined);
         toggle.textContent = '⏹ Stop';
         toggle.classList.remove('btn-primary');
+        lastSignal = performance.now();
+        await populateMics();
       } catch (err) {
-        errEl.textContent = 'Microphone blocked. Allow mic access (and use http://localhost, not a file:// page).';
+        errEl.textContent = 'Microphone blocked. Allow mic access (and use an https:// or localhost address).';
       }
     });
   },

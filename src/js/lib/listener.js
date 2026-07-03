@@ -17,13 +17,13 @@ export class ChordListener {
     this._raf = null;
   }
 
-  async start() {
+  async start(deviceId) {
     if (this.running) return;
     const AC = window.AudioContext || window.webkitAudioContext;
     this.audioCtx = new AC();
-    this.stream = await navigator.mediaDevices.getUserMedia({
-      audio: { echoCancellation: false, autoGainControl: false, noiseSuppression: false },
-    });
+    const audio = { echoCancellation: false, autoGainControl: false, noiseSuppression: false };
+    if (deviceId) audio.deviceId = { exact: deviceId };
+    this.stream = await navigator.mediaDevices.getUserMedia({ audio });
     const src = this.audioCtx.createMediaStreamSource(this.stream);
     this.analyser = this.audioCtx.createAnalyser();
     this.analyser.fftSize = this.fftSize;

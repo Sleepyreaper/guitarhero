@@ -86,13 +86,13 @@ export class Tuner {
     this._raf = null;
   }
 
-  async start() {
+  async start(deviceId) {
     if (this.running) return;
     const AC = window.AudioContext || window.webkitAudioContext;
     this.audioCtx = new AC();
-    this.stream = await navigator.mediaDevices.getUserMedia({
-      audio: { echoCancellation: false, autoGainControl: false, noiseSuppression: false },
-    });
+    const audio = { echoCancellation: false, autoGainControl: false, noiseSuppression: false };
+    if (deviceId) audio.deviceId = { exact: deviceId };
+    this.stream = await navigator.mediaDevices.getUserMedia({ audio });
     const source = this.audioCtx.createMediaStreamSource(this.stream);
     this.analyser = this.audioCtx.createAnalyser();
     this.analyser.fftSize = 2048;
@@ -105,12 +105,15 @@ export class Tuner {
   _loop() {
     if (!this.running) return;
     this.analyser.getFloatTimeDomainData(this.buf);
+    // Raw input level (RMS) — reported every frame so a meter can show that audio is
+    // arriving even when no confident pitch is found. Key for diagnosing dead mics.
+    let sum = 0;
+    for (let i = 0; i < this.buf.length; i++) sum += this.buf[i] * this.buf[i];
+    const level = Math.sqrt(sum / this.buf.length);
+
     const freq = autoCorrelate(this.buf, this.audioCtx.sampleRate);
-    if (freq > 0 && freq < 2000) {
-      this.onReading(freqToNote(freq));
-    } else {
-      this.onReading(null);
-    }
+    const note = freq > 0 && freq < 2000 ? freqToNote(freq) : null;
+    this.onReading({ level, note });
     this._raf = requestAnimationFrame(() => this._loop());
   }
 
