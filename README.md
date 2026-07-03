@@ -36,7 +36,7 @@ Then open:
 - `https://<server-ip>:8443` — everything **including the tuner** (accept the one-time
   self-signed-cert warning per device)
 
-(Ports are set in `docker-compose.yml`; change the left-hand numbers if they collide with
+(Ports are set in `compose.yaml`; change the left-hand numbers if they collide with
 another container.)
 
 **Why two ports / HTTPS?** The tuner uses the browser's microphone (`getUserMedia`), which
@@ -46,6 +46,22 @@ volume, so you only click through the warning once per device.
 
 > The tuner uses the microphone of **whatever device you open it on** (your phone/laptop next to
 > the guitar) — not a mic attached to the server.
+
+### Managing it with Dockge
+
+To have it show up as a stack in [Dockge](https://github.com/louislam/dockge), clone it into
+Dockge's stacks directory (find it with
+`docker inspect dockge --format '{{ range .Mounts }}{{ .Source }} -> {{ .Destination }}{{"\n"}}{{ end }}'`
+— it's the host path mapped to `/opt/stacks`):
+
+```bash
+cd /opt/stacks           # or wherever Dockge's stacks live
+sudo git clone https://github.com/Sleepyreaper/guitarhero.git
+```
+
+`guitarhero` then appears in the Dockge UI; hit **Deploy** (it builds the image locally on first
+run). Because it builds from source, after a `git pull` you rebuild with
+`docker compose up -d --build` in the folder (Dockge's Deploy won't re-build on its own).
 
 ## What's inside
 
