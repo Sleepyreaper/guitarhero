@@ -19,7 +19,13 @@ bet is *song-first, minimal-theory* teaching (see `docs/PEDAGOGY.md`).
 ## Layout
 - `src/js/data/` — **content** (chords, songs, curriculum). Most additions go here, data-driven.
 - `src/js/lib/` — `audio.js` (AudioContext + pluck/strum synth), `pitch.js` (Tuner +
-  autocorrelation), `metronome.js` (lookahead scheduler), `storage.js` (localStorage progress).
+  autocorrelation, monophonic), `chroma.js` (chromagram/pitch-class chord analysis, pure
+  functions), `listener.js` (`ChordListener` — mic → chromagram stream, polyphonic),
+  `metronome.js` (lookahead scheduler), `storage.js` (localStorage progress).
+- Two mic paths on purpose: **time-domain autocorrelation** for the tuner (one note),
+  **frequency-domain FFT chromagram** for the Chord Coach (many notes). The Chord Coach lives
+  on the Chords page and is audio-based (not MIDI) — heuristic; detection thresholds are in
+  `lib/chroma.js` and may need calibration against a real guitar.
 - `src/js/components/chordDiagram.js` — builds chord SVGs (strings low-E → high-e, left to right).
 - `src/js/views/` — one module per screen; each exports `{ render(root, param), destroy() }`.
   `destroy()` MUST stop any audio (mic/metronome) and remove listeners — the router calls it on
