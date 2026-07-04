@@ -7,6 +7,20 @@
 // differ, so the "Find the chords" link is the source of truth.
 
 export const TARGET_SONGS = [
+  // ----- Vocal showcases (for a strong singer) -----
+  { title: 'Fast Car', artist: 'Tracy Chapman', genres: ['folk', 'americana'],
+    chords: ['Cadd9', 'G', 'Em', 'D'], capo: 'Capo 2',
+    why: 'A storytelling masterclass — four repeating chords, all about the voice.' },
+  { title: 'Landslide', artist: 'Fleetwood Mac', genres: ['folk', 'americana'],
+    chords: ['C', 'G', 'Am'], capo: 'Capo 3',
+    why: 'Timeless, intimate, and built to carry a great vocal.' },
+  { title: 'Hallelujah', artist: 'Leonard Cohen', genres: ['folk', 'church'],
+    chords: ['C', 'Am', 'F', 'G', 'E'], capo: 'No capo',
+    why: 'The ultimate slow-build vocal showcase (Fmaj7 works for the F).' },
+  { title: 'Girl Crush', artist: 'Little Big Town', genres: ['country'],
+    chords: ['G', 'C', 'D', 'Em'], capo: 'Capo — to taste',
+    why: 'A slow-burn country vocal that lets a singer soar.' },
+
   // ----- Sing with the kids -----
   { title: 'You Are My Sunshine', artist: 'Jimmie Davis (traditional country)', genres: ['kids', 'country'],
     chords: ['G', 'C', 'D'], capo: 'No capo',

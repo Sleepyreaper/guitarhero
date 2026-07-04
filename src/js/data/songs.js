@@ -487,6 +487,28 @@ export const SONGS = [
     ],
   },
   {
+    id: 'house-of-the-rising-sun',
+    title: 'The House of the Rising Sun',
+    style: 'Folk / Blues ballad',
+    genres: ['folk', 'americana'],
+    level: 5,
+    key: 'Am',
+    capo: 0,
+    time: '6/8',
+    strum: 'Rolling 6/8 — arpeggiate or a gentle DOWN-down-down, DOWN-down-down',
+    difficulty: 'Vocal showcase',
+    chords: ['Am', 'C', 'D', 'Fmaj7', 'E'],
+    note: 'A traditional folk ballad (public domain) — the classic big-voice showcase. Uses Fmaj7 as the easy stand-in for F; swap in a full F barre when you\'re ready.',
+    body: [
+      { section: 'Verse', lines: [
+        [{ t: 'There ' }, { c: 'Am', t: 'is a ' }, { c: 'C', t: 'house in ' }, { c: 'D', t: 'New Or' }, { c: 'Fmaj7', t: 'leans' }],
+        [{ t: 'They ' }, { c: 'Am', t: 'call the ' }, { c: 'C', t: 'Rising ' }, { c: 'E', t: 'Sun' }],
+        [{ t: 'And it\'s ' }, { c: 'Am', t: 'been the ' }, { c: 'C', t: 'ruin of ' }, { c: 'D', t: 'many a poor ' }, { c: 'Fmaj7', t: 'boy' }],
+        [{ t: 'And ' }, { c: 'E', t: 'God, I know I\'m ' }, { c: 'Am', t: 'one' }],
+      ] },
+    ],
+  },
+  {
     id: 'scarborough-fair',
     title: 'Scarborough Fair',
     style: 'Folk (English ballad)',
