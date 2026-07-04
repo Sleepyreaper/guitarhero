@@ -7,6 +7,23 @@
 // differ, so the "Find the chords" link is the source of truth.
 
 export const TARGET_SONGS = [
+  // ----- Current hits (requested) -----
+  { title: 'You Look Like You Love Me', artist: 'Ella Langley (feat. Riley Green)', genres: ['country'],
+    chords: ['G', 'C', 'D'], capo: 'Capo — to taste',
+    why: 'Her breakout duet — a modern honky-tonk singalong.' },
+  { title: "Weren't For The Wind", artist: 'Ella Langley', genres: ['country', 'americana'],
+    chords: ['Em', 'C', 'G', 'D'], capo: 'Capo — to taste',
+    why: 'A slow, aching ballad — great for practicing smooth changes.' },
+  { title: 'Last Night', artist: 'Morgan Wallen', genres: ['country'],
+    chords: ['G', 'D', 'Em', 'C'], capo: 'Capo — to taste',
+    why: 'His biggest hit — four chords and you\'re there.' },
+  { title: 'Whiskey Glasses', artist: 'Morgan Wallen', genres: ['country'],
+    chords: ['G', 'C', 'D', 'Em'], capo: 'Capo — to taste',
+    why: 'A barroom singalong everybody knows.' },
+  { title: 'Wasted on You', artist: 'Morgan Wallen', genres: ['country'],
+    chords: ['G', 'D', 'Em', 'C'], capo: 'Capo — to taste',
+    why: 'Big and emotional, and only four chords.' },
+
   // ----- Modern / classic country -----
   { title: 'Wagon Wheel', artist: 'Old Crow Medicine Show / Darius Rucker', genres: ['country', 'americana'],
     chords: ['G', 'D', 'Em', 'C'], capo: 'No capo',
