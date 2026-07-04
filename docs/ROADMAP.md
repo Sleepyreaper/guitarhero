@@ -17,6 +17,12 @@
       manual Skip/Back fallback (`views/song.js` + `lib/coach.js`)
 - [x] Chord detection reworked to relative best-match (`ChordJudge`/`matchChroma`), self-
       calibrating to room/mic, with a live "I hear: X · NN%" readout in the Coach
+- [x] **Sing-along mode** — the app strums a song's progression in time (adjustable tempo,
+      loops) so a singer can sing to it (`strumAt` + a lookahead scheduler in `views/song.js`)
+- [x] **Honest practice tracking** — mic-verified play time; day-streak needs 60s of real
+      playing (`lib/practice.js` + `lib/storage.js`)
+- [x] **"Playing with a singer" unit** — time-first, capo-to-her-key, leaving space, count-ins
+- [x] **"Beat the buzz"** fundamentals lesson (fret placement, verified with the tuner)
 - [ ] **Calibrate on a real guitar** — dial SIM_OK / cleanChroma floor / tuner minClarity from
       the on-screen readouts (needs real-mic data points from the user)
 - [ ] Auto noise-floor baseline (sample the room when idle, subtract it)

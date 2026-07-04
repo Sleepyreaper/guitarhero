@@ -2,7 +2,8 @@ import { SONGS, SONG_BY_ID, GENRES } from '../data/songs.js';
 import { TARGET_SONGS, chartSearchUrl } from '../data/targets.js';
 import { CHORD_BY_NAME, chordFrequencies } from '../data/chords.js';
 import { chordSVG } from '../components/chordDiagram.js';
-import { strum } from '../lib/audio.js';
+import { strum, strumAt } from '../lib/audio.js';
+import { getAudioContext } from '../lib/audio.js';
 import { ChordListener } from '../lib/listener.js';
 import { ChordJudge } from '../lib/coach.js';
 import { listAudioInputs, activeDeviceId } from '../lib/devices.js';
@@ -121,6 +122,7 @@ function detail(root, id, self) {
 
     <div class="btn-row" style="margin:1rem 0">
       <button class="btn btn-primary" id="pa-start">🎤 Play along — I'll listen</button>
+      <button class="btn" id="sa-start">🔊 Sing along — I'll play</button>
     </div>
 
     <section class="panel">
@@ -150,6 +152,7 @@ function detail(root, id, self) {
 
   self._onClick = (e) => {
     if (e.target.closest('#pa-start')) { playAlong(root, song, self); return; }
+    if (e.target.closest('#sa-start')) { singAlong(root, song, self); return; }
     const btn = e.target.closest('.btn-play');
     if (btn) {
       const chord = CHORD_BY_NAME[btn.dataset.chord];
@@ -277,8 +280,102 @@ function playAlong(root, song, self) {
   startMic();
 }
 
+// ---- Sing-along: the app PLAYS the chords in time so someone can sing to it ----
+function singAlong(root, song, self) {
+  cleanup(self);
+  const seq = chordSequence(song);
+  const beatsPerBar = song.time && song.time.includes('3/4') ? 3 : 4;
+  let bpm = 84;
+  let playing = false;
+  let barIndex = 0;
+  let beatInBar = 0;
+  let nextNoteTime = 0;
+  let timer = null;
+  const uiQueue = [];
+
+  root.innerHTML = `
+    <button class="back-link" id="sa-exit" style="background:none;border:none;cursor:pointer">← Back to song</button>
+    <h1 style="margin:.2rem 0">${song.title}</h1>
+    <p class="faint" style="margin-top:0">I'll play the chords in time — you (or your singer) just sing. Set a comfy tempo and hit play.</p>
+
+    <section class="panel" style="text-align:center">
+      <div class="pa-progress" id="sa-progress"></div>
+      <div class="pa-current">
+        <div class="pa-name" id="sa-name">–</div>
+        <div id="sa-diagram"></div>
+      </div>
+      <div class="bpm-display" style="font-size:2rem;margin-top:.6rem"><span id="sa-bpm">${bpm}</span> <small>BPM</small></div>
+      <input id="sa-slider" type="range" min="50" max="130" value="${bpm}" style="max-width:280px" />
+      <div class="btn-row" style="justify-content:center;margin-top:.6rem">
+        <button class="btn btn-primary" id="sa-toggle" style="min-width:120px">▶ Play</button>
+        <button class="btn" id="sa-restart">↻ Restart</button>
+      </div>
+      <p class="faint" style="margin:.7rem 0 0;font-size:.8rem">It loops the whole progression so you can keep singing. Tip: nudge the tempo to fit her range and the vibe.</p>
+    </section>
+  `;
+
+  const progressEl = root.querySelector('#sa-progress');
+  const nameEl = root.querySelector('#sa-name');
+  const diagramEl = root.querySelector('#sa-diagram');
+  const bpmEl = root.querySelector('#sa-bpm');
+  const slider = root.querySelector('#sa-slider');
+  const toggle = root.querySelector('#sa-toggle');
+
+  const drawUI = (activeIdx) => {
+    progressEl.innerHTML = seq
+      .map((c, i) => `<span class="pa-chip ${i === activeIdx ? 'current' : ''}">${c}</span>`)
+      .join('');
+    const chord = CHORD_BY_NAME[seq[activeIdx]];
+    nameEl.textContent = seq[activeIdx] || '–';
+    diagramEl.innerHTML = chord ? chordSVG(chord, { w: 132, h: 164 }) : '';
+  };
+
+  const scheduler = () => {
+    const ac = getAudioContext();
+    while (nextNoteTime < ac.currentTime + 0.15) {
+      const idx = barIndex % seq.length;
+      const chord = CHORD_BY_NAME[seq[idx]];
+      if (chord) {
+        const gain = beatInBar === 0 ? 0.2 : 0.11; // accent the downbeat
+        strumAt(chordFrequencies(chord), nextNoteTime, gain);
+      }
+      if (beatInBar === 0) uiQueue.push({ time: nextNoteTime, idx });
+      beatInBar++;
+      if (beatInBar >= beatsPerBar) { beatInBar = 0; barIndex++; }
+      nextNoteTime += 60 / bpm;
+    }
+    while (uiQueue.length && uiQueue[0].time <= ac.currentTime) drawUI(uiQueue.shift().idx);
+  };
+
+  const start = () => {
+    const ac = getAudioContext();
+    playing = true;
+    nextNoteTime = ac.currentTime + 0.12;
+    timer = setInterval(scheduler, 25);
+    self._accompanist = () => { playing = false; clearInterval(timer); timer = null; };
+    toggle.textContent = '⏸ Pause';
+    toggle.classList.remove('btn-primary');
+  };
+  const stop = () => {
+    playing = false;
+    if (timer) clearInterval(timer);
+    timer = null;
+    self._accompanist = null;
+    toggle.textContent = '▶ Play';
+    toggle.classList.add('btn-primary');
+  };
+
+  toggle.addEventListener('click', () => (playing ? stop() : start()));
+  root.querySelector('#sa-restart').addEventListener('click', () => { barIndex = 0; beatInBar = 0; uiQueue.length = 0; drawUI(0); });
+  root.querySelector('#sa-exit').addEventListener('click', () => { stop(); detail(root, song.id, self); });
+  slider.addEventListener('input', () => { bpm = +slider.value; bpmEl.textContent = bpm; });
+
+  drawUI(0);
+}
+
 function cleanup(self) {
   if (self._player) { self._player.stop(); self._player = null; }
+  if (self._accompanist) { self._accompanist(); self._accompanist = null; }
   if (self._onClick && self._root) { self._root.removeEventListener('click', self._onClick); self._onClick = null; }
 }
 

@@ -43,3 +43,10 @@ export function pluck(freq, when = 0, dur = 1.4, gain = 0.22) {
 export function strum(freqs, spread = 0.035) {
   freqs.forEach((f, i) => pluck(f, i * spread, 1.6, 0.18));
 }
+
+// Strum at a precise AudioContext time (for scheduled accompaniment/backing).
+export function strumAt(freqs, atTime, gain = 0.16, spread = 0.028) {
+  const ac = getAudioContext();
+  const when = Math.max(0, atTime - ac.currentTime);
+  freqs.forEach((f, i) => pluck(f, when + i * spread, 1.5, gain));
+}

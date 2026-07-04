@@ -245,6 +245,49 @@ export const CURRICULUM = [
         ] },
     ],
   },
+  {
+    id: 'u7',
+    title: 'Playing with a singer',
+    blurb: 'The real goal: backing a voice. It’s a different skill from playing alone — here’s how.',
+    lessons: [
+      { id: 'l7-1', title: 'Your #1 job is time', min: 8, tool: '#/metronome',
+        objective: 'When you back a singer, steady rhythm matters more than fancy chords. Be the drummer.',
+        goal: 'Loop one chord in perfect time with the metronome for 2 minutes without rushing.',
+        steps: [
+          'A singer follows YOUR groove. A rock-steady strum on two chords beats a shaky strum on ten.',
+          'Set the metronome slow and keep the strumming hand moving even between chord changes — never stop the pulse.',
+          'If you flub a chord, keep the rhythm going and catch the next one. Never stop to fix it.',
+        ] },
+      { id: 'l7-2', title: 'Play in HER key (the capo trick)', min: 8,
+        objective: 'Match the singer’s range so the song sits where their voice is comfortable — same easy shapes, moved by a capo.',
+        steps: [
+          'Have her sing the first line. If it’s straining high, the key’s too high; if it’s a mumble, too low.',
+          'Keep your G–C–D–Em shapes and slide the capo up a fret at a time until it sits right for her.',
+          'That’s the whole secret to accompanying: you barely change what your hands do — the capo does the transposing.',
+        ] },
+      { id: 'l7-3', title: 'Leave space for the voice', min: 6,
+        objective: 'Support the singer instead of competing with them.',
+        steps: [
+          'Play softer under the verses, lift into the choruses — dynamics make you sound like a real band.',
+          'Simplify: fewer strums, let chords ring. The gaps are where the voice lives.',
+          'Lock your eyes/ears on the singer, not your hands, once a shape is muscle-memory.',
+        ] },
+      { id: 'l7-4', title: 'Count-ins, endings & faking it', min: 6,
+        objective: 'Start together, end together, and survive getting lost.',
+        steps: [
+          'Count her in out loud: “1, 2, 3, 4” at the tempo you’ll play — so you both start as one.',
+          'To end: land on the home chord (the “1”) and let it ring, or repeat the last line and slow down together.',
+          'Lost mid-song? Just vamp the home chord in time until you hear where she is, then hop back on. Keeping time > playing the “right” chord.',
+        ] },
+      { id: 'l7-5', title: 'Do it for real: sing-along mode', min: 10, songId: 'house-of-the-rising-sun',
+        objective: 'Put it together — let the app play so your singer can sing, then take over the part yourself.',
+        steps: [
+          'Open a song and hit “🔊 Sing along — I’ll play”. Set a tempo that fits her voice.',
+          'Have her sing to the app first so you both learn how it sits. Then mute the app and YOU play the same chords in that same steady time.',
+          'Congratulations — that’s accompanying. Everything else is just more songs.',
+        ] },
+    ],
+  },
 ];
 
 export const ALL_LESSONS = CURRICULUM.flatMap((u) => u.lessons.map((l) => ({ ...l, unitId: u.id })));
