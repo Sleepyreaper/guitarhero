@@ -1,4 +1,5 @@
 import { SONGS, SONG_BY_ID, GENRES } from '../data/songs.js';
+import { TARGET_SONGS, chartSearchUrl } from '../data/targets.js';
 import { CHORD_BY_NAME, chordFrequencies } from '../data/chords.js';
 import { chordSVG } from '../components/chordDiagram.js';
 import { strum } from '../lib/audio.js';
@@ -43,7 +44,7 @@ function renderCards(genre) {
   const songs = [...SONGS]
     .filter((s) => genre === 'all' || s.genres.includes(genre))
     .sort(byLearningOrder);
-  if (!songs.length) return `<p class="muted">No ${genre} songs yet.</p>`;
+  if (!songs.length) return `<p class="muted">No ${genre} songs in the play-along set yet.</p>`;
   return `<div class="grid song-list">
     ${songs.map((s) => `
       <a class="panel song-card" href="#/songs/${s.id}">
@@ -54,23 +55,44 @@ function renderCards(genre) {
   </div>`;
 }
 
+function renderTargets(genre) {
+  const items = TARGET_SONGS.filter((t) => genre === 'all' || t.genres.includes(genre));
+  if (!items.length) return `<p class="muted">No ${genre} target songs yet.</p>`;
+  return `<div class="grid song-list">
+    ${items.map((t) => `
+      <div class="panel song-card target-card">
+        <div class="tag-row">${t.genres.map((g) => `<span class="pill gold">${cap(g)}</span>`).join('')}<span class="pill">${t.capo}</span></div>
+        <h3 style="margin:.3rem 0 0">${t.title}</h3>
+        <div class="faint" style="font-size:.82rem">${t.artist}</div>
+        <div class="target-chords">${t.chords.join(' · ')}</div>
+        <div class="muted" style="font-size:.85rem">${t.why}</div>
+        <a class="btn btn-ghost" href="${chartSearchUrl(t)}" target="_blank" rel="noopener" style="margin-top:.5rem">Find the chords ↗</a>
+      </div>`).join('')}
+  </div>`;
+}
+
 function list(root, self) {
   const genre = self._genre || 'all';
+  const countFor = (g) => SONGS.filter((s) => s.genres.includes(g)).length + TARGET_SONGS.filter((t) => t.genres.includes(g)).length;
   root.innerHTML = `
-    <p class="eyebrow">Play-along</p>
+    <p class="eyebrow">Songs</p>
     <h1>Songs</h1>
-    <p class="lead">Real songs you can play with the beginner chords — all public domain, spanning country,
-    folk, americana & church. They're ordered easiest first, so start at the top and work down.</p>
+    <p class="lead">Two kinds: a play-along songbook you can strum along with in the app, and real
+    on-the-radio songs to aim for. Filter by the style you love.</p>
 
     <div class="chip-row" id="genre-filter">
-      <button class="chip-btn ${genre === 'all' ? 'sel' : ''}" data-genre="all">All (${SONGS.length})</button>
-      ${GENRES.map((g) => {
-        const n = SONGS.filter((s) => s.genres.includes(g)).length;
-        return `<button class="chip-btn ${genre === g ? 'sel' : ''}" data-genre="${g}">${cap(g)} (${n})</button>`;
-      }).join('')}
+      <button class="chip-btn ${genre === 'all' ? 'sel' : ''}" data-genre="all">All (${SONGS.length + TARGET_SONGS.length})</button>
+      ${GENRES.map((g) => `<button class="chip-btn ${genre === g ? 'sel' : ''}" data-genre="${g}">${cap(g)} (${countFor(g)})</button>`).join('')}
     </div>
 
+    <h2 style="margin-top:.5rem">🪕 Play-along songbook</h2>
+    <p class="muted" style="margin-top:0">All public domain — full chords &amp; words, and the app can listen along. Ordered easiest first.</p>
     <div id="song-cards">${renderCards(genre)}</div>
+
+    <h2 style="margin-top:2rem">🎯 Real songs to aim for</h2>
+    <p class="muted" style="margin-top:0">On-the-radio songs you can already play with these chords. They're
+    copyrighted, so we can't print the words here — here are the chords &amp; capo; tap to find a full chart.</p>
+    <div id="target-cards">${renderTargets(genre)}</div>
   `;
 
   root.querySelector('#genre-filter').addEventListener('click', (e) => {

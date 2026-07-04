@@ -37,7 +37,12 @@ bet is *song-first, minimal-theory* teaching (see `docs/PEDAGOGY.md`).
 - Chord shapes: `frets`/`fingers` arrays are 6 entries, **low-E first**; `-1` = muted, `0` = open.
 - SVG/theme colors come from CSS variables in `src/css/styles.css` (warm "campfire" palette).
 - Songs are stored as token lines `{ c: 'G', t: 'lyric' }` and rendered chord-over-lyric in
-  monospace. **Only public-domain songs may be bundled** — reference copyrighted songs by name only.
+  monospace. Two tiers, on purpose:
+  - **Play-along songbook** (`data/songs.js`): **public-domain only** — we embed full chords +
+    lyrics and the app listens along.
+  - **"Songs to aim for"** (`data/targets.js`): copyrighted radio songs referenced by
+    title/artist + the (uncopyrightable) chord list + capo + an outbound "find the chart" link.
+    **Never embed lyrics or a chord-over-lyric chart for these.**
 
 ## Verifying changes
 Start the `campfire` preview server and check the affected screen. For audio features (tuner,

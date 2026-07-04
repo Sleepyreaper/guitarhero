@@ -177,6 +177,10 @@ ol.steps li { margin: .3rem 0; }
 .chordline { color: var(--gold); font-weight: 700; white-space: pre; line-height: 1.2; }
 .lyricline { color: var(--text); white-space: pre; line-height: 1.2; }
 
+.target-card { cursor: default; border-style: dashed; }
+.target-card:hover { border-color: var(--gold); transform: none; }
+.target-chords { font-family: var(--mono); color: var(--gold); font-weight: 700; margin-top: .25rem; }
+
 .back-link { display: inline-flex; align-items: center; gap: .4rem; color: var(--muted); font-weight: 600; margin-bottom: .8rem; }
 .back-link:hover { color: var(--text); }
 
