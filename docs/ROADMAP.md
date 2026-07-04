@@ -6,7 +6,9 @@
 - [x] **Chord library** (big-8 open chords + worship/folk extras) with SVG diagrams + "hear it" strum
 - [x] **Metronome** — lookahead scheduler, tap tempo, beats-per-bar, visual beats
 - [x] **Curriculum** — 6 units, ~24 lessons, song-first, progress + streak tracking
-- [x] **Songs** — 7 public-domain play-along charts (chord-over-lyric)
+- [x] **Songs** — 15 public-domain play-along charts (chord-over-lyric), genre-tagged
+      (country/folk/americana/church), sorted easiest→hardest, with per-song strum patterns +
+      a genre filter
 - [x] **Chord Coach** — mic listens to a strummed chord and verifies it via a chromagram
       (pitch-class profile) with a live 12-note visualizer + per-note feedback
 
@@ -25,7 +27,7 @@
 - [ ] Explore an ML pitch/chord model (e.g. CREPE/TF.js) for tougher voicings — would add a
       dependency, so weigh against the no-build constraint
 - [ ] User song import (paste ChordPro / plain chord-over-lyric text)
-- [ ] More public-domain songbook + a genre filter (country / folk / americana / church)
+- [ ] Even more public-domain songs; "songs you can play now" based on chords you've learned
 - [ ] Left-handed diagram mode; alternate tunings in the tuner
 - [ ] Practice reminders / daily-goal notifications
 - [ ] PWA: installable + offline (add manifest + service worker)

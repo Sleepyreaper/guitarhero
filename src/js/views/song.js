@@ -1,10 +1,11 @@
-import { SONGS, SONG_BY_ID } from '../data/songs.js';
+import { SONGS, SONG_BY_ID, GENRES } from '../data/songs.js';
 import { CHORD_BY_NAME, chordFrequencies } from '../data/chords.js';
 import { chordSVG } from '../components/chordDiagram.js';
 import { strum } from '../lib/audio.js';
 import { markPracticedToday } from '../lib/storage.js';
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const cap = (s) => s[0].toUpperCase() + s.slice(1);
 
 // Turn a token line into aligned chord-over-lyric HTML (monospace padding).
 function renderLine(tokens) {
@@ -20,37 +21,69 @@ function renderLine(tokens) {
   return `<div class="songline"><div class="chordline">${esc(top.replace(/\s+$/, ' '))}</div><div class="lyricline">${esc(bot.replace(/\s+$/, ''))}</div></div>`;
 }
 
-function list(root) {
+const byLearningOrder = (a, b) => a.level - b.level || a.title.localeCompare(b.title);
+
+function renderCards(genre) {
+  const songs = [...SONGS]
+    .filter((s) => genre === 'all' || s.genres.includes(genre))
+    .sort(byLearningOrder);
+  if (!songs.length) return `<p class="muted">No ${genre} songs yet.</p>`;
+  return `<div class="grid song-list">
+    ${songs.map((s) => `
+      <a class="panel song-card" href="#/songs/${s.id}">
+        <div class="tag-row"><span class="pill gold">${s.style}</span><span class="pill">${s.chords.length} chords</span></div>
+        <h3 style="margin:.3rem 0 0">${s.title}</h3>
+        <div class="faint" style="font-size:.85rem">${s.chords.join(' · ')} · ${s.time}</div>
+      </a>`).join('')}
+  </div>`;
+}
+
+function list(root, self) {
+  const genre = self._genre || 'all';
   root.innerHTML = `
     <p class="eyebrow">Play-along</p>
     <h1>Songs</h1>
     <p class="lead">Real songs you can play with the beginner chords — all public domain, spanning country,
-    folk, americana & church. Start at the top; each one down the list adds a little more.</p>
-    <div class="grid song-list" style="margin-top:1rem">
-      ${SONGS.map((s) => `
-        <a class="panel song-card" href="#/songs/${s.id}">
-          <div class="tag-row"><span class="pill gold">${s.style}</span><span class="pill">${s.difficulty}</span></div>
-          <h3 style="margin:.3rem 0 0">${s.title}</h3>
-          <div class="faint" style="font-size:.85rem">${s.chords.join(' · ')} · ${s.time}</div>
-        </a>`).join('')}
+    folk, americana & church. They're ordered easiest first, so start at the top and work down.</p>
+
+    <div class="chip-row" id="genre-filter">
+      <button class="chip-btn ${genre === 'all' ? 'sel' : ''}" data-genre="all">All (${SONGS.length})</button>
+      ${GENRES.map((g) => {
+        const n = SONGS.filter((s) => s.genres.includes(g)).length;
+        return `<button class="chip-btn ${genre === g ? 'sel' : ''}" data-genre="${g}">${cap(g)} (${n})</button>`;
+      }).join('')}
     </div>
+
+    <div id="song-cards">${renderCards(genre)}</div>
   `;
+
+  root.querySelector('#genre-filter').addEventListener('click', (e) => {
+    const btn = e.target.closest('.chip-btn');
+    if (!btn) return;
+    self._genre = btn.dataset.genre;
+    list(root, self);
+  });
 }
 
-function detail(root, id) {
+function detail(root, id, self) {
   const song = SONG_BY_ID[id];
-  if (!song) return list(root);
+  if (!song) return list(root, self);
   markPracticedToday();
 
   root.innerHTML = `
     <a class="back-link" href="#/songs">← All songs</a>
-    <div class="tag-row"><span class="pill gold">${song.style}</span><span class="pill">${song.difficulty}</span></div>
+    <div class="tag-row">
+      ${song.genres.map((g) => `<span class="pill gold">${cap(g)}</span>`).join('')}
+      <span class="pill">${song.difficulty}</span>
+    </div>
     <h1 style="margin-top:.4rem">${song.title}</h1>
     <p class="faint" style="margin-top:0">Key of ${song.key} · ${song.time}${song.capo ? ` · Capo ${song.capo}` : ' · No capo'}</p>
 
     <div class="callout" style="margin:.6rem 0 1.1rem">${song.note}</div>
 
-    <section class="panel">
+    ${song.strum ? `<div class="strum-hint">🎵 <strong>Strum:</strong> ${song.strum}</div>` : ''}
+
+    <section class="panel" style="margin-top:1rem">
       <h3 style="margin-bottom:.6rem">Chords you'll need</h3>
       <div class="grid chords-grid">
         ${song.chords.map((n) => CHORD_BY_NAME[n] ? `
@@ -71,7 +104,7 @@ function detail(root, id) {
 
     <div class="btn-row" style="margin-top:1.1rem">
       <a class="btn" href="#/metronome">🥁 Practice with the metronome</a>
-      <a class="btn" href="#/chords">🎸 Chord library</a>
+      <a class="btn" href="#/chords">🎸 Chord Coach</a>
     </div>
   `;
 
@@ -86,9 +119,10 @@ function detail(root, id) {
 }
 
 export default {
+  _genre: 'all',
   render(root, param) {
-    if (param) detail.call(this, root, param);
-    else list(root);
+    if (param) detail.call(this, root, param, this);
+    else list(root, this);
   },
   destroy() {
     if (this._root && this._onClick) this._root.removeEventListener('click', this._onClick);

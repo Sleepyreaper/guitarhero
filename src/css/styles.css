@@ -223,6 +223,20 @@ ol.steps li { margin: .3rem 0; }
 .level-fill.live { background: linear-gradient(90deg, var(--green), var(--gold)); }
 .no-signal { color: var(--gold); font-size: .82rem; margin: 0 0 .6rem; }
 
+/* ---------- genre filter chips ---------- */
+.chip-row { display: flex; gap: .45rem; flex-wrap: wrap; margin: 0 0 1.2rem; }
+.chip-btn {
+  font: inherit; font-weight: 700; font-size: .88rem; cursor: pointer;
+  padding: .4rem .85rem; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--panel-2); color: var(--muted);
+  transition: all .12s;
+}
+.chip-btn:hover { color: var(--text); border-color: var(--faint); }
+.chip-btn.sel { background: var(--rust); border-color: var(--rust); color: #fff; }
+
+.strum-hint { border-left: 3px solid var(--green); background: var(--panel-2); padding: .6rem .9rem; border-radius: var(--radius-sm); color: var(--muted); margin-bottom: .2rem; }
+.strum-hint strong { color: var(--green); }
+
 /* ---------- responsive ---------- */
 @media (max-width: 560px) {
   .app-header { padding: .7rem 1rem; }
