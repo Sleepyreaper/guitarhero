@@ -1,5 +1,8 @@
 // Lightweight progress persistence via localStorage.
+// Practice is tracked HONESTLY: only real, mic-detected playing time is logged
+// (see lib/practice.js), and the day-streak only counts days you actually played.
 const KEY = 'campfire.progress.v1';
+const MIN_DAY_SECONDS = 60; // a day counts toward the streak after 1 minute of real playing
 
 function load() {
   try {
@@ -18,8 +21,10 @@ function save(state) {
 }
 
 function defaults() {
-  return { done: {}, lastLesson: null, practiceDays: [], streak: 0 };
+  return { done: {}, lastLesson: null, practiceSeconds: {} };
 }
+
+const today = () => new Date().toISOString().slice(0, 10);
 
 export function getState() {
   return { ...defaults(), ...load() };
@@ -29,12 +34,12 @@ export function isDone(lessonId) {
   return !!getState().done[lessonId];
 }
 
+// Completing a lesson tracks PROGRESS only — it does NOT fake a practice day.
 export function setDone(lessonId, done = true) {
   const s = getState();
   if (done) s.done[lessonId] = Date.now();
   else delete s.done[lessonId];
   s.lastLesson = lessonId;
-  touchToday(s);
   save(s);
   return s;
 }
@@ -49,34 +54,37 @@ export function doneCount() {
   return Object.keys(getState().done).length;
 }
 
-// Record that the learner did something today and update the streak.
-function touchToday(s) {
-  const today = new Date().toISOString().slice(0, 10);
-  if (!s.practiceDays.includes(today)) {
-    s.practiceDays.push(today);
-    s.practiceDays = s.practiceDays.slice(-400);
-  }
-  s.streak = computeStreak(s.practiceDays);
-}
+// --- Honest practice tracking ---
 
-export function markPracticedToday() {
+// Add real, mic-verified seconds of playing to today's total.
+export function addPracticeSeconds(sec) {
   const s = getState();
-  touchToday(s);
+  const d = today();
+  s.practiceSeconds[d] = (s.practiceSeconds[d] || 0) + sec;
   save(s);
-  return s;
+  return s.practiceSeconds[d];
 }
 
-function computeStreak(days) {
-  const set = new Set(days);
-  let streak = 0;
+export function todaySeconds() {
+  return getState().practiceSeconds[today()] || 0;
+}
+
+// Consecutive days (ending today, or yesterday if you haven't played yet today) with
+// at least MIN_DAY_SECONDS of real playing.
+export function streak() {
+  const secs = getState().practiceSeconds;
+  const counts = (key) => (secs[key] || 0) >= MIN_DAY_SECONDS;
+  let n = 0;
   const d = new Date();
-  // If today isn't logged yet, start counting from yesterday.
-  if (!set.has(d.toISOString().slice(0, 10))) d.setDate(d.getDate() - 1);
+  if (!counts(d.toISOString().slice(0, 10))) d.setDate(d.getDate() - 1);
   for (;;) {
-    const key = d.toISOString().slice(0, 10);
-    if (set.has(key)) { streak++; d.setDate(d.getDate() - 1); } else break;
+    if (counts(d.toISOString().slice(0, 10))) { n++; d.setDate(d.getDate() - 1); } else break;
   }
-  return streak;
+  return n;
+}
+
+export function playedToday() {
+  return todaySeconds() >= MIN_DAY_SECONDS;
 }
 
 export function resetProgress() {

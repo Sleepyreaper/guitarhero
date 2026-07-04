@@ -3,7 +3,6 @@ import { TARGET_SONGS, chartSearchUrl } from '../data/targets.js';
 import { CHORD_BY_NAME, chordFrequencies } from '../data/chords.js';
 import { chordSVG } from '../components/chordDiagram.js';
 import { strum } from '../lib/audio.js';
-import { markPracticedToday } from '../lib/storage.js';
 import { ChordListener } from '../lib/listener.js';
 import { ChordJudge } from '../lib/coach.js';
 import { listAudioInputs, activeDeviceId } from '../lib/devices.js';
@@ -106,7 +105,6 @@ function list(root, self) {
 function detail(root, id, self) {
   const song = SONG_BY_ID[id];
   if (!song) return list(root, self);
-  markPracticedToday();
   cleanup(self);
 
   root.innerHTML = `

@@ -39,6 +39,16 @@ export const CURRICULUM = [
     title: 'Your first two chords',
     blurb: 'By the end of this unit you can change between two real chords in time.',
     lessons: [
+      { id: 'l1-0', title: 'One clean note — beat the buzz', min: 8, tool: '#/tuner',
+        objective: 'Get a single fretted note to ring CLEAN with no buzz. This is the root skill under every chord — buzzing is placement, not talent.',
+        goal: 'Fret one note and open the Tuner — when it locks onto a clear note, that\'s a clean press.',
+        steps: [
+          'Put ONE finger down: 1st finger, 3rd fret of the B string. Pick just that string.',
+          'Fret RIGHT behind the fret wire — not on top of it, not in the middle of the gap. Closer to the fret = way less pressure needed.',
+          'Press with the very TIP of your finger (nail short), knuckle arched so the finger comes straight down and doesn\'t touch the neighboring strings.',
+          'Thumb on the BACK of the neck, roughly opposite your finger, for squeeze/leverage.',
+          'Open the Tuner: a clean note locks onto a pitch instantly. Buzz or a dead thud won\'t. Adjust until it locks, then try each finger on a few strings.',
+        ] },
       { id: 'l1-1', title: 'The Em chord', min: 8, chords: ['Em'],
         objective: 'Fret a clean-ringing Em — your easiest first shape.',
         steps: [
