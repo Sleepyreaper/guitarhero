@@ -3,6 +3,7 @@ import { chordCard } from '../components/chordDiagram.js';
 import { strum } from '../lib/audio.js';
 import { ChordListener } from '../lib/listener.js';
 import { chordPitchClasses, evaluateChord, PC_NAMES, pcNames } from '../lib/chroma.js';
+import { ChordJudge } from '../lib/coach.js';
 import { listAudioInputs, activeDeviceId } from '../lib/devices.js';
 
 const GROUPS = [
@@ -39,6 +40,7 @@ export default {
         </div>
 
         <div id="verdict" class="verdict idle">Pick a chord, press <strong>Start listening</strong>, then strum.</div>
+        <div id="hear" class="hear-line"></div>
         <div class="note-chips" id="note-chips"></div>
 
         <div class="chroma" id="chroma">
@@ -68,16 +70,19 @@ export default {
     const verdict = root.querySelector('#verdict');
     const chipsEl = root.querySelector('#note-chips');
     const errEl = root.querySelector('#coach-err');
+    const hearEl = root.querySelector('#hear');
     const cols = [...root.querySelectorAll('.chroma-col')]; // index === pitch class
     const bars = cols.map((c) => c.querySelector('.chroma-bar'));
     const pickBtns = [...root.querySelectorAll('#coach-pick button')];
     const micRow = root.querySelector('#coach-mic');
     const micSelect = root.querySelector('#coach-mic-select');
 
+    const judge = new ChordJudge();
     let selected = CHORD_BY_NAME['C'] || CHORDS[0];
     let expectedPCs = [];
     let expectedSet = new Set();
     let okStreak = 0;
+    const SIM_OK = 0.88; // cosine similarity that counts as "you're playing this chord"
 
     const setSelected = (chord) => {
       selected = chord;
@@ -87,9 +92,11 @@ export default {
       cols.forEach((c, pc) => { c.classList.toggle('expected', expectedSet.has(pc)); c.classList.remove('hit'); });
       chipsEl.innerHTML = expectedPCs.map((pc) => `<span class="note-chip" data-pc="${pc}">${PC_NAMES[pc]}</span>`).join('');
       okStreak = 0;
+      judge.reset();
       if (!this.listener || !this.listener.running) {
         verdict.className = 'verdict idle';
         verdict.innerHTML = `Press <strong>Start listening</strong>, then strum a <strong>${chord.name}</strong>.`;
+        hearEl.textContent = '';
       }
     };
 
@@ -98,37 +105,43 @@ export default {
 
     this.listener = new ChordListener((frame) => {
       const { chroma, active } = frame;
-      // Update the visualizer.
+      judge.push(chroma, active);
+
+      // Visualizer: bars + which of the chord's notes are ringing.
       for (let pc = 0; pc < 12; pc++) {
         bars[pc].style.height = `${Math.round(chroma[pc] * 100)}%`;
         cols[pc].classList.toggle('hit', expectedSet.has(pc) && chroma[pc] >= PRESENT);
       }
-      const chips = [...chipsEl.children];
-      chips.forEach((chip) => {
-        const pc = +chip.dataset.pc;
-        chip.classList.toggle('hit', chroma[pc] >= PRESENT);
-      });
+      [...chipsEl.children].forEach((chip) => chip.classList.toggle('hit', chroma[+chip.dataset.pc] >= PRESENT));
 
       if (!active) {
         okStreak = 0;
+        hearEl.textContent = '';
         verdict.className = 'verdict idle';
         verdict.textContent = `Strum your ${selected.name}…`;
         return;
       }
 
-      const ev = evaluateChord(chroma, expectedPCs, { presentThresh: PRESENT });
-      okStreak = ev.ok ? Math.min(okStreak + 1, 12) : Math.max(okStreak - 2, 0);
+      // Best-match verdict (relative — self-calibrates to the room).
+      const best = judge.best();
+      const pct = Math.round(best.sim * 100);
+      hearEl.textContent = best.name ? `I hear: ${best.name} · ${pct}%` : '';
 
-      if (okStreak >= 8) {
+      const onTarget = best.name === selected.name && best.sim >= SIM_OK;
+      okStreak = onTarget ? Math.min(okStreak + 1, 10) : Math.max(okStreak - 2, 0);
+
+      if (okStreak >= 5) {
         verdict.className = 'verdict ok';
         verdict.textContent = `✓ That's a clean ${selected.name}!`;
-      } else if (ev.coverage >= 0.66) {
+      } else if (best.name === selected.name) {
         verdict.className = 'verdict almost';
-        if (ev.missing.length) {
-          verdict.textContent = `Almost — I can't hear the ${pcNames(ev.missing).join(' & ')}. Press that string a little harder.`;
-        } else {
-          verdict.textContent = `Close! Something extra is ringing (${PC_NAMES[ev.foreignPC]}). Mute the strings you're not fretting.`;
-        }
+        const ev = evaluateChord(chroma, expectedPCs, { presentThresh: PRESENT });
+        verdict.textContent = ev.missing.length
+          ? `Almost — let the ${pcNames(ev.missing).join(' & ')} ring out.`
+          : `Getting there — let it ring cleanly.`;
+      } else if (best.name) {
+        verdict.className = 'verdict almost';
+        verdict.textContent = `That sounds more like ${best.name} — aim for ${selected.name}.`;
       } else {
         verdict.className = 'verdict idle';
         verdict.textContent = `Keep strumming ${selected.name}…`;

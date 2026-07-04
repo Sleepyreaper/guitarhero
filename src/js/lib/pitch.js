@@ -24,7 +24,7 @@ export function autoCorrelate(buf, sampleRate) {
   let rms = 0;
   for (let i = 0; i < SIZE; i++) rms += buf[i] * buf[i];
   rms = Math.sqrt(rms / SIZE);
-  if (rms < 0.006) return null;
+  if (rms < 0.004) return null;
 
   const fMin = 65;  // just below low E (82.4 Hz)
   const fMax = 520; // above high E (329.6 Hz), with headroom
@@ -100,7 +100,7 @@ export class Tuner {
     // Smoothing: recent valid pitches, median-filtered with octave-jump correction.
     this.history = [];
     this.lastDetect = 0;
-    this.minClarity = 0.7; // confidence gate; too high = never locks, too low = jittery
+    this.minClarity = 0.6; // confidence gate; too high = never locks, too low = jittery
     this.holdMs = 500; // keep showing the last note this long after signal drops
   }
 

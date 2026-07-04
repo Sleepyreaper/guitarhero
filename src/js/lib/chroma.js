@@ -81,6 +81,38 @@ export function evaluateChord(chroma, expectedPCs, opts = {}) {
   return { present, missing, foreign, foreignPC, coverage, ok };
 }
 
+// Suppress a low-level noise floor across the 12 bins, then renormalize. Real rooms/mics
+// spread energy into every pitch class; this keeps the chord's real notes and drops the haze.
+export function cleanChroma(chroma, floor = 0.14) {
+  const out = new Array(12);
+  let max = 0;
+  for (let i = 0; i < 12; i++) {
+    const v = Math.max(0, chroma[i] - floor);
+    out[i] = v;
+    if (v > max) max = v;
+  }
+  if (max > 0) for (let i = 0; i < 12; i++) out[i] /= max;
+  return out;
+}
+
+// Rank templates by cosine similarity to the chroma. Returns [{ name, sim }] desc.
+// "Which chord does this most look like" is far more robust than fixed per-note thresholds,
+// because it's relative — it self-adjusts to the room and mic level.
+export function matchChroma(chroma, templates) {
+  const norm = Math.sqrt(chroma.reduce((a, b) => a + b * b, 0)) || 1;
+  const ranked = templates.map((t) => {
+    let dot = 0;
+    let tn = 0;
+    for (let pc = 0; pc < 12; pc++) {
+      dot += chroma[pc] * t.vec[pc];
+      tn += t.vec[pc] * t.vec[pc];
+    }
+    return { name: t.name, sim: dot / (norm * (Math.sqrt(tn) || 1)) };
+  });
+  ranked.sort((a, b) => b.sim - a.sim);
+  return ranked;
+}
+
 // Open-ended guess: which template chord best matches the chroma (cosine similarity).
 export function bestMatch(chroma, templates) {
   const norm = Math.sqrt(chroma.reduce((a, b) => a + b * b, 0)) || 1;

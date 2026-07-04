@@ -198,6 +198,7 @@ ol.steps li { margin: .3rem 0; }
 .verdict.almost { color: var(--gold); border-color: #6a5220; }
 .verdict.ok     { color: #fff; background: var(--green-dk); border-color: var(--green); box-shadow: 0 0 22px rgba(123,171,99,.35); }
 
+.hear-line { text-align: center; font-family: var(--mono); font-size: .82rem; color: var(--gold); min-height: 1.1em; margin-top: .4rem; }
 .note-chips { display: flex; gap: .4rem; justify-content: center; flex-wrap: wrap; margin: .8rem 0; }
 .note-chip { min-width: 40px; text-align: center; font-weight: 800; padding: .3rem .5rem; border-radius: 8px; border: 1px solid var(--line); background: var(--panel-2); color: var(--faint); transition: all .12s; }
 .note-chip.hit { background: var(--green-dk); border-color: var(--green); color: #fff; }
@@ -222,6 +223,14 @@ ol.steps li { margin: .3rem 0; }
 .level-fill { height: 100%; width: 0; border-radius: 999px; background: var(--faint); transition: width .05s linear, background .1s; }
 .level-fill.live { background: linear-gradient(90deg, var(--green), var(--gold)); }
 .no-signal { color: var(--gold); font-size: .82rem; margin: 0 0 .6rem; }
+
+/* ---------- play-along ---------- */
+.pa-progress { display: flex; gap: .4rem; flex-wrap: wrap; justify-content: center; margin-bottom: 1rem; }
+.pa-chip { font-weight: 800; font-size: .9rem; padding: .3rem .6rem; border-radius: 8px; border: 1px solid var(--line); background: var(--panel-2); color: var(--faint); }
+.pa-chip.done { background: var(--green-dk); border-color: var(--green); color: #fff; }
+.pa-chip.current { background: var(--rust); border-color: var(--rust); color: #fff; transform: scale(1.08); box-shadow: 0 0 16px rgba(210,102,47,.5); }
+.pa-current { display: flex; flex-direction: column; align-items: center; gap: .3rem; }
+.pa-name { font-size: 2.6rem; font-weight: 800; color: var(--gold); line-height: 1; }
 
 /* ---------- genre filter chips ---------- */
 .chip-row { display: flex; gap: .45rem; flex-wrap: wrap; margin: 0 0 1.2rem; }

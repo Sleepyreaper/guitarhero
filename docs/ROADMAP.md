@@ -13,10 +13,13 @@
       (pitch-class profile) with a live 12-note visualizer + per-note feedback
 
 ## Next up (high value, low effort)
-- [ ] **Embed the Chord Coach into songs/lessons** — auto-advance the chart when the correct
-      chord is heard (the "Piano Marvel" play-along loop)
-- [ ] Calibrate Chord Coach thresholds against real guitars (presentThresh/foreignThresh in
-      `lib/chroma.js`) — maybe an auto-gain/room-noise baseline
+- [x] **Play-along** — song pages listen and auto-advance through the chord progression, with a
+      manual Skip/Back fallback (`views/song.js` + `lib/coach.js`)
+- [x] Chord detection reworked to relative best-match (`ChordJudge`/`matchChroma`), self-
+      calibrating to room/mic, with a live "I hear: X · NN%" readout in the Coach
+- [ ] **Calibrate on a real guitar** — dial SIM_OK / cleanChroma floor / tuner minClarity from
+      the on-screen readouts (needs real-mic data points from the user)
+- [ ] Auto noise-floor baseline (sample the room when idle, subtract it)
 - [ ] Capo transposer on song charts (shift chords by N frets, keep easy shapes)
 - [ ] Nashville-number toggle on charts (show 1–4–5 instead of letters)
 - [ ] Chord-change trainer game (count clean changes in 60s, save personal best)
