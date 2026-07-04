@@ -7,6 +7,17 @@
 // differ, so the "Find the chords" link is the source of truth.
 
 export const TARGET_SONGS = [
+  // ----- Sing with the kids -----
+  { title: 'You Are My Sunshine', artist: 'Jimmie Davis (traditional country)', genres: ['kids', 'country'],
+    chords: ['G', 'C', 'D'], capo: 'No capo',
+    why: 'Maybe the ultimate parent-and-kid singalong. Three chords.' },
+  { title: 'This Land Is Your Land', artist: 'Woody Guthrie', genres: ['kids', 'folk', 'americana'],
+    chords: ['G', 'C', 'D'], capo: 'No capo',
+    why: 'A joyful family singalong the whole car can belt out.' },
+  { title: 'Rainbow Connection', artist: 'Kermit the Frog (Paul Williams)', genres: ['kids'],
+    chords: ['G', 'Em', 'C', 'D'], capo: 'No capo',
+    why: 'Sweet, gentle, and a little magic — great for winding down.' },
+
   // ----- Current hits (requested) -----
   { title: 'You Look Like You Love Me', artist: 'Ella Langley (feat. Riley Green)', genres: ['country'],
     chords: ['G', 'C', 'D'], capo: 'Capo — to taste',
