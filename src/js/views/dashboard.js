@@ -9,7 +9,9 @@ const TOOLS = [
   { href: '#/learn', ico: '📚', h: 'Learn', p: 'A step-by-step path from zero to real songs.' },
   { href: '#/songs', ico: '🎵', h: 'Songs', p: 'Play-along charts + real songs to aim for.' },
   { href: '#/chords', ico: '🎸', h: 'Chords', p: 'The beginner shapes with diagrams you can hear.' },
-  { href: '#/train', ico: '🏋️', h: 'Trainer', p: 'Drill chord changes — how many in 60 seconds?' },
+  { href: '#/train', ico: '🏋️', h: 'Change trainer', p: 'Drill chord changes — how many in 60 seconds?' },
+  { href: '#/warmup', ico: '🤸', h: 'Finger warm-ups', p: 'The 1·2·3·4 drill for finger strength.' },
+  { href: '#/strum', ico: '🎶', h: 'Strum trainer', p: 'See and hear strum patterns, then copy them.' },
   { href: '#/tuner', ico: '🎯', h: 'Tuner', p: 'Get in tune with your mic before you play.' },
   { href: '#/metronome', ico: '🥁', h: 'Metronome', p: 'Build rock-solid timing from day one.' },
 ];
@@ -80,6 +82,7 @@ export default {
         <div class="level-wrap" style="justify-content:center;margin:.7rem 0 .3rem"><span class="level-tag">you</span><div class="level-meter"><div id="pt-level" class="level-fill"></div></div></div>
         <div class="btn-row" style="justify-content:center;margin-top:.6rem">
           <button class="btn btn-primary" id="pt-toggle">🎤 Start practice session</button>
+          <a class="btn" href="#/routine">📋 Today's plan</a>
         </div>
         <div id="pt-err" class="faint" style="text-align:center;color:var(--red);margin-top:.4rem"></div>
       </section>

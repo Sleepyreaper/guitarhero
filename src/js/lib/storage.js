@@ -21,7 +21,7 @@ function save(state) {
 }
 
 function defaults() {
-  return { done: {}, lastLesson: null, practiceSeconds: {}, bestChanges: {} };
+  return { done: {}, lastLesson: null, practiceSeconds: {}, bestChanges: {}, routine: {} };
 }
 
 const today = () => new Date().toISOString().slice(0, 10);
@@ -85,6 +85,26 @@ export function streak() {
 
 export function playedToday() {
   return todaySeconds() >= MIN_DAY_SECONDS;
+}
+
+// --- Daily practice routine (self-checked, resets each day) ---
+export function isRoutineStepDone(id) {
+  const r = getState().routine[today()];
+  return !!(r && r[id]);
+}
+
+export function toggleRoutineStep(id) {
+  const s = getState();
+  const d = today();
+  s.routine[d] = s.routine[d] || {};
+  s.routine[d][id] = !s.routine[d][id];
+  save(s);
+  return s.routine[d][id];
+}
+
+export function routineDoneCount() {
+  const r = getState().routine[today()] || {};
+  return Object.values(r).filter(Boolean).length;
 }
 
 // --- Chord-change trainer personal bests, keyed by the chord pair (e.g. "Em-G") ---

@@ -228,6 +228,29 @@ ol.steps li { margin: .3rem 0; }
 .level-fill.live { background: linear-gradient(90deg, var(--green), var(--gold)); }
 .no-signal { color: var(--gold); font-size: .82rem; margin: 0 0 .6rem; }
 
+/* ---------- finger warm-ups ---------- */
+.warmup-cue { font-size: 1.5rem; font-weight: 800; color: var(--gold); margin: .4rem 0 1rem; }
+.fretboard { max-width: 320px; margin: 0 auto; }
+.fb-strings { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin-bottom: 4px; }
+.fb-strings span { text-align: center; font-family: var(--mono); font-size: .75rem; color: var(--faint); }
+.fb-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin-bottom: 6px; }
+.fb-cell { height: 40px; border-radius: 8px; background: var(--panel-2); border: 1px solid var(--line); display: grid; place-items: center; font-weight: 800; color: #fff; }
+.fb-cell.active { background: var(--rust); border-color: var(--rust); box-shadow: 0 0 16px rgba(210,102,47,.5); transform: scale(1.06); }
+
+/* ---------- strum trainer ---------- */
+.strum-row { display: flex; justify-content: center; gap: .4rem; flex-wrap: wrap; margin: 1rem 0; }
+.strum-slot { width: 42px; padding: .4rem 0; border-radius: 10px; background: var(--panel-2); border: 1px solid var(--line); }
+.strum-slot.air { opacity: .45; }
+.strum-slot.on { background: var(--rust); border-color: var(--rust); box-shadow: 0 0 14px rgba(210,102,47,.5); transform: translateY(-2px); }
+.strum-slot.on .strum-arrow, .strum-slot.on .strum-beat { color: #fff; }
+.strum-arrow { font-size: 1.5rem; font-weight: 800; color: var(--gold); line-height: 1; }
+.strum-beat { font-family: var(--mono); font-size: .72rem; color: var(--faint); margin-top: .2rem; }
+
+/* ---------- daily routine ---------- */
+.routine-step { display: flex; align-items: center; gap: .9rem; }
+.routine-step.done { border-color: var(--green-dk); }
+.routine-step .lesson-check { cursor: pointer; background: var(--panel-2); }
+
 /* ---------- chord-change trainer ---------- */
 .train-pick { display: flex; align-items: center; justify-content: center; gap: 1.2rem; flex-wrap: wrap; margin-bottom: 1rem; }
 .train-select { font: inherit; font-weight: 800; font-size: 1.1rem; background: var(--panel-2); color: var(--text); border: 1px solid var(--line); border-radius: 10px; padding: .35rem .7rem; }

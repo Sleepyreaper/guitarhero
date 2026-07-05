@@ -6,6 +6,9 @@ import chords from './views/chords.js';
 import tuner from './views/tuner.js';
 import metronome from './views/metronome.js';
 import train from './views/train.js';
+import warmup from './views/warmup.js';
+import routine from './views/routine.js';
+import strumTrainer from './views/strum.js';
 
 const ROUTES = {
   home: dashboard,
@@ -15,6 +18,9 @@ const ROUTES = {
   tuner,
   metronome,
   train,
+  warmup,
+  routine,
+  strum: strumTrainer,
 };
 
 const NAV_HREF = {
