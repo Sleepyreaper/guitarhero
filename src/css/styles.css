@@ -228,6 +228,16 @@ ol.steps li { margin: .3rem 0; }
 .level-fill.live { background: linear-gradient(90deg, var(--green), var(--gold)); }
 .no-signal { color: var(--gold); font-size: .82rem; margin: 0 0 .6rem; }
 
+/* ---------- chord-change trainer ---------- */
+.train-pick { display: flex; align-items: center; justify-content: center; gap: 1.2rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.train-select { font: inherit; font-weight: 800; font-size: 1.1rem; background: var(--panel-2); color: var(--text); border: 1px solid var(--line); border-radius: 10px; padding: .35rem .7rem; }
+.train-swap { font-size: 1.6rem; color: var(--gold); }
+.train-scoreboard { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin: 1rem 0; }
+.train-scoreboard .n { font-size: 2.4rem; }
+.tap-btn { width: 100%; max-width: 320px; margin: .8rem auto 0; padding: 1.1rem; font-size: 1.1rem; font-weight: 800; background: var(--panel-2); border: 2px dashed var(--line); border-radius: var(--radius); line-height: 1.2; }
+.tap-btn:not(:disabled):active { background: var(--rust); border-color: var(--rust); color: #fff; transform: scale(.98); }
+.tap-btn small { font-weight: 500; color: var(--faint); }
+
 /* ---------- play-along ---------- */
 .pa-progress { display: flex; gap: .4rem; flex-wrap: wrap; justify-content: center; margin-bottom: 1rem; }
 .pa-chip { font-weight: 800; font-size: .9rem; padding: .3rem .6rem; border-radius: 8px; border: 1px solid var(--line); background: var(--panel-2); color: var(--faint); }

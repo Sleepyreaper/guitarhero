@@ -72,7 +72,7 @@ export const CURRICULUM = [
           'Give raw fingertips a day to recover; calluses build during rest. Light, frequent practice builds them fastest.',
           'If the guitar physically fights you, lighter-gauge strings and a cheap setup at a shop make a big difference.',
         ] },
-      { id: 'l1-3', title: 'One-minute changes: Em ↔ G', min: 8, chords: ['Em', 'G'], tool: '#/metronome',
+      { id: 'l1-3', title: 'One-minute changes: Em ↔ G', min: 8, chords: ['Em', 'G'], tool: '#/train',
         objective: 'Switch cleanly between two chords — the #1 skill that unlocks songs.',
         goal: 'Count how many clean Em↔G changes you make in 60 seconds. Beat it tomorrow.',
         steps: [

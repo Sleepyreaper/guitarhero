@@ -9,6 +9,7 @@ const TOOLS = [
   { href: '#/learn', ico: '📚', h: 'Learn', p: 'A step-by-step path from zero to real songs.' },
   { href: '#/songs', ico: '🎵', h: 'Songs', p: 'Play-along charts + real songs to aim for.' },
   { href: '#/chords', ico: '🎸', h: 'Chords', p: 'The beginner shapes with diagrams you can hear.' },
+  { href: '#/train', ico: '🏋️', h: 'Trainer', p: 'Drill chord changes — how many in 60 seconds?' },
   { href: '#/tuner', ico: '🎯', h: 'Tuner', p: 'Get in tune with your mic before you play.' },
   { href: '#/metronome', ico: '🥁', h: 'Metronome', p: 'Build rock-solid timing from day one.' },
 ];

@@ -5,6 +5,7 @@ import song from './views/song.js';
 import chords from './views/chords.js';
 import tuner from './views/tuner.js';
 import metronome from './views/metronome.js';
+import train from './views/train.js';
 
 const ROUTES = {
   home: dashboard,
@@ -13,6 +14,7 @@ const ROUTES = {
   chords,
   tuner,
   metronome,
+  train,
 };
 
 const NAV_HREF = {

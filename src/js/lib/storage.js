@@ -21,7 +21,7 @@ function save(state) {
 }
 
 function defaults() {
-  return { done: {}, lastLesson: null, practiceSeconds: {} };
+  return { done: {}, lastLesson: null, practiceSeconds: {}, bestChanges: {} };
 }
 
 const today = () => new Date().toISOString().slice(0, 10);
@@ -85,6 +85,24 @@ export function streak() {
 
 export function playedToday() {
   return todaySeconds() >= MIN_DAY_SECONDS;
+}
+
+// --- Chord-change trainer personal bests, keyed by the chord pair (e.g. "Em-G") ---
+export function pairKey(a, b) {
+  return [a, b].sort().join('-');
+}
+
+export function getBestChanges(key) {
+  return getState().bestChanges[key] || 0;
+}
+
+// Save only if it beats the previous best. Returns { best, isRecord }.
+export function recordChanges(key, n) {
+  const s = getState();
+  const prev = s.bestChanges[key] || 0;
+  const isRecord = n > prev;
+  if (isRecord) { s.bestChanges[key] = n; save(s); }
+  return { best: Math.max(prev, n), isRecord };
 }
 
 export function resetProgress() {
