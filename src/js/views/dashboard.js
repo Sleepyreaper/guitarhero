@@ -43,6 +43,8 @@ const WEEK = [
 ];
 
 function renderOnboarding(root, owner) {
+  const saved = getProfile() || {};
+  const checked = (key, value, fallback) => (saved[key] || fallback) === value ? 'checked' : '';
   root.innerHTML = `
     <section class="panel onboarding-panel">
       <p class="eyebrow">Build your first week</p>
@@ -50,17 +52,17 @@ function renderOnboarding(root, owner) {
       <p class="lead">Four quick choices give you a starting path. Nothing here is public, and you can change it later.</p>
       <form id="onboarding-form" class="onboarding-form">
         <fieldset><legend>How do you play?</legend><div class="choice-grid">
-          <label><input type="radio" name="hand" value="right" checked> Right-handed</label>
-          <label><input type="radio" name="hand" value="left"> Left-handed</label>
+          <label><input type="radio" name="hand" value="right" ${checked('hand', 'right', 'right')}> Right-handed</label>
+          <label><input type="radio" name="hand" value="left" ${checked('hand', 'left', 'right')}> Left-handed</label>
         </div></fieldset>
         <fieldset><legend>Where are you starting?</legend><div class="choice-grid">
-          <label><input type="radio" name="experience" value="new" checked> Never played</label>
-          <label><input type="radio" name="experience" value="some"> I know a chord or two</label>
+          <label><input type="radio" name="experience" value="new" ${checked('experience', 'new', 'new')}> Never played</label>
+          <label><input type="radio" name="experience" value="some" ${checked('experience', 'some', 'new')}> I know a chord or two</label>
         </div></fieldset>
         <fieldset><legend>What sounds like you?</legend><div class="choice-grid">
-          ${Object.entries(GENRE_LABELS).map(([value, label]) => `<label><input type="radio" name="genre" value="${value}" ${value === 'mixed' ? 'checked' : ''}> ${label}</label>`).join('')}
+          ${Object.entries(GENRE_LABELS).map(([value, label]) => `<label><input type="radio" name="genre" value="${value}" ${checked('genre', value, 'mixed')}> ${label}</label>`).join('')}
         </div></fieldset>
-        <label class="song-goal"><strong>First song you want to play</strong><input name="song" maxlength="80" placeholder="A favorite song—or leave this blank" /></label>
+        <label class="song-goal"><strong>First song you want to play</strong><input name="song" maxlength="80" value="${esc(saved.song || '')}" placeholder="A favorite song—or leave this blank" /></label>
         <button class="btn btn-primary" type="submit">Make my seven-day path →</button>
       </form>
       <p class="faint">For younger learners: use Campfire with a parent or guardian. Campfire has no public profiles, chat, or shared recordings.</p>

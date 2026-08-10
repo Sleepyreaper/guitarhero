@@ -3,7 +3,7 @@ import { CHORD_BY_NAME } from '../data/chords.js';
 import { SONG_BY_ID } from '../data/songs.js';
 import { chordSVG } from '../components/chordDiagram.js';
 import {
-  getFeedback, isDone, isSkillProven, saveFeedback, setDone, setLastLesson, setSkillProof,
+  getFeedback, getProfile, isDone, isSkillProven, saveFeedback, setDone, setLastLesson, setSkillProof,
 } from '../lib/storage.js';
 
 function videoBlock(video) {
@@ -78,6 +78,10 @@ function detail(root, lessonId) {
   const song = lesson.songId ? SONG_BY_ID[lesson.songId] : null;
   const done = isDone(lessonId);
   const feedback = getFeedback(lessonId);
+  const leftHanded = getProfile()?.hand === 'left';
+  const steps = lesson.steps.map((step) => leftHanded
+    ? step.replace('low E on the left', 'low E on the right').replace('low-E on the left', 'low-E on the right')
+    : step);
 
   root.innerHTML = `
     <a class="back-link" href="#/learn">← All lessons</a>
@@ -88,6 +92,7 @@ function detail(root, lessonId) {
     ${videoBlock(lesson.video)}
 
     ${lesson.chords ? `
+      ${leftHanded ? '<p class="pill gold">Left-handed diagrams are mirrored</p>' : ''}
       <div class="grid chords-grid" style="margin-bottom:1.1rem">
         ${lesson.chords.map((n) => CHORD_BY_NAME[n] ? `
           <div class="panel chord-card"><div class="chord-name">${n}</div>${chordSVG(CHORD_BY_NAME[n])}<div class="chord-sub">${CHORD_BY_NAME[n].label}</div></div>` : '').join('')}
@@ -95,7 +100,7 @@ function detail(root, lessonId) {
 
     <section class="panel">
       <h3>Do this</h3>
-      <ol class="steps">${lesson.steps.map((s) => `<li>${s}</li>`).join('')}</ol>
+      <ol class="steps">${steps.map((s) => `<li>${s}</li>`).join('')}</ol>
       ${lesson.chords && lesson.chords[0] && CHORD_BY_NAME[lesson.chords[0]] ? `<p class="faint" style="margin:.4rem 0 0">💡 ${CHORD_BY_NAME[lesson.chords[0]].tip}</p>` : ''}
     </section>
 

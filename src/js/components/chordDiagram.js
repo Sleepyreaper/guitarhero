@@ -1,5 +1,6 @@
 // Renders a chord shape as an SVG string. Strings are drawn low-E (left) to high-e (right),
 // matching how you look down at the fretboard while playing.
+import { getProfile } from '../lib/storage.js';
 
 export function chordSVG(chord, opts = {}) {
   const W = opts.w || 122;
@@ -8,6 +9,7 @@ export function chordSVG(chord, opts = {}) {
   const padTop = 30;
   const padBottom = 14;
   const nStr = 6;
+  const leftHanded = opts.leftHanded ?? (getProfile()?.hand === 'left');
 
   const maxFret = Math.max(...chord.frets);
   const base = chord.baseFret || 1;
@@ -17,7 +19,7 @@ export function chordSVG(chord, opts = {}) {
   const gridH = H - padTop - padBottom;
   const dx = gridW / (nStr - 1);
   const dy = gridH / nFret;
-  const xOf = (i) => padX + i * dx;
+  const xOf = (i) => padX + (leftHanded ? nStr - 1 - i : i) * dx;
   const topY = padTop;
 
   const parts = [];
@@ -55,7 +57,7 @@ export function chordSVG(chord, opts = {}) {
     }
   });
 
-  return `<svg class="chord" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${chord.name} chord diagram">${parts.join('')}</svg>`;
+  return `<svg class="chord ${leftHanded ? 'left-handed' : ''}" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${chord.name} chord diagram${leftHanded ? ', mirrored for left-handed guitar' : ''}">${parts.join('')}</svg>`;
 }
 
 // A full card: diagram + name + optional "hear it" strum button (wired by the view).
