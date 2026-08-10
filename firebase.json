@@ -1,0 +1,33 @@
+{
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "firestore.rules",
+      "firestore.indexes.json",
+      ".firebaserc",
+      "**/.*",
+      "Dockerfile",
+      "compose.yaml",
+      "deploy/**",
+      "docs/**",
+      "README.md",
+      "CLAUDE.md",
+      "AGENTS.md"
+    ],
+    "headers": [
+      {
+        "source": "**/*.@(html|js|css)",
+        "headers": [{ "key": "Cache-Control", "value": "no-cache" }]
+      },
+      {
+        "source": "/__/firebase/**",
+        "headers": [{ "key": "Cache-Control", "value": "no-store" }]
+      }
+    ]
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  }
+}

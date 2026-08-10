@@ -3,6 +3,8 @@
 // (see lib/practice.js), and the day-streak only counts days you actually played.
 const KEY = 'campfire.progress.v1';
 const MIN_DAY_SECONDS = 60; // a day counts toward the streak after 1 minute of real playing
+let cloud = null;
+let cloudTimer = null;
 
 function load() {
   try {
@@ -18,10 +20,92 @@ function save(state) {
   } catch {
     /* storage full or disabled — fail quietly */
   }
+  queueCloudSave(state);
 }
 
 function defaults() {
   return { done: {}, lastLesson: null, practiceSeconds: {}, bestChanges: {}, routine: {} };
+}
+
+function mergeMaps(local = {}, remote = {}, reducer = (_, b) => b) {
+  const merged = { ...remote };
+  for (const [key, value] of Object.entries(local)) {
+    merged[key] = key in merged ? reducer(value, merged[key]) : value;
+  }
+  return merged;
+}
+
+function mergeStates(localState, remoteState) {
+  const local = { ...defaults(), ...(localState || {}) };
+  const remote = { ...defaults(), ...(remoteState || {}) };
+  const routine = mergeMaps(local.routine, remote.routine, (a, b) => ({ ...b, ...a }));
+  return {
+    ...remote,
+    ...local,
+    lastLesson: local.lastLesson || remote.lastLesson || null,
+    done: mergeMaps(local.done, remote.done, (a, b) => Math.max(a || 0, b || 0)),
+    practiceSeconds: mergeMaps(local.practiceSeconds, remote.practiceSeconds, (a, b) => Math.max(a || 0, b || 0)),
+    bestChanges: mergeMaps(local.bestChanges, remote.bestChanges, (a, b) => Math.max(a || 0, b || 0)),
+    routine,
+  };
+}
+
+async function writeCloud(state = getState()) {
+  if (!cloud) return;
+  const { firestoreApi, db, uid } = cloud;
+  const ref = firestoreApi.doc(db, 'users', uid, 'state', 'progress');
+  try {
+    await firestoreApi.setDoc(ref, {
+      state,
+      schemaVersion: 1,
+      updatedAt: firestoreApi.serverTimestamp(),
+    }, { merge: true });
+  } catch (error) {
+    console.warn('Campfire progress sync failed; local progress is safe.', error);
+  }
+}
+
+function queueCloudSave(state) {
+  if (!cloud) return;
+  clearTimeout(cloudTimer);
+  cloudTimer = setTimeout(() => writeCloud(state), 10000);
+}
+
+// Attach the currently authenticated account, merge its cloud progress with this
+// device, then keep future writes synchronized (debounced to control Firestore cost).
+export async function connectCloudProgress(user, services) {
+  if (!user || !services?.available) return;
+  if (cloud?.uid === user.uid) return;
+  if (cloud) await writeCloud();
+  cloud = { uid: user.uid, db: services.db, firestoreApi: services.firestoreApi };
+  const ref = services.firestoreApi.doc(services.db, 'users', user.uid, 'state', 'progress');
+  try {
+    const snapshot = await services.firestoreApi.getDoc(ref);
+    const merged = mergeStates(getState(), snapshot.exists() ? snapshot.data().state : null);
+    try { localStorage.setItem(KEY, JSON.stringify(merged)); } catch { /* local-only failure */ }
+    await writeCloud(merged);
+    window.dispatchEvent(new CustomEvent('campfire:progress-sync'));
+  } catch (error) {
+    console.warn('Cloud progress could not be loaded; continuing locally.', error);
+  }
+}
+
+export async function flushCloudProgress() {
+  clearTimeout(cloudTimer);
+  cloudTimer = null;
+  await writeCloud();
+}
+
+export function disconnectCloudProgress() {
+  clearTimeout(cloudTimer);
+  cloudTimer = null;
+  cloud = null;
+}
+
+// Used after a deliberate sign-out on a shared device. This does not queue a
+// cloud write; the signed-in user's cloud copy has already been flushed.
+export function clearLocalProgress() {
+  try { localStorage.removeItem(KEY); } catch { /* local-only failure */ }
 }
 
 const today = () => new Date().toISOString().slice(0, 10);

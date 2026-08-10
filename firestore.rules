@@ -1,0 +1,28 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Every learner owns a private subtree keyed by their Firebase Auth UID.
+    match /users/{userId} {
+      allow read, create, update, delete:
+        if request.auth != null && request.auth.uid == userId;
+
+      match /state/{stateId} {
+        allow read, delete:
+          if request.auth != null && request.auth.uid == userId;
+
+        allow create, update:
+          if request.auth != null
+          && request.auth.uid == userId
+          && stateId == 'progress'
+          && request.resource.data.keys().hasOnly(['state', 'schemaVersion', 'updatedAt'])
+          && request.resource.data.schemaVersion == 1;
+      }
+    }
+
+    // Everything not explicitly owned above is denied.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

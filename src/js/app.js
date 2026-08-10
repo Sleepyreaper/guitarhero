@@ -9,6 +9,9 @@ import train from './views/train.js';
 import warmup from './views/warmup.js';
 import routine from './views/routine.js';
 import strumTrainer from './views/strum.js';
+import account from './views/account.js';
+import { startCloudSession } from './lib/firebase.js';
+import { connectCloudProgress, flushCloudProgress, disconnectCloudProgress } from './lib/storage.js';
 
 const ROUTES = {
   home: dashboard,
@@ -21,6 +24,7 @@ const ROUTES = {
   warmup,
   routine,
   strum: strumTrainer,
+  account,
 };
 
 const NAV_HREF = {
@@ -30,6 +34,7 @@ const NAV_HREF = {
   chords: '#/chords',
   tuner: '#/tuner',
   metronome: '#/metronome',
+  account: '#/account',
 };
 
 const root = document.getElementById('app');
@@ -64,3 +69,22 @@ function route() {
 
 window.addEventListener('hashchange', route);
 route();
+
+const accountLink = document.getElementById('account-link');
+startCloudSession(async (user, services) => {
+  if (user) await connectCloudProgress(user, services);
+  else disconnectCloudProgress();
+  if (accountLink) {
+    accountLink.textContent = user && !user.isAnonymous ? (user.displayName?.split(' ')[0] || 'Account') : 'Save progress';
+    accountLink.classList.toggle('synced', !!user && !user.isAnonymous);
+  }
+  window.dispatchEvent(new CustomEvent('campfire:auth-change', { detail: { user } }));
+});
+
+window.addEventListener('campfire:progress-sync', () => {
+  if (current === dashboard || current === lessons || current === routine || current === train) route();
+});
+window.addEventListener('pagehide', () => { flushCloudProgress(); });
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden') flushCloudProgress();
+});

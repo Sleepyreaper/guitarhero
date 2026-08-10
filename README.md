@@ -47,6 +47,12 @@ volume, so you only click through the warning once per device.
 > The tuner uses the microphone of **whatever device you open it on** (your phone/laptop next to
 > the guitar) — not a mic attached to the server.
 
+## Public multi-user hosting on GCP
+
+The app is ready for Firebase Hosting, Authentication, and Cloud Firestore while preserving its
+no-build architecture and local/offline behavior. See [docs/GCP_DEPLOYMENT.md](docs/GCP_DEPLOYMENT.md)
+for the one-time project setup and deployment commands.
+
 ### Managing it with Dockge
 
 To have it show up as a stack in [Dockge](https://github.com/louislam/dockge), clone it into
