@@ -268,6 +268,13 @@ ol.steps li { margin: .3rem 0; }
 .level-fill { height: 100%; width: 0; border-radius: 999px; background: var(--faint); transition: width .05s linear, background .1s; }
 .level-fill.live { background: linear-gradient(90deg, var(--green), var(--gold)); }
 .no-signal { color: var(--gold); font-size: .82rem; margin: 0 0 .6rem; }
+.mic-check { margin-top: 1rem; }
+.mic-check h2 { margin-top: 0; }
+.mic-check-grid { display: grid; gap: .4rem; margin: .8rem 0; }
+.mic-check-row { display: grid; grid-template-columns: minmax(130px, 1.5fr) repeat(3, minmax(70px, .7fr)); gap: .45rem; padding: .5rem .65rem; border: 1px solid var(--line); border-radius: 8px; color: var(--faint); font-family: var(--mono); font-size: .75rem; }
+.mic-check-row strong { color: var(--muted); }
+.mic-check-row.sampled { border-color: var(--green-dk); }
+.mic-check-row.sampled strong { color: var(--green); }
 
 /* ---------- finger warm-ups ---------- */
 .warmup-cue { font-size: 1.5rem; font-weight: 800; color: var(--gold); margin: .4rem 0 1rem; }
@@ -335,6 +342,7 @@ ol.steps li { margin: .3rem 0; }
   .tuner-note { font-size: 3.6rem; }
   .bpm-display { font-size: 3rem; }
   .week-grid { grid-template-columns: repeat(7, 145px); }
+  .mic-check-row { grid-template-columns: 1fr 1fr; }
 }
 .account-link.synced { color: var(--green); }
 .auth-panel { max-width: 620px; margin: 1.5rem auto; }

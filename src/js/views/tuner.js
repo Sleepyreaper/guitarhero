@@ -1,5 +1,6 @@
 import { Tuner, STRINGS, freqToNote, midiToFreq } from '../lib/pitch.js';
 import { listAudioInputs, activeDeviceId } from '../lib/devices.js';
+import { addMicCheckReading, createMicCheck, formatMicCheck, summarizeMicCheck } from '../lib/calibration.js';
 
 export default {
   render(root) {
@@ -46,6 +47,17 @@ export default {
         </div>
         <p id="target-help" class="faint" style="margin:.8rem 0 0;font-size:.8rem">Selected: Low E (6th). Thick low-E on the left → thin high-E on the right.</p>
       </section>
+
+      <section class="panel mic-check">
+        <h2>Six-string mic check</h2>
+        <p class="faint">Use each string button above and pluck that string 3-4 times. This measures only signal and pitch results; it never records or uploads audio.</p>
+        <div id="check-grid" class="mic-check-grid"></div>
+        <div class="btn-row">
+          <button id="check-reset" class="btn">Reset check</button>
+          <button id="check-copy" class="btn" disabled>Copy diagnostic report</button>
+        </div>
+        <p id="check-status" class="faint" aria-live="polite">Start the tuner to begin.</p>
+      </section>
     `;
 
     const noteEl = root.querySelector('#note');
@@ -62,9 +74,31 @@ export default {
     const signalHelp = root.querySelector('#signal-help');
     const targetHelp = root.querySelector('#target-help');
     const strEls = [...root.querySelectorAll('.string-btn')];
+    const checkGrid = root.querySelector('#check-grid');
+    const checkReset = root.querySelector('#check-reset');
+    const checkCopy = root.querySelector('#check-copy');
+    const checkStatus = root.querySelector('#check-status');
 
     let lastSeen = 0;
     let lastSignal = 0;
+    let micCheck = createMicCheck(STRINGS);
+
+    const paintMicCheck = () => {
+      const summaries = micCheck.map(summarizeMicCheck);
+      checkGrid.innerHTML = summaries.map((row) => `
+        <div class="mic-check-row ${row.sampled ? 'sampled' : ''}">
+          <strong>${row.label}</strong>
+          <span>signal ${row.signalPct}%</span>
+          <span>clear ${row.clearPct}%</span>
+          <span>lock ${row.lockPct}%</span>
+        </div>`).join('');
+      const tested = summaries.filter((row) => row.sampled).length;
+      checkCopy.disabled = tested === 0;
+      checkStatus.textContent = tested === 6
+        ? 'All six sampled. Copy the report if any string still feels unreliable.'
+        : `${tested}/6 strings sampled. Let each selected string ring for about 2 seconds.`;
+    };
+    paintMicCheck();
 
     const paintTarget = (hit = false) => {
       strEls.forEach((e) => {
@@ -77,6 +111,12 @@ export default {
 
     this.tuner = new Tuner((reading) => {
       const { level, note, raw } = reading;
+
+      if (this.tuner.running && this.tuner.target) {
+        const index = STRINGS.indexOf(this.tuner.target);
+        if (index >= 0) addMicCheckReading(micCheck[index], reading, midiToFreq(this.tuner.target.midi), this.tuner.minClarity);
+        if (micCheck[index]?.frames % 12 === 0) paintMicCheck();
+      }
 
       // Always-on input-level meter (proves audio is arriving even with no clear pitch).
       levelFill.style.width = `${Math.min(100, Math.round(level * 500))}%`;
@@ -184,6 +224,22 @@ export default {
         await populateMics();
       } catch (err) {
         errEl.textContent = 'Microphone blocked. Allow mic access (and use an https:// or localhost address).';
+      }
+    });
+
+    checkReset.addEventListener('click', () => {
+      micCheck = createMicCheck(STRINGS);
+      paintMicCheck();
+    });
+
+    checkCopy.addEventListener('click', async () => {
+      const micLabel = micSelect.selectedOptions[0]?.textContent || this.tuner.stream?.getAudioTracks()[0]?.label;
+      const report = formatMicCheck(micCheck, micLabel, this.tuner.audioCtx?.sampleRate);
+      try {
+        await navigator.clipboard.writeText(report);
+        checkStatus.textContent = 'Diagnostic report copied. It contains measurements only; no audio or account details.';
+      } catch {
+        checkStatus.textContent = 'Copy was blocked by the browser. Try again from the secure Campfire address.';
       }
     });
   },
