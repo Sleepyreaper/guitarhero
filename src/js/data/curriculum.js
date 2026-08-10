@@ -10,6 +10,7 @@ export const CURRICULUM = [
     lessons: [
       { id: 'l0-1', title: 'Meet your guitar', min: 6,
         objective: 'Know the parts and sit so your hands are free to move.',
+        video: { id: 'MlV6WhM9YhE', title: 'How to (Really) Hold a Guitar', teacher: 'JustinGuitar', watchFor: 'Notice the neck angle, relaxed shoulders, and how both hands stay free.' },
         steps: [
           'Name the parts: headstock, tuners, nut, neck, frets, soundhole, bridge.',
           'Sit up straight, guitar on your right leg, neck angled slightly up.',
@@ -18,6 +19,8 @@ export const CURRICULUM = [
         ] },
       { id: 'l0-2', title: 'Tune up', min: 5, tool: '#/tuner',
         objective: 'Get all six strings to E A D G B E. An out-of-tune guitar makes everything sound wrong.',
+        video: { id: 'X2EmpWr9vUc', title: 'How to Tune Your Guitar for Beginners', teacher: 'JustinGuitar', watchFor: 'Listen for how one string is played at a time and re-checked after tuning.' },
+        proof: { id: 'tune-six', title: 'I can tune all six strings', check: 'Each string is close enough for the tuner to identify E A D G B E. If the app is unsure, confirm with a clip-on tuner.' },
         steps: [
           'Open the Tuner and allow microphone access.',
           'Play one string at a time, from the thick low E to the thin high E.',
@@ -41,6 +44,8 @@ export const CURRICULUM = [
     lessons: [
       { id: 'l1-0', title: 'One clean note — beat the buzz', min: 8, tool: '#/tuner',
         objective: 'Get a single fretted note to ring CLEAN with no buzz. This is the root skill under every chord — buzzing is placement, not talent.',
+        video: { id: 'IscDj_-Nr0s', title: 'Body Posture and Finger Placement', teacher: 'JustinGuitar', watchFor: 'Copy the fingertip angle, thumb position, and relaxed wrist—not just the fret number.' },
+        proof: { id: 'clean-note', title: 'I can make one clean fretted note', check: 'Pick it three times. It rings clearly each time without a buzz, thud, or neighboring string being touched.' },
         goal: 'Fret one note and open the Tuner — when it locks onto a clear note, that\'s a clean press.',
         steps: [
           'Put ONE finger down: 1st finger, 3rd fret of the B string. Pick just that string.',
@@ -51,6 +56,8 @@ export const CURRICULUM = [
         ] },
       { id: 'l1-1', title: 'The Em chord', min: 8, chords: ['Em'],
         objective: 'Fret a clean-ringing Em — your easiest first shape.',
+        video: { id: '2C2jODHRQBY', title: 'The easiest way to play Em', teacher: 'JustinGuitar', watchFor: 'Check which fingertips press the second fret and how the fingers stay curled.' },
+        proof: { id: 'clean-em', title: 'My Em rings cleanly', check: 'Slowly pick all six strings. At least five ring clearly, then strum the whole chord twice.' },
         steps: [
           'Place fingers 2 and 3 on the 2nd fret of the A and D strings.',
           'Strum all six strings slowly. Every note should ring clearly.',
@@ -58,6 +65,8 @@ export const CURRICULUM = [
         ] },
       { id: 'l1-2', title: 'The G chord', min: 10, chords: ['G'],
         objective: 'Fret a full, ringing G — the home base of country & folk.',
+        video: { id: 'i0G69vCTv4s', title: 'How to Play the G Chord', teacher: 'JustinGuitar', watchFor: 'Try the grip shown, but use the Campfire diagram as the shape you are practicing.' },
+        proof: { id: 'clean-g', title: 'My G rings cleanly', check: 'Pick all six strings slowly. Fix any muted string, then make the full shape twice without placing fingers one-by-one.' },
         steps: [
           'Finger 2 on 3rd fret low-E, finger 1 on 2nd fret A, finger 3 on 3rd fret high-e.',
           'Strum all six. Check each string sounds; adjust finger angle for buzzes.',
@@ -74,6 +83,8 @@ export const CURRICULUM = [
         ] },
       { id: 'l1-3', title: 'One-minute changes: Em ↔ G', min: 8, chords: ['Em', 'G'], tool: '#/train',
         objective: 'Switch cleanly between two chords — the #1 skill that unlocks songs.',
+        video: { id: 'Ck73R_GjowE', title: 'One Minute Changes', teacher: 'JustinGuitar', watchFor: 'Accuracy comes before speed. Count only changes where the chord would actually ring.' },
+        proof: { id: 'em-g-five', title: 'I can make five clean Em ↔ G changes', check: 'Use the Change Trainer or count yourself. Five clean changes without stopping is enough to continue.' },
         goal: 'Count how many clean Em↔G changes you make in 60 seconds. Beat it tomorrow.',
         steps: [
           'Form Em, strum once. Form G, strum once. Repeat slowly.',
@@ -82,6 +93,8 @@ export const CURRICULUM = [
         ] },
       { id: 'l1-4', title: 'Your first strum', min: 8, tool: '#/metronome',
         objective: 'Keep steady time with simple down-strums.',
+        video: { id: 'n45PDizCRLw', title: 'Your First Strumming Pattern', teacher: 'JustinGuitar', watchFor: 'The hand keeps moving evenly and stays relaxed; a missed chord never stops the beat.' },
+        proof: { id: 'steady-strum', title: 'I can strum steadily for 20 seconds', check: 'Use one easy chord. Keep the beat moving even if a strum sounds imperfect.' },
         steps: [
           'Hold G. Strum DOWN on every metronome click at 70 BPM.',
           'Keep your strumming hand moving like a metronome even between hits.',
@@ -111,6 +124,7 @@ export const CURRICULUM = [
         ] },
       { id: 'l2-2', title: 'The G–C–D family (1–4–5)', min: 6,
         objective: 'Understand why these three chords belong together.',
+        video: { id: '4uwPUO7LNpY', title: 'Chords in the Key of G', teacher: 'Worship Tutorials', watchFor: 'These G, C, D, and Em shapes are the shared vocabulary behind many worship and country songs.' },
         steps: [
           'In the key of G, the 1–4–5 chords are G, C, and D.',
           'Thousands of country/folk/church songs use only these three.',
@@ -146,6 +160,7 @@ export const CURRICULUM = [
         ] },
       { id: 'l3-2', title: 'The all-purpose pattern: D–DU–UDU', min: 10, tool: '#/metronome',
         objective: 'Learn the one strum pattern that fits most songs.',
+        video: { id: '6LmQCdt_ZhQ', title: 'The Most Common Strumming Pattern', teacher: 'JustinGuitar', watchFor: 'Watch the continuous down-up hand motion, including the quiet air strums.' },
         goal: 'Loop D–DU–UDU on a G chord for 2 minutes without a hiccup.',
         steps: [
           'Count “1, 2-and, -and-4-and”. Down on 1; down-up on 2; up-down-up on 3-4.',

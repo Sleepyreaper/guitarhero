@@ -24,7 +24,10 @@ function save(state) {
 }
 
 function defaults() {
-  return { done: {}, lastLesson: null, practiceSeconds: {}, bestChanges: {}, routine: {} };
+  return {
+    done: {}, lastLesson: null, practiceSeconds: {}, bestChanges: {}, routine: {},
+    profile: null, skillProofs: {}, feedback: {},
+  };
 }
 
 function mergeMaps(local = {}, remote = {}, reducer = (_, b) => b) {
@@ -46,6 +49,9 @@ function mergeStates(localState, remoteState) {
     done: mergeMaps(local.done, remote.done, (a, b) => Math.max(a || 0, b || 0)),
     practiceSeconds: mergeMaps(local.practiceSeconds, remote.practiceSeconds, (a, b) => Math.max(a || 0, b || 0)),
     bestChanges: mergeMaps(local.bestChanges, remote.bestChanges, (a, b) => Math.max(a || 0, b || 0)),
+    skillProofs: mergeMaps(local.skillProofs, remote.skillProofs, (a, b) => Math.max(a || 0, b || 0)),
+    feedback: mergeMaps(local.feedback, remote.feedback, (a) => a),
+    profile: local.profile || remote.profile || null,
     routine,
   };
 }
@@ -136,6 +142,42 @@ export function setLastLesson(lessonId) {
 
 export function doneCount() {
   return Object.keys(getState().done).length;
+}
+
+// --- Learner preferences, self-verified skills, and private pilot feedback ---
+
+export function getProfile() {
+  return getState().profile;
+}
+
+export function saveProfile(profile) {
+  const s = getState();
+  s.profile = { ...profile, updatedAt: Date.now() };
+  save(s);
+  return s.profile;
+}
+
+export function isSkillProven(skillId) {
+  return !!getState().skillProofs[skillId];
+}
+
+export function setSkillProof(skillId, proven = true) {
+  const s = getState();
+  if (proven) s.skillProofs[skillId] = Date.now();
+  else delete s.skillProofs[skillId];
+  save(s);
+  return proven;
+}
+
+export function getFeedback(lessonId) {
+  return getState().feedback[lessonId] || null;
+}
+
+export function saveFeedback(lessonId, response) {
+  const s = getState();
+  s.feedback[lessonId] = { ...response, updatedAt: Date.now() };
+  save(s);
+  return s.feedback[lessonId];
 }
 
 // --- Honest practice tracking ---

@@ -1,7 +1,9 @@
 import { ALL_LESSONS } from '../data/curriculum.js';
 import { SONGS } from '../data/songs.js';
 import { TARGET_SONGS } from '../data/targets.js';
-import { doneCount, isDone, streak, todaySeconds, addPracticeSeconds } from '../lib/storage.js';
+import {
+  addPracticeSeconds, doneCount, getProfile, isDone, saveProfile, streak, todaySeconds,
+} from '../lib/storage.js';
 import { PracticeMeter } from '../lib/practice.js';
 import { listAudioInputs, activeDeviceId } from '../lib/devices.js';
 
@@ -25,9 +27,70 @@ function expandLearned(set) {
 
 const PLAY_GATE = 0.02; // RMS above this = you're actually making sound
 const fmt = (sec) => `${Math.floor(sec / 60)}:${String(Math.floor(sec % 60)).padStart(2, '0')}`;
+const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({
+  '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+}[char]));
+
+const GENRE_LABELS = { church: 'Christian & worship', country: 'Modern country', americana: 'Americana & folk', mixed: 'A little of everything' };
+const WEEK = [
+  ['#/learn/l0-1', 'Get comfortable', 'Hold the guitar without fighting it'],
+  ['#/learn/l0-2', 'Tune with confidence', 'Get all six strings ready'],
+  ['#/learn/l1-0', 'Beat the buzz', 'Make one clean fretted note'],
+  ['#/learn/l1-1', 'Play Em', 'Your first full chord'],
+  ['#/learn/l1-2', 'Play G', 'The home of country and folk'],
+  ['#/learn/l1-3', 'Make the change', 'Five clean Em ↔ G switches'],
+  ['#/learn/l1-5', 'Play a song', 'Put the week together'],
+];
+
+function renderOnboarding(root, owner) {
+  root.innerHTML = `
+    <section class="panel onboarding-panel">
+      <p class="eyebrow">Build your first week</p>
+      <h1>What do you want guitar to do?</h1>
+      <p class="lead">Four quick choices give you a starting path. Nothing here is public, and you can change it later.</p>
+      <form id="onboarding-form" class="onboarding-form">
+        <fieldset><legend>How do you play?</legend><div class="choice-grid">
+          <label><input type="radio" name="hand" value="right" checked> Right-handed</label>
+          <label><input type="radio" name="hand" value="left"> Left-handed</label>
+        </div></fieldset>
+        <fieldset><legend>Where are you starting?</legend><div class="choice-grid">
+          <label><input type="radio" name="experience" value="new" checked> Never played</label>
+          <label><input type="radio" name="experience" value="some"> I know a chord or two</label>
+        </div></fieldset>
+        <fieldset><legend>What sounds like you?</legend><div class="choice-grid">
+          ${Object.entries(GENRE_LABELS).map(([value, label]) => `<label><input type="radio" name="genre" value="${value}" ${value === 'mixed' ? 'checked' : ''}> ${label}</label>`).join('')}
+        </div></fieldset>
+        <label class="song-goal"><strong>First song you want to play</strong><input name="song" maxlength="80" placeholder="A favorite song—or leave this blank" /></label>
+        <button class="btn btn-primary" type="submit">Make my seven-day path →</button>
+      </form>
+      <p class="faint">For younger learners: use Campfire with a parent or guardian. Campfire has no public profiles, chat, or shared recordings.</p>
+    </section>`;
+  root.querySelector('#onboarding-form').addEventListener('submit', (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    saveProfile({ hand: data.get('hand'), experience: data.get('experience'), genre: data.get('genre'), song: String(data.get('song') || '').trim() });
+    owner.render(root);
+  });
+}
+
+function weekHtml(profile) {
+  const firstOpen = WEEK.findIndex(([href]) => !isDone(href.split('/').pop()));
+  const current = firstOpen < 0 ? WEEK.length - 1 : firstOpen;
+  return `
+    <section class="panel first-week">
+      <div class="week-head"><div><p class="eyebrow">Your seven-day start</p><h2>${GENRE_LABELS[profile.genre] || GENRE_LABELS.mixed}${profile.song ? ` · aiming for “${esc(profile.song)}”` : ''}</h2></div><button class="btn btn-ghost" id="edit-profile" type="button">Change goals</button></div>
+      <div class="week-grid">${WEEK.map(([href, title, blurb], index) => {
+        const done = isDone(href.split('/').pop());
+        return `<a class="week-day ${done ? 'done' : ''} ${index === current ? 'current' : ''}" href="${href}"><span>Day ${index + 1}</span><strong>${done ? '✓ ' : ''}${title}</strong><small>${blurb}</small></a>`;
+      }).join('')}</div>
+      <p class="faint">Move faster if you are ready: skill lessons include a “Prove it” check so quick learners can skip ahead honestly.</p>
+    </section>`;
+}
 
 export default {
   render(root) {
+    const profile = getProfile();
+    if (!profile) { renderOnboarding(root, this); return; }
     const total = ALL_LESSONS.length;
     const done = doneCount();
     const pct = Math.round((done / total) * 100);
@@ -68,6 +131,8 @@ export default {
           <a class="btn" href="#/tuner">🎯 Tune up first</a>
         </div>
       </section>
+
+      ${weekHtml(profile)}
 
       <section class="panel" style="margin-bottom:1.1rem">
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
@@ -117,6 +182,12 @@ export default {
           </a>`).join('')}
       </div>
     `;
+
+    root.querySelector('#edit-profile')?.addEventListener('click', () => {
+      this.meter?.stop();
+      if (this._tick) { clearInterval(this._tick); this._tick = null; }
+      renderOnboarding(root, this);
+    });
 
     // ---- Honest practice session ----
     const toggle = root.querySelector('#pt-toggle');
