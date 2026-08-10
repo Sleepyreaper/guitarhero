@@ -2,9 +2,10 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
-const [firebaseText, appText, indexText, curriculumText, diagramText] = await Promise.all([
+const [firebaseText, appText, indexText, curriculumText, diagramText, dashboardText, targetsText] = await Promise.all([
   read('firebase.json'), read('src/js/app.js'), read('index.html'),
   read('src/js/data/curriculum.js'), read('src/js/components/chordDiagram.js'),
+  read('src/js/views/dashboard.js'), read('src/js/data/targets.js'),
 ]);
 
 const firebase = JSON.parse(firebaseText);
@@ -20,6 +21,8 @@ assert.ok(allHeaders.some((header) => header.key === 'Permissions-Policy' && hea
 assert.match(appText, /privacy from '.\/views\/privacy\.js'/, 'privacy view must be routed');
 assert.match(indexText, /href="#\/privacy"/, 'privacy page must be linked from every screen');
 assert.match(curriculumText, /youtube\.com|video:/, 'curriculum should contain video demonstrations');
+assert.match(dashboardText, /Your first setlist/, 'music preference must produce a visible personalized setlist');
+assert.match(targetsText, /How Great Is Our God[\s\S]*tutorial:/, 'pilot worship target should include a curated tutorial');
 
 // Exercise the SVG renderer without introducing a package/build system.
 const isolatedDiagram = diagramText.replace("import { getProfile } from '../lib/storage.js';", 'const getProfile = () => null;');

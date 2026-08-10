@@ -1,6 +1,6 @@
 import { ALL_LESSONS } from '../data/curriculum.js';
 import { SONGS } from '../data/songs.js';
-import { TARGET_SONGS } from '../data/targets.js';
+import { TARGET_SONGS, chartSearchUrl } from '../data/targets.js';
 import {
   addPracticeSeconds, doneCount, getProfile, isDone, saveProfile, streak, todaySeconds,
 } from '../lib/storage.js';
@@ -41,6 +41,12 @@ const WEEK = [
   ['#/learn/l1-3', 'Make the change', 'Five clean Em ↔ G switches'],
   ['#/learn/l1-5', 'Play a song', 'Put the week together'],
 ];
+const PILOT_SETLISTS = {
+  church: ['How Great Is Our God', '10,000 Reasons (Bless the Lord)', 'Great Are You Lord'],
+  country: ['You Look Like You Love Me', "Weren't For The Wind", 'Last Night'],
+  americana: ['Something in the Orange', 'Wagon Wheel', 'Take Me Home, Country Roads'],
+  mixed: ['How Great Is Our God', 'You Look Like You Love Me', 'Wagon Wheel'],
+};
 
 function renderOnboarding(root, owner) {
   const saved = getProfile() || {};
@@ -86,6 +92,42 @@ function weekHtml(profile) {
         return `<a class="week-day ${done ? 'done' : ''} ${index === current ? 'current' : ''}" href="${href}"><span>Day ${index + 1}</span><strong>${done ? '✓ ' : ''}${title}</strong><small>${blurb}</small></a>`;
       }).join('')}</div>
       <p class="faint">Move faster if you are ready: skill lessons include a “Prove it” check so quick learners can skip ahead honestly.</p>
+    </section>`;
+}
+
+function setlistHtml(profile, learned) {
+  const preferred = PILOT_SETLISTS[profile.genre] || PILOT_SETLISTS.mixed;
+  let songs = preferred.map((title) => TARGET_SONGS.find((song) => song.title === title)).filter(Boolean);
+  const requested = profile.song
+    ? TARGET_SONGS.find((song) => song.title.toLowerCase() === profile.song.toLowerCase())
+    : null;
+  if (requested) songs = [requested, ...songs.filter((song) => song !== requested)].slice(0, 3);
+
+  const custom = profile.song && !requested ? {
+    title: profile.song, artist: 'Your request', chords: [], capo: 'Chart needed',
+    why: 'Keep this as the destination while Campfire builds the core skills underneath it.',
+  } : null;
+  if (custom) songs = [custom, ...songs].slice(0, 3);
+
+  return `
+    <section class="panel personal-setlist" style="margin-bottom:1.1rem">
+      <p class="eyebrow">Your first setlist</p>
+      <h2>These are what the fundamentals are building toward</h2>
+      <div class="grid cards-3">${songs.map((song) => {
+        const missing = song.chords.filter((chord) => !learned.has(chord));
+        const ready = song.chords.length > 0 && missing.length === 0;
+        return `<article class="setlist-card">
+          <div class="tag-row"><span class="pill ${ready ? 'green' : 'gold'}">${ready ? 'Ready to try' : missing.length ? `${missing.length} chord${missing.length === 1 ? '' : 's'} away` : 'Personal goal'}</span><span class="pill">${song.capo}</span></div>
+          <h3>${esc(song.title)}</h3><p class="faint">${esc(song.artist)}</p>
+          ${song.chords.length ? `<div class="target-chords">${song.chords.join(' · ')}</div>` : ''}
+          <p class="muted">${song.why}</p>
+          <div class="btn-row">
+            <a class="btn btn-ghost" href="${chartSearchUrl(song)}" target="_blank" rel="noopener noreferrer">Find the chart ↗</a>
+            ${song.tutorial ? `<a class="btn btn-ghost" href="${song.tutorial}" target="_blank" rel="noopener noreferrer">Watch tutorial ↗</a>` : ''}
+          </div>
+        </article>`;
+      }).join('')}</div>
+      <p class="faint">Modern songs link out because Campfire does not republish copyrighted lyrics or charts.</p>
     </section>`;
 }
 
@@ -135,6 +177,8 @@ export default {
       </section>
 
       ${weekHtml(profile)}
+
+      ${setlistHtml(profile, learned)}
 
       <section class="panel" style="margin-bottom:1.1rem">
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
