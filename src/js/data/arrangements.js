@@ -69,7 +69,7 @@ export const ARRANGEMENTS = {
     'Give it a light bounce, with a stronger first beat and short brushes on 2 and 3.',
     'The title melody begins on repeated notes. Find it on the B string and play only that short answer between phrases.'),
   'shady-grove': a(92, 4, 'boomChuck', 'Modal two-chord practice loop',
-    ['Em', 'Em', 'G', 'G', 'Em', 'Em', 'G', 'G'],
+    ['Em', 'G', 'Em', 'G', 'Em', 'G', 'Em', 'G'],
     'Keep the low pulse dry and even. Old-time drive comes from rhythm, not a busy strum.',
     'Use the open high-e and 3rd-fret high-e as a tiny Em/G fill after “little love”; leave the vocal line alone.'),
   'row-your-boat': a(92, 4, 'sparse', 'One-chord verse',

@@ -29,6 +29,8 @@ for (const song of SONGS) {
 assert.ok(new Set(Object.values(ARRANGEMENTS).map((item) => item.groove)).size >= 7,
   'the songbook must not collapse into one generic strum');
 assert.equal(ARRANGEMENTS['shady-grove'].groove, 'boomChuck');
+assert.deepEqual(ARRANGEMENTS['shady-grove'].bars.slice(0, 4), ['Em', 'G', 'Em', 'G'],
+  'Shady Grove must honor its one-bar Em / one-bar G beginner instruction');
 assert.equal(ARRANGEMENTS['house-of-the-rising-sun'].groove, 'sixEight');
 assert.ok(Object.values(ARRANGEMENTS).some((item) => item.bars.some(Array.isArray)),
   'arrangements must support mid-bar chord changes');
