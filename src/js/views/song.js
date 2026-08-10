@@ -6,6 +6,7 @@ import { strum, strumAt } from '../lib/audio.js';
 import { getAudioContext } from '../lib/audio.js';
 import { ChordListener } from '../lib/listener.js';
 import { ChordJudge } from '../lib/coach.js';
+import { isConfidentMatch } from '../lib/confidence.js';
 import { listAudioInputs, activeDeviceId } from '../lib/devices.js';
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -246,9 +247,12 @@ function playAlong(root, song, self) {
     if (done()) { hearEl.textContent = ''; return; }
 
     const best = judge.best();
-    hearEl.textContent = active && best.name ? `I hear: ${best.name} · ${Math.round(best.sim * 100)}%` : '';
+    const confident = isConfidentMatch(best, SIM_OK);
+    hearEl.textContent = active && best.name
+      ? `${confident ? `I hear: ${best.name}` : 'Chord heard · exact shape uncertain'} · ${Math.round(best.sim * 100)}%`
+      : '';
 
-    const onTarget = active && best.name === seq[idx] && best.sim >= SIM_OK;
+    const onTarget = active && best.name === seq[idx] && confident;
     okStreak = onTarget ? okStreak + 1 : Math.max(0, okStreak - 1);
     confFill.style.width = `${Math.min(100, okStreak * 25)}%`;
     confFill.classList.toggle('live', okStreak > 0);

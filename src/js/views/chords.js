@@ -4,6 +4,7 @@ import { strum } from '../lib/audio.js';
 import { ChordListener } from '../lib/listener.js';
 import { chordPitchClasses, evaluateChord, PC_NAMES, pcNames } from '../lib/chroma.js';
 import { ChordJudge } from '../lib/coach.js';
+import { isConfidentMatch } from '../lib/confidence.js';
 import { listAudioInputs, activeDeviceId } from '../lib/devices.js';
 
 const GROUPS = [
@@ -125,9 +126,12 @@ export default {
       // Best-match verdict (relative — self-calibrates to the room).
       const best = judge.best();
       const pct = Math.round(best.sim * 100);
-      hearEl.textContent = best.name ? `I hear: ${best.name} · ${pct}%` : '';
+      const confident = isConfidentMatch(best, SIM_OK);
+      hearEl.textContent = best.name
+        ? `${confident ? `I hear: ${best.name}` : 'I hear the chord, but the exact shape is uncertain'} · ${pct}%`
+        : '';
 
-      const onTarget = best.name === selected.name && best.sim >= SIM_OK;
+      const onTarget = best.name === selected.name && confident;
       okStreak = onTarget ? Math.min(okStreak + 1, 10) : Math.max(okStreak - 2, 0);
 
       if (okStreak >= 5) {
@@ -139,9 +143,12 @@ export default {
         verdict.textContent = ev.missing.length
           ? `Almost — let the ${pcNames(ev.missing).join(' & ')} ring out.`
           : `Getting there — let it ring cleanly.`;
-      } else if (best.name) {
+      } else if (best.name && confident) {
         verdict.className = 'verdict almost';
         verdict.textContent = `That sounds more like ${best.name} — aim for ${selected.name}.`;
+      } else if (best.name) {
+        verdict.className = 'verdict idle';
+        verdict.textContent = `I can hear a chord, but I can't judge it confidently. Let ${selected.name} ring, or trust your ears and try again.`;
       } else {
         verdict.className = 'verdict idle';
         verdict.textContent = `Keep strumming ${selected.name}…`;

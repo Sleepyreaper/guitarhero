@@ -2,6 +2,7 @@ import { CHORDS, CHORD_BY_NAME, chordFrequencies } from '../data/chords.js';
 import { chordSVG } from '../components/chordDiagram.js';
 import { ChordListener } from '../lib/listener.js';
 import { ChordJudge } from '../lib/coach.js';
+import { isConfidentMatch } from '../lib/confidence.js';
 import { listAudioInputs, activeDeviceId } from '../lib/devices.js';
 import { pairKey, getBestChanges, recordChanges, addPracticeSeconds } from '../lib/storage.js';
 
@@ -101,8 +102,11 @@ export default {
       if (active) heardThisSecond = true;
       const best = judge.best();
       const targets = [chA.value, chB.value];
-      hearEl.textContent = active && best.name ? `I hear: ${best.name} · ${Math.round(best.sim * 100)}%` : '';
-      if (!best.name || best.sim < SIM_OK || !targets.includes(best.name)) return;
+      const confident = isConfidentMatch(best, SIM_OK);
+      hearEl.textContent = active && best.name
+        ? `${confident ? `I hear: ${best.name}` : 'Chord heard · exact shape uncertain'} · ${Math.round(best.sim * 100)}%`
+        : '';
+      if (!confident || !targets.includes(best.name)) return;
 
       // Confirm a stable new chord, then count it as a change.
       if (best.name === current) { candidate = null; candFrames = 0; return; }
