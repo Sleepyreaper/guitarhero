@@ -32,6 +32,7 @@ export default {
     }
 
     const { auth, authApi } = services;
+    const continueToLessons = () => { location.hash = '#/learn'; };
     const paint = () => {
       const user = auth.currentUser;
       const permanent = user && !user.isAnonymous;
@@ -73,10 +74,14 @@ export default {
           const provider = new authApi.GoogleAuthProvider();
           if (auth.currentUser?.isAnonymous) await authApi.linkWithPopup(auth.currentUser, provider);
           else await authApi.signInWithPopup(auth, provider);
+          continueToLessons();
         } catch (error) {
           if (error.code === 'auth/credential-already-in-use') {
             const credential = authApi.GoogleAuthProvider.credentialFromError(error);
-            if (credential) await authApi.signInWithCredential(auth, credential);
+            if (credential) {
+              await authApi.signInWithCredential(auth, credential);
+              continueToLessons();
+            }
             else busy(friendlyError(error));
           } else busy(friendlyError(error));
         }
@@ -96,9 +101,13 @@ export default {
             const credential = authApi.EmailAuthProvider.credential(email, password);
             await authApi.linkWithCredential(auth.currentUser, credential);
           } else await authApi.createUserWithEmailAndPassword(auth, email, password);
+          continueToLessons();
         } catch (error) {
           if (error.code === 'auth/email-already-in-use' || error.code === 'auth/credential-already-in-use') {
-            try { await authApi.signInWithEmailAndPassword(auth, email, password); }
+            try {
+              await authApi.signInWithEmailAndPassword(auth, email, password);
+              continueToLessons();
+            }
             catch (signInError) { busy(friendlyError(signInError)); }
           } else busy(friendlyError(error));
         }
@@ -107,7 +116,10 @@ export default {
       root.querySelector('#email-signin')?.addEventListener('click', async () => {
         const { email, password } = emailValues();
         busy('Signing in…');
-        try { await authApi.signInWithEmailAndPassword(auth, email, password); }
+        try {
+          await authApi.signInWithEmailAndPassword(auth, email, password);
+          continueToLessons();
+        }
         catch (error) { busy(friendlyError(error)); }
       });
 
