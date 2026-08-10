@@ -12,6 +12,9 @@ assert.ok(firebase.hosting.ignore.includes('tests/**'), 'test sources must not b
 assert.ok(firebase.hosting.ignore.includes('.git/**'), 'Git internals must not be publicly hosted');
 assert.ok(firebase.hosting.ignore.includes('firebase-debug.log*'), 'deployment logs must not be publicly hosted');
 const allHeaders = firebase.hosting.headers.flatMap((entry) => entry.headers || []);
+const rootHeaders = firebase.hosting.headers.find((entry) => entry.source === '/')?.headers || [];
+assert.ok(rootHeaders.some((header) => header.key === 'Cache-Control' && header.value === 'no-store'),
+  'the app shell must not strand returning learners on an old release');
 assert.ok(allHeaders.some((header) => header.key === 'Permissions-Policy' && header.value.includes('microphone=(self)')),
   'microphone should be limited to Campfire itself');
 assert.match(appText, /privacy from '.\/views\/privacy\.js'/, 'privacy view must be routed');
