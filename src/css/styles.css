@@ -318,7 +318,11 @@ ol.steps li { margin: .3rem 0; }
 
 /* ---------- responsive ---------- */
 @media (max-width: 560px) {
-  .app-header { padding: .7rem 1rem; }
+  .app-header { padding: .65rem .8rem; gap: .45rem; }
+  .app-nav { width: 100%; flex-wrap: nowrap; overflow-x: auto; padding-bottom: .2rem; scrollbar-width: thin; }
+  .app-nav a { display: flex; align-items: center; flex: 0 0 auto; min-height: 44px; padding: .42rem .65rem; }
+  .app-main { padding: 1.2rem .8rem 2.5rem; }
+  .panel { padding: 1rem; }
   .hero h1 { font-size: 1.9rem; }
   .tuner-note { font-size: 3.6rem; }
   .bpm-display { font-size: 3rem; }

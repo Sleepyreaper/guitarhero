@@ -6,7 +6,7 @@ Campfire uses Firebase services inside the same Google Cloud project:
 - **Firebase Authentication** — anonymous, Google, and email/password accounts
 - **Cloud Firestore** — one private progress document per account
 
-Microphone audio never leaves the browser. Only lesson progress, verified practice totals,
+Microphone audio never leaves the browser. Only lesson progress, mic-confirmed practice totals,
 routine checks, and personal bests synchronize.
 
 ## One-time console setup

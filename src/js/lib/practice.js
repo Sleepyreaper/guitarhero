@@ -1,6 +1,6 @@
-// A lightweight mic level meter for HONEST practice tracking. It just measures input
-// loudness (RMS) each frame — no pitch/chord work — so the practice timer can accrue time
-// only while it actually hears you playing. You can't fake practice by clicking around.
+// A lightweight mic level meter for learner-reviewed practice tracking. It measures input
+// loudness (RMS) each frame — no pitch/chord work — so the timer accrues only while the
+// selected microphone hears sound. The UI accurately asks the learner to review the total.
 export class PracticeMeter {
   constructor(onLevel) {
     this.onLevel = onLevel;

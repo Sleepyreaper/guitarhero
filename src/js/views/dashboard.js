@@ -33,13 +33,13 @@ const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({
 
 const GENRE_LABELS = { church: 'Christian & worship', country: 'Modern country', americana: 'Americana & folk', mixed: 'A little of everything' };
 const WEEK = [
-  ['#/learn/l0-1', 'Get comfortable', 'Hold the guitar without fighting it'],
-  ['#/learn/l0-2', 'Tune with confidence', 'Get all six strings ready'],
-  ['#/learn/l1-0', 'Beat the buzz', 'Make one clean fretted note'],
-  ['#/learn/l1-1', 'Play Em', 'Your first full chord'],
-  ['#/learn/l1-2', 'Play G', 'The home of country and folk'],
-  ['#/learn/l1-3', 'Make the change', 'Five clean Em ↔ G switches'],
-  ['#/learn/l1-5', 'Play a song', 'Put the week together'],
+  { href: '#/learn/l0-1', doneId: 'l0-1', title: 'Get comfortable', blurb: 'Hold the guitar without fighting it' },
+  { href: '#/learn/l0-2', doneId: 'l0-2', title: 'Tune with confidence', blurb: 'Get all six strings ready' },
+  { href: '#/learn/l1-0', doneId: 'l1-0', title: 'Beat the buzz', blurb: 'Make one clean fretted note' },
+  { href: '#/learn/l1-1', doneId: 'l1-1', title: 'Play Em', blurb: 'Your first full chord' },
+  { href: '#/learn/l1-2', doneId: 'l1-2', title: 'Play G', blurb: 'The home of country and folk' },
+  { href: '#/learn/l1-3', doneId: 'l1-3', title: 'Make the change', blurb: 'Five clean Em ↔ G switches' },
+  { href: '#/learn/l1-4', doneId: 'l1-5', title: 'Strum, then play', blurb: 'Learn steady down-strums, then continue to your first song' },
 ];
 const PILOT_SETLISTS = {
   church: ['How Great Is Our God', '10,000 Reasons (Bless the Lord)', 'Great Are You Lord'],
@@ -82,14 +82,14 @@ function renderOnboarding(root, owner) {
 }
 
 function weekHtml(profile) {
-  const firstOpen = WEEK.findIndex(([href]) => !isDone(href.split('/').pop()));
+  const firstOpen = WEEK.findIndex((day) => !isDone(day.doneId));
   const current = firstOpen < 0 ? WEEK.length - 1 : firstOpen;
   return `
     <section class="panel first-week">
       <div class="week-head"><div><p class="eyebrow">Your seven-day start</p><h2>${GENRE_LABELS[profile.genre] || GENRE_LABELS.mixed}${profile.song ? ` · aiming for “${esc(profile.song)}”` : ''}</h2></div><button class="btn btn-ghost" id="edit-profile" type="button">Change goals</button></div>
-      <div class="week-grid">${WEEK.map(([href, title, blurb], index) => {
-        const done = isDone(href.split('/').pop());
-        return `<a class="week-day ${done ? 'done' : ''} ${index === current ? 'current' : ''}" href="${href}"><span>Day ${index + 1}</span><strong>${done ? '✓ ' : ''}${title}</strong><small>${blurb}</small></a>`;
+      <div class="week-grid">${WEEK.map((day, index) => {
+        const done = isDone(day.doneId);
+        return `<a class="week-day ${done ? 'done' : ''} ${index === current ? 'current' : ''}" href="${day.href}"><span>Day ${index + 1}</span><strong>${done ? '✓ ' : ''}${day.title}</strong><small>${day.blurb}</small></a>`;
       }).join('')}</div>
       <p class="faint">Move faster if you are ready: skill lessons include a “Prove it” check so quick learners can skip ahead honestly.</p>
     </section>`;
@@ -185,7 +185,7 @@ export default {
           <div>
             <p class="eyebrow" style="margin:0">🎸 Practice</p>
             <h2 style="margin:.1rem 0">Played today: <span id="pt-time">${fmt(todaySeconds())}</span></h2>
-            <p class="faint" style="margin:0">Honest tracking — the clock only moves while it hears you actually playing.</p>
+            <p class="faint" style="margin:0">Mic-confirmed tracking — the clock moves only during seconds when your selected mic hears sound. Review the total honestly.</p>
           </div>
           <div class="stat"><div class="n" id="pt-streak">${streak()}</div><div class="l">day streak</div></div>
         </div>

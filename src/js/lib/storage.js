@@ -38,7 +38,7 @@ function mergeMaps(local = {}, remote = {}, reducer = (_, b) => b) {
   return merged;
 }
 
-function mergeStates(localState, remoteState) {
+export function mergeStates(localState, remoteState) {
   const local = { ...defaults(), ...(localState || {}) };
   const remote = { ...defaults(), ...(remoteState || {}) };
   const routine = mergeMaps(local.routine, remote.routine, (a, b) => ({ ...b, ...a }));

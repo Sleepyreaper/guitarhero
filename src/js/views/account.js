@@ -62,7 +62,7 @@ export default {
             </form>
           `}
           <p id="auth-message" class="faint auth-message" aria-live="polite"></p>
-          <div class="callout" style="margin-top:1rem"><strong>Privacy:</strong> microphone audio stays on your device. Campfire only syncs progress totals and completed exercises.</div>
+          <div class="callout" style="margin-top:1rem"><strong>Privacy:</strong> microphone audio stays on your device. Campfire syncs lesson progress, practice totals, learning preferences, chord-change records, and private lesson feedback.</div>
         </section>`;
 
       const message = root.querySelector('#auth-message');

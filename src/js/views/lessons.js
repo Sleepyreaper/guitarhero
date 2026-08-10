@@ -44,7 +44,7 @@ function overview(root) {
   root.innerHTML = `
     <p class="eyebrow">Your path from zero</p>
     <h1>Learn guitar</h1>
-    <p class="lead">Six short units. Each one ends on a real, playable song so you always have something
+    <p class="lead">Eight short units. The early units end on real, playable songs so you always have something
     to show for your practice. Do a little every day — 15–20 minutes beats one long weekly session.</p>
     ${CURRICULUM.map((u) => {
       const allDone = u.lessons.every((l) => isDone(l.id));
