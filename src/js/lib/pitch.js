@@ -17,7 +17,9 @@ export const STRINGS = [
 // restricted to the guitar's fundamental range. The range restriction + a large
 // analysis window (set in Tuner.start) are what make the LOW strings work: an 82 Hz
 // low-E wave is ~535 samples long, so a short buffer simply can't see enough of it.
-export function autoCorrelate(buf, sampleRate) {
+export const midiToFreq = (midi) => 440 * Math.pow(2, (midi - 69) / 12);
+
+export function autoCorrelate(buf, sampleRate, targetFreq = null) {
   const SIZE = buf.length;
 
   // Loudness gate — low strings are quieter, so keep this modest.
@@ -28,8 +30,14 @@ export function autoCorrelate(buf, sampleRate) {
 
   const fMin = 65;  // just below low E (82.4 Hz)
   const fMax = 520; // above high E (329.6 Hz), with headroom
-  const maxLag = Math.min(Math.floor(sampleRate / fMin), SIZE - 1);
-  const minLag = Math.max(2, Math.floor(sampleRate / fMax));
+  let maxLag = Math.min(Math.floor(sampleRate / fMin), SIZE - 1);
+  let minLag = Math.max(2, Math.floor(sampleRate / fMax));
+  // In guided mode, search a generous window around the selected string. This rejects
+  // octave harmonics while still allowing a badly out-of-tune string (roughly ±5 semitones).
+  if (targetFreq) {
+    minLag = Math.max(minLag, Math.floor(sampleRate / (targetFreq * 1.35)));
+    maxLag = Math.min(maxLag, Math.ceil(sampleRate / (targetFreq * 0.75)));
+  }
 
   // NSDF over the candidate lags: nsdf[lag] ∈ [-1, 1], 1 = perfectly periodic.
   const nsdf = new Float32Array(maxLag + 1);
@@ -47,14 +55,18 @@ export function autoCorrelate(buf, sampleRate) {
   }
   if (gmax < 0.3) return null; // nothing convincingly periodic
 
-  // Pick the FIRST key maximum that clears 90% of the global peak. Choosing the
-  // longest-period strong peak locks onto the fundamental, not an octave harmonic.
-  const threshold = gmax * 0.9;
+  // In automatic mode, use the first very strong peak. In guided mode, prefer the
+  // convincing peak nearest the selected string; this is much more robust when an
+  // acoustic low E's second harmonic is louder than its fundamental.
+  const threshold = gmax * (targetFreq ? 0.72 : 0.9);
   let chosen = -1;
+  let bestDistance = Infinity;
   for (let lag = minLag + 1; lag < maxLag; lag++) {
     if (nsdf[lag] > nsdf[lag - 1] && nsdf[lag] >= nsdf[lag + 1] && nsdf[lag] >= threshold) {
-      chosen = lag;
-      break;
+      if (!targetFreq) { chosen = lag; break; }
+      const freq = sampleRate / lag;
+      const distance = Math.abs(1200 * Math.log2(freq / targetFreq));
+      if (distance < bestDistance) { bestDistance = distance; chosen = lag; }
     }
   }
   if (chosen < 0) return null;
@@ -102,6 +114,7 @@ export class Tuner {
     this.lastDetect = 0;
     this.minClarity = 0.6; // confidence gate; too high = never locks, too low = jittery
     this.holdMs = 500; // keep showing the last note this long after signal drops
+    this.target = STRINGS[0];
   }
 
   _median() {
@@ -125,6 +138,12 @@ export class Tuner {
   _stableFreq() {
     if (performance.now() - this.lastDetect > this.holdMs) { this.history = []; return null; }
     return this.history.length >= 4 ? this._median() : null;
+  }
+
+  setTarget(target) {
+    this.target = target || null;
+    this.history = [];
+    this.lastDetect = 0;
   }
 
   async start(deviceId) {
@@ -156,7 +175,8 @@ export class Tuner {
     const level = Math.sqrt(sum / this.buf.length);
 
     // Only feed the smoother clear, confident detections; noise/decay is dropped.
-    const res = autoCorrelate(this.buf, this.audioCtx.sampleRate);
+    const targetFreq = this.target ? midiToFreq(this.target.midi) : null;
+    const res = autoCorrelate(this.buf, this.audioCtx.sampleRate, targetFreq);
     const raw = res && res.freq > 40 && res.freq < 2000 ? res : null;
     if (raw && raw.clarity >= this.minClarity && raw.freq > 60 && raw.freq < 1200) {
       this._pushFreq(raw.freq);

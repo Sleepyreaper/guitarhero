@@ -141,9 +141,12 @@ svg.chord { display: block; }
 .needle { position: absolute; top: -6px; bottom: -6px; width: 4px; border-radius: 4px; background: var(--rust-2); left: 50%; transform: translateX(-50%); transition: left .08s linear, background .1s; box-shadow: 0 0 12px rgba(232,129,74,.6); }
 .needle.intune { background: var(--green); box-shadow: 0 0 14px rgba(123,171,99,.7); }
 .string-row { display: flex; gap: .5rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem; }
-.string-btn { width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; border: 1px solid var(--line); background: var(--panel-2); color: var(--muted); }
+.string-btn { width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; font: inherit; font-weight: 800; cursor: pointer; border: 1px solid var(--line); background: var(--panel-2); color: var(--muted); }
 .string-btn.target { border-color: var(--gold); color: var(--gold); }
 .string-btn.hit { background: var(--green-dk); border-color: var(--green); color: #fff; }
+.string-btn.auto-string { width: 58px; border-radius: 999px; font-size: .72rem; }
+.tuner-setup { margin-bottom: 1rem; }
+.tuner-signal { min-height: 1.5em; color: var(--gold); font-size: .86rem; margin: .2rem 0 .7rem; }
 
 /* ---------- metronome ---------- */
 .bpm-display { font-size: 4rem; font-weight: 800; text-align: center; line-height: 1; color: var(--gold); }
