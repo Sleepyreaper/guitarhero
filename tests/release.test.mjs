@@ -9,6 +9,8 @@ const [firebaseText, appText, indexText, curriculumText, diagramText] = await Pr
 
 const firebase = JSON.parse(firebaseText);
 assert.ok(firebase.hosting.ignore.includes('tests/**'), 'test sources must not be publicly hosted');
+assert.ok(firebase.hosting.ignore.includes('.git/**'), 'Git internals must not be publicly hosted');
+assert.ok(firebase.hosting.ignore.includes('firebase-debug.log*'), 'deployment logs must not be publicly hosted');
 const allHeaders = firebase.hosting.headers.flatMap((entry) => entry.headers || []);
 assert.ok(allHeaders.some((header) => header.key === 'Permissions-Policy' && header.value.includes('microphone=(self)')),
   'microphone should be limited to Campfire itself');
