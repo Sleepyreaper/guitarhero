@@ -68,11 +68,32 @@ version-controlled rules with every release; never replace them with an allow-al
 The app saves locally first, merges existing browser progress into the account, and batches cloud
 writes on a ten-second delay. Practice audio is analyzed locally and is never uploaded.
 
-## Optional custom domain
+## Production domain: campfire.sleepyreaper.com
 
-In Firebase Console, open **Hosting → Add custom domain** and follow the DNS instructions. Firebase
-provisions and renews the TLS certificate automatically. Add the final domain to Authentication's
-**Authorized domains** list if it is not added automatically.
+After the first successful deployment:
+
+1. In Firebase Console, open **Build → Hosting** and click **Add custom domain**.
+2. Enter `campfire.sleepyreaper.com` and continue through Firebase's verification wizard.
+3. Keep that wizard open; it supplies the exact DNS records for this Hosting site.
+4. In Namecheap, open **Domain List → sleepyreaper.com → Manage → Advanced DNS**.
+5. Under **Host Records**, add each record Firebase requested:
+   - For records whose full host is `campfire.sleepyreaper.com`, enter only `campfire` in
+     Namecheap's **Host** field.
+   - For a verification or ACME host, remove only the `.sleepyreaper.com` suffix and enter the
+     remaining host exactly as Firebase provided it.
+   - Copy Firebase's **Value/Target** exactly and use Automatic or the lowest available TTL.
+6. Do not alter records for `@`, `www`, MX/email, or unrelated subdomains.
+7. Return to Firebase and click **Verify**. DNS may begin resolving in roughly 30 minutes, while
+   trusted TLS certificate provisioning can take up to 24 hours.
+8. Under **Build → Authentication → Settings → Authorized domains**, confirm that
+   `campfire.sleepyreaper.com` is listed; add it if necessary.
+
+Once Firebase reports **Connected**, use `https://campfire.sleepyreaper.com` as the production URL.
+Firebase provisions and renews its trusted TLS certificate automatically, so browser microphone
+permission works without a self-signed-certificate warning.
+
+If Namecheap's **Advanced DNS → Host Records** is not editable, the domain is using different
+authoritative nameservers. Add the same Firebase-provided records at that DNS provider instead.
 
 ## Before inviting more than a few friends
 
