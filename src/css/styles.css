@@ -196,6 +196,8 @@ ol.steps li { margin: .3rem 0; }
 .video-privacy { margin: 0; font-size: .75rem; }
 .skill-proof.proven { border-color: var(--green-dk); }
 .lesson-feedback { box-shadow: none; }
+.report-stats .panel { box-shadow: none; }
+.report-preview { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--muted); background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px; padding: .8rem; }
 
 /* ---------- songs ---------- */
 .song-list { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }

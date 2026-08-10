@@ -29,6 +29,7 @@ export default {
         <section class="panel">
           <h2>Control your data</h2>
           <p>You can use Campfire as a guest, sign out, or delete your account and synced progress from the <a href="#/account">Account</a> page. For a shared device, sign out when you finish.</p>
+          <p>The optional <a href="#/report">Pilot report</a> excludes identity and is copied only when you press its copy button. Campfire never sends that report automatically.</p>
           <p>For younger learners, a parent or guardian should help choose the account and review outside video links. Do not put personal information into the first-song field or lesson feedback.</p>
         </section>
       </div>

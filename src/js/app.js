@@ -11,6 +11,7 @@ import routine from './views/routine.js';
 import strumTrainer from './views/strum.js';
 import account from './views/account.js';
 import privacy from './views/privacy.js';
+import report from './views/report.js';
 import { startCloudSession } from './lib/firebase.js';
 import { connectCloudProgress, flushCloudProgress, disconnectCloudProgress } from './lib/storage.js';
 
@@ -27,6 +28,7 @@ const ROUTES = {
   strum: strumTrainer,
   account,
   privacy,
+  report,
 };
 
 const NAV_HREF = {

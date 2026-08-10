@@ -19,6 +19,7 @@ assert.ok(rootHeaders.some((header) => header.key === 'Cache-Control' && header.
 assert.ok(allHeaders.some((header) => header.key === 'Permissions-Policy' && header.value.includes('microphone=(self)')),
   'microphone should be limited to Campfire itself');
 assert.match(appText, /privacy from '.\/views\/privacy\.js'/, 'privacy view must be routed');
+assert.match(appText, /report from '.\/views\/report\.js'/, 'pilot report must be routed');
 assert.match(indexText, /href="#\/privacy"/, 'privacy page must be linked from every screen');
 assert.match(curriculumText, /youtube\.com|video:/, 'curriculum should contain video demonstrations');
 assert.match(dashboardText, /Your first setlist/, 'music preference must produce a visible personalized setlist');

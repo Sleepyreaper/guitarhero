@@ -194,6 +194,7 @@ export default {
         <div class="btn-row" style="justify-content:center;margin-top:.6rem">
           <button class="btn btn-primary" id="pt-toggle">🎤 Start practice session</button>
           <a class="btn" href="#/routine">📋 Today's plan</a>
+          <a class="btn btn-ghost" href="#/report">Pilot report</a>
         </div>
         <div id="pt-err" class="faint" style="text-align:center;color:var(--red);margin-top:.4rem"></div>
       </section>
