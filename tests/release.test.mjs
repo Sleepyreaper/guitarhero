@@ -2,11 +2,11 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
-const [firebaseText, appText, indexText, curriculumText, diagramText, dashboardText, targetsText, accountText, cssText] = await Promise.all([
+const [firebaseText, appText, indexText, curriculumText, diagramText, dashboardText, targetsText, accountText, cssText, songViewText] = await Promise.all([
   read('firebase.json'), read('src/js/app.js'), read('index.html'),
   read('src/js/data/curriculum.js'), read('src/js/components/chordDiagram.js'),
   read('src/js/views/dashboard.js'), read('src/js/data/targets.js'),
-  read('src/js/views/account.js'), read('src/css/styles.css'),
+  read('src/js/views/account.js'), read('src/css/styles.css'), read('src/js/views/song.js'),
 ]);
 
 const firebase = JSON.parse(firebaseText);
@@ -23,6 +23,8 @@ assert.match(appText, /privacy from '.\/views\/privacy\.js'/, 'privacy view must
 assert.match(appText, /report from '.\/views\/report\.js'/, 'pilot report must be routed');
 assert.match(indexText, /href="#\/privacy"/, 'privacy page must be linked from every screen');
 assert.match(curriculumText, /youtube\.com|video:/, 'curriculum should contain video demonstrations');
+assert.match(curriculumText, /Accompaniment vs\. lead: choose your job[\s\S]*B–D–G/,
+  'curriculum must explicitly teach the different jobs of backing and lead guitar');
 assert.match(dashboardText, /Your first setlist/, 'music preference must produce a visible personalized setlist');
 assert.match(dashboardText, /href: '#\/learn\/l1-4', doneId: 'l1-5'/,
   'day seven must teach strumming before remaining open until the first song is complete');
@@ -35,6 +37,10 @@ assert.match(cssText, /@media \(max-width: 560px\)[\s\S]*\.app-nav \{[^}]*overfl
   'phone navigation must remain reachable without consuming the screen in wrapped rows');
 assert.match(cssText, /\.app-nav a \{[^}]*min-height: 44px/,
   'phone navigation targets must remain finger-friendly');
+assert.match(songViewText, /arrangement\.bpm/, 'sing-along tempo must come from the song arrangement');
+assert.match(songViewText, /groove\.events/, 'sing-along rhythm must come from the song groove');
+assert.match(songViewText, /accompaniment supplies harmony, pulse, and feel/, 'song pages must teach accompaniment versus melody');
+assert.doesNotMatch(songViewText, /let bpm = 84/, 'songs must not all default to the same tempo');
 
 // Exercise the SVG renderer without introducing a package/build system.
 const isolatedDiagram = diagramText.replace("import { getProfile } from '../lib/storage.js';", 'const getProfile = () => null;');

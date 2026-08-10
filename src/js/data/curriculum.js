@@ -287,6 +287,16 @@ export const CURRICULUM = [
           'Simplify: fewer strums, let chords ring. The gaps are where the voice lives.',
           'Lock your eyes/ears on the singer, not your hands, once a shape is muscle-memory.',
         ] },
+      { id: 'l7-lead', title: 'Accompaniment vs. lead: choose your job', min: 10, tool: '#/songs',
+        objective: 'Know when to hold the song together and when to add a recognizable melody or fill.',
+        proof: { id: 'rhythm-vs-lead', title: 'I can switch between backing and a fill', check: 'Strum G steadily for four bars, stop after a vocal phrase, play the three-note G fill once, and return on beat 1 without losing time.' },
+        steps: [
+          'ACCOMPANIMENT is the default under singing: chord, pulse, groove, and dynamics. It supports the melody; it is not supposed to sound like the sung tune by itself.',
+          'LEAD carries melody or a hook. Use it for an intro, a solo, or a short answer in the silence after a vocal phrase—not continuously over the singer.',
+          'Try a safe G-chord fill: open B string, 3rd fret B string, 3rd fret high-e. Those notes are B–D–G, all inside the G chord.',
+          'Call and response: have the singer deliver one line, answer once with B–D–G, then be back on the G chord before the next line begins.',
+          'On each song page, read its Accompany and Lead cards. First master the backing groove, then add only the suggested intro or fill.',
+        ] },
       { id: 'l7-4', title: 'Count-ins, endings & faking it', min: 6,
         objective: 'Start together, end together, and survive getting lost.',
         steps: [

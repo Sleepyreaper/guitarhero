@@ -198,6 +198,11 @@ ol.steps li { margin: .3rem 0; }
 .lesson-feedback { box-shadow: none; }
 .report-stats .panel { box-shadow: none; }
 .report-preview { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--muted); background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px; padding: .8rem; }
+.arrangement-roles { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.arrangement-roles p { margin: .25rem 0 .7rem; }
+.arrangement-bars { display: flex; gap: .35rem; overflow-x: auto; padding: .15rem 0 .9rem; }
+.arrangement-bars span { flex: 0 0 auto; min-width: 54px; padding: .35rem .5rem; text-align: center; border: 1px solid var(--line); border-radius: 8px; background: var(--panel-2); color: var(--gold); font-family: var(--mono); font-weight: 700; }
+.arrangement-bars small { display: block; color: var(--faint); font-size: .6rem; }
 
 /* ---------- songs ---------- */
 .song-list { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
