@@ -121,6 +121,7 @@ function setlistHtml(profile, learned) {
           <h3>${esc(song.title)}</h3><p class="faint">${esc(song.artist)}</p>
           ${song.chords.length ? `<div class="target-chords">${song.chords.join(' · ')}</div>` : ''}
           <p class="muted">${song.why}</p>
+          ${song.bridge ? `<p class="faint"><strong>Start here:</strong> ${song.bridge.firstStep}</p>` : ''}
           <div class="btn-row">
             <a class="btn btn-ghost" href="${chartSearchUrl(song)}" target="_blank" rel="noopener noreferrer">Find the chart ↗</a>
             ${song.tutorial ? `<a class="btn btn-ghost" href="${song.tutorial}" target="_blank" rel="noopener noreferrer">Watch tutorial ↗</a>` : ''}

@@ -31,6 +31,8 @@ assert.match(dashboardText, /href: '#\/learn\/l1-4', doneId: 'l1-5'/,
 assert.match(dashboardText, /Review the total honestly/,
   'practice copy must not claim a level meter can prove the source is guitar');
 assert.match(targetsText, /How Great Is Our God[\s\S]*tutorial:/, 'pilot worship target should include a curated tutorial');
+assert.match(targetsText, /You Look Like You Love Me[\s\S]*bridge:/,
+  'requested modern-country targets must include an actionable beginner bridge');
 assert.match(accountText, /learning preferences, chord-change records, and private lesson feedback/,
   'account privacy copy must accurately list cloud-synced learner data');
 assert.match(cssText, /@media \(max-width: 560px\)[\s\S]*\.app-nav \{[^}]*overflow-x: auto/,

@@ -68,7 +68,15 @@ function renderTargets(genre) {
         <div class="faint" style="font-size:.82rem">${t.artist}</div>
         <div class="target-chords">${t.chords.join(' · ')}</div>
         <div class="muted" style="font-size:.85rem">${t.why}</div>
-        <a class="btn btn-ghost" href="${chartSearchUrl(t)}" target="_blank" rel="noopener" style="margin-top:.5rem">Find the chords ↗</a>
+        ${t.bridge ? `<details class="target-bridge"><summary>Beginner game plan</summary>
+          <p><strong>Feel:</strong> ${t.bridge.groove}</p>
+          <p><strong>Start here:</strong> ${t.bridge.firstStep}</p>
+          <p><strong>Lead role:</strong> ${t.bridge.lead}</p>
+        </details>` : ''}
+        <div class="btn-row" style="margin-top:.5rem">
+          ${t.tutorial ? `<a class="btn btn-primary" href="${t.tutorial}" target="_blank" rel="noopener noreferrer">Curated lesson ↗</a>` : ''}
+          <a class="btn btn-ghost" href="${chartSearchUrl(t)}" target="_blank" rel="noopener noreferrer">Find the chart ↗</a>
+        </div>
       </div>`).join('')}
   </div>`;
 }
