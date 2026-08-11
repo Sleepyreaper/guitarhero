@@ -298,7 +298,7 @@ export const SONGS = [
     strum: 'Bass on 1, short chord brush on 2',
     difficulty: 'Easy',
     chords: ['G', 'C', 'D7'],
-    note: 'Stephen Foster, 1848 — the original American singalong. Bouncy 4/4 with a classic I–IV–V chorus.',
+    note: 'Stephen Foster, 1848 — the original American singalong. Quick 2/4 with a classic I–IV–V chorus.',
     body: [
       { section: 'Verse', lines: [
         [{ c: 'G', t: 'I come from Alabama with my ' }, { c: 'D7', t: 'banjo on my knee' }],

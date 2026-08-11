@@ -133,6 +133,10 @@ assert.deepEqual(ARRANGEMENTS['oh-susanna'].bars, [
 assert.equal(ARRANGEMENTS['oh-susanna'].meter, 2);
 assert.equal(ARRANGEMENTS['oh-susanna'].groove, 'countryTwo');
 assert.equal(ARRANGEMENTS['oh-susanna'].timing, 'verified');
+const ohSusannaSong = SONGS.find(song => song.id === 'oh-susanna');
+assert.equal(ohSusannaSong.time, '2/4');
+assert.match(ohSusannaSong.note, /Quick 2\/4/);
+assert.doesNotMatch(ohSusannaSong.note, /4\/4/);
 assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 13,
   'only independently checked arrangements may claim lyric-synchronized timing');
 assert.equal(ARRANGEMENTS['house-of-the-rising-sun'].groove, 'sixEight');
