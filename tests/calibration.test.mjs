@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { addMicCheckReading, createMicCheck, formatMicCheck, summarizeMicCheck } from '../src/js/lib/calibration.js';
+import { calibrateChromaNoise, subtractChromaFloor } from '../src/js/lib/chroma.js';
 
 const strings = [{ label: 'Low E (6th)', midi: 40 }];
 const [row] = createMicCheck(strings);
@@ -18,4 +19,20 @@ assert.deepEqual(summarizeMicCheck(quiet), {
   medianFreq: null, medianClarity: null, sampled: false,
 });
 
-console.log('calibration tests passed');
+const roomProfile = [0.04, 0.01, 0.02, 0.01, 0.03, 0.01, 0.01, 0.02, 0.01, 0.03, 0.01, 0.02];
+const calibrated = calibrateChromaNoise([
+  { chroma: roomProfile, maxDb: -61 },
+  { chroma: roomProfile.map((value) => value * 1.05), maxDb: -60 },
+  { chroma: roomProfile.map((value) => value * 0.95), maxDb: -59 },
+]);
+assert.equal(calibrated.gateDb, -50, 'chord gate should sit 10 dB above the median room peak');
+const guitarOverRoom = [...roomProfile];
+guitarOverRoom[0] += 0.8;
+guitarOverRoom[4] += 0.65;
+guitarOverRoom[7] += 0.7;
+const cleaned = subtractChromaFloor(guitarOverRoom, calibrated.profile, 1.5);
+assert.ok(cleaned[0] === 1 && cleaned[4] > 0.7 && cleaned[7] > 0.8,
+  'noise subtraction should preserve strong guitar pitch classes');
+assert.ok(cleaned[1] === 0 && cleaned[3] === 0, 'steady room-only pitch classes should be removed');
+
+console.log('calibration tests passed: mic report plus adaptive tuner/chord room floors');

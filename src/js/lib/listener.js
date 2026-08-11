@@ -1,7 +1,7 @@
 // Mic listener that streams a chromagram (pitch-class profile) each animation frame.
 // Uses frequency-domain FFT data (unlike the Tuner, which uses time-domain autocorrelation)
 // because chords are polyphonic — several notes ringing at once.
-import { computeChroma } from './chroma.js';
+import { calibrateChromaNoise, computeChroma, subtractChromaFloor } from './chroma.js';
 
 export class ChordListener {
   constructor(onFrame, opts = {}) {
@@ -15,6 +15,10 @@ export class ChordListener {
     this.stream = null;
     this.freqDb = null;
     this._raf = null;
+    this.calibrationFrames = opts.calibrationFrames || 45;
+    this.roomSamples = [];
+    this.noiseProfile = new Array(12).fill(0);
+    this.noiseGateDb = -72;
   }
 
   async start(deviceId) {
@@ -30,6 +34,9 @@ export class ChordListener {
     this.analyser.smoothingTimeConstant = 0.6;
     src.connect(this.analyser);
     this.freqDb = new Float32Array(this.analyser.frequencyBinCount);
+    this.roomSamples = [];
+    this.noiseProfile = new Array(12).fill(0);
+    this.noiseGateDb = -72;
     this.running = true;
     this._loop();
   }
@@ -41,7 +48,20 @@ export class ChordListener {
       fMin: this.fMin,
       fMax: this.fMax,
     });
-    this.onFrame(result);
+    if (this.roomSamples.length < this.calibrationFrames) {
+      this.roomSamples.push({ chroma: [...result.rawChroma], maxDb: result.maxDb });
+      if (this.roomSamples.length === this.calibrationFrames) {
+        const calibrated = calibrateChromaNoise(this.roomSamples);
+        this.noiseProfile = calibrated.profile;
+        this.noiseGateDb = calibrated.gateDb;
+      }
+      this.onFrame({ ...result, chroma: new Array(12).fill(0), active: false, calibrating: true,
+        calibrationProgress: this.roomSamples.length / this.calibrationFrames });
+    } else {
+      const chroma = subtractChromaFloor(result.rawChroma, this.noiseProfile, 1.5);
+      const active = result.maxDb > this.noiseGateDb && Math.max(...chroma) > 0.12;
+      this.onFrame({ ...result, chroma, active, calibrating: false, noiseGateDb: this.noiseGateDb });
+    }
     this._raf = requestAnimationFrame(() => this._loop());
   }
 

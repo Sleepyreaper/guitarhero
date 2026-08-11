@@ -110,9 +110,9 @@ export default {
     };
 
     this.tuner = new Tuner((reading) => {
-      const { level, note, raw } = reading;
+      const { level, note, raw, calibrating, signalFloor } = reading;
 
-      if (this.tuner.running && this.tuner.target) {
+      if (this.tuner.running && this.tuner.target && !calibrating) {
         const index = STRINGS.indexOf(this.tuner.target);
         if (index >= 0) addMicCheckReading(micCheck[index], reading, midiToFreq(this.tuner.target.midi), this.tuner.minClarity);
         if (micCheck[index]?.frames % 12 === 0) paintMicCheck();
@@ -124,6 +124,7 @@ export default {
       if (level > 0.01) lastSignal = performance.now();
       noSignal.hidden = !(this.tuner.running && performance.now() - lastSignal > 2500);
       if (!this.tuner.running) signalHelp.textContent = 'Start the tuner, then pluck the selected string once.';
+      else if (calibrating) signalHelp.textContent = 'Room check: stay quiet for one second…';
       else if (performance.now() - lastSignal > 2500) signalHelp.textContent = 'No guitar signal yet. Check the selected mic, mute switch, and input gain.';
       else if (level < 0.008) signalHelp.textContent = 'Signal is quiet. Move the mic closer or raise its gain slightly.';
       else if (level > 0.18) signalHelp.textContent = 'Signal is very loud. Move the mic back or lower its gain to prevent clipping.';
@@ -132,9 +133,11 @@ export default {
 
       // Live calibration readout: what the detector hears *before* the confidence gate.
       if (this.tuner.running) {
-        debugEl.textContent = raw
+        debugEl.textContent = calibrating
+          ? 'measuring this room’s noise floor…'
+          : raw
           ? `heard ${freqToNote(raw.freq).note}  ${raw.freq.toFixed(1)} Hz  ·  clarity ${raw.clarity.toFixed(2)}`
-          : 'heard: (nothing clear yet)';
+          : `heard: (nothing clear yet) · room gate ${signalFloor.toFixed(4)}`;
       } else {
         debugEl.textContent = '';
       }

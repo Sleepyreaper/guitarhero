@@ -19,14 +19,14 @@ export const STRINGS = [
 // low-E wave is ~535 samples long, so a short buffer simply can't see enough of it.
 export const midiToFreq = (midi) => 440 * Math.pow(2, (midi - 69) / 12);
 
-export function autoCorrelate(buf, sampleRate, targetFreq = null) {
+export function autoCorrelate(buf, sampleRate, targetFreq = null, minRms = 0.004) {
   const SIZE = buf.length;
 
   // Loudness gate — low strings are quieter, so keep this modest.
   let rms = 0;
   for (let i = 0; i < SIZE; i++) rms += buf[i] * buf[i];
   rms = Math.sqrt(rms / SIZE);
-  if (rms < 0.004) return null;
+  if (rms < minRms) return null;
 
   const fMin = 65;  // just below low E (82.4 Hz)
   const fMax = 520; // above high E (329.6 Hz), with headroom
@@ -115,6 +115,9 @@ export class Tuner {
     this.minClarity = 0.6; // confidence gate; too high = never locks, too low = jittery
     this.holdMs = 500; // keep showing the last note this long after signal drops
     this.target = STRINGS[0];
+    this.calibrationFrames = 45;
+    this.roomSamples = [];
+    this.signalFloor = 0.004;
   }
 
   _median() {
@@ -161,6 +164,8 @@ export class Tuner {
     this.buf = new Float32Array(this.analyser.fftSize);
     this.history = [];
     this.lastDetect = 0;
+    this.roomSamples = [];
+    this.signalFloor = 0.004;
     this.running = true;
     this._loop();
   }
@@ -174,9 +179,22 @@ export class Tuner {
     for (let i = 0; i < this.buf.length; i++) sum += this.buf[i] * this.buf[i];
     const level = Math.sqrt(sum / this.buf.length);
 
+    const calibrating = this.roomSamples.length < this.calibrationFrames;
+    if (calibrating) {
+      this.roomSamples.push(level);
+      if (this.roomSamples.length === this.calibrationFrames) {
+        // Imported lazily would complicate this no-build module; use the same robust
+        // median calculation here so pitch.js remains independently testable.
+        const sorted = [...this.roomSamples].sort((a, b) => a - b);
+        const mid = sorted.length >> 1;
+        const room = sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+        this.signalFloor = Math.max(0.004, room * 2.5);
+      }
+    }
+
     // Only feed the smoother clear, confident detections; noise/decay is dropped.
     const targetFreq = this.target ? midiToFreq(this.target.midi) : null;
-    const res = autoCorrelate(this.buf, this.audioCtx.sampleRate, targetFreq);
+    const res = calibrating ? null : autoCorrelate(this.buf, this.audioCtx.sampleRate, targetFreq, this.signalFloor);
     const raw = res && res.freq > 40 && res.freq < 2000 ? res : null;
     if (raw && raw.clarity >= this.minClarity && raw.freq > 60 && raw.freq < 1200) {
       this._pushFreq(raw.freq);
@@ -184,7 +202,8 @@ export class Tuner {
     const stable = this._stableFreq();
     const note = stable ? freqToNote(stable) : null;
     // `raw` is passed through un-gated so the UI can show what's being heard (for calibration).
-    this.onReading({ level, note, raw: raw ? { freq: raw.freq, clarity: raw.clarity } : null });
+    this.onReading({ level, note, raw: raw ? { freq: raw.freq, clarity: raw.clarity } : null,
+      calibrating, signalFloor: this.signalFloor });
     this._raf = requestAnimationFrame(() => this._loop());
   }
 

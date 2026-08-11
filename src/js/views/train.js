@@ -79,6 +79,7 @@ export default {
     let candidate = null;
     let candFrames = 0;
     let heardThisSecond = false;
+    let timerStarted = false;
     const judge = new ChordJudge();
 
     const refresh = () => {
@@ -95,8 +96,25 @@ export default {
     const bump = () => { count++; countEl.textContent = count; heardThisSecond = true; };
     tapBtn.addEventListener('click', () => { if (running) bump(); });
 
+    const beginTimer = () => {
+      if (timerStarted || !running) return;
+      timerStarted = true;
+      startBtn.textContent = '● Recording…';
+      this._tick = setInterval(() => {
+        timeLeft--;
+        timerEl.textContent = timeLeft;
+        if (heardThisSecond) { addPracticeSeconds(1); heardThisSecond = false; }
+        if (timeLeft <= 0) finish();
+      }, 1000);
+    };
+
     this.listener = new ChordListener((frame) => {
-      const { chroma, active } = frame;
+      const { chroma, active, calibrating } = frame;
+      if (calibrating) {
+        if (running) hearEl.textContent = 'Room check: stay quiet for one second…';
+        return;
+      }
+      beginTimer();
       judge.push(chroma, active);
       if (!running) return;
       if (active) heardThisSecond = true;
@@ -123,6 +141,7 @@ export default {
       running = false;
       clearInterval(this._tick);
       this._tick = null;
+      timerStarted = false;
       this.listener.stop();
       tapBtn.disabled = true;
       startBtn.textContent = '▶ Start 60s';
@@ -155,24 +174,19 @@ export default {
       errEl.textContent = '';
       resultEl.className = 'verdict idle';
       resultEl.textContent = '';
-      count = 0; timeLeft = DURATION; current = null; candidate = null; candFrames = 0;
+      count = 0; timeLeft = DURATION; current = null; candidate = null; candFrames = 0; timerStarted = false;
       countEl.textContent = '0'; timerEl.textContent = DURATION;
       running = true;
       tapBtn.disabled = false;
       startBtn.disabled = true;
-      startBtn.textContent = '● Recording…';
+      startBtn.textContent = 'Room check…';
       try {
         await this.listener.start(micSelect.value || undefined);
         await populateMics();
       } catch {
         errEl.textContent = 'Mic off — no problem, tap the button on each change.';
+        beginTimer();
       }
-      this._tick = setInterval(() => {
-        timeLeft--;
-        timerEl.textContent = timeLeft;
-        if (heardThisSecond) { addPracticeSeconds(1); heardThisSecond = false; }
-        if (timeLeft <= 0) finish();
-      }, 1000);
     });
   },
   destroy() {

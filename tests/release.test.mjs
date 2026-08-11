@@ -2,11 +2,12 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
-const [firebaseText, appText, indexText, curriculumText, diagramText, dashboardText, targetsText, accountText, cssText, songViewText, practiceText] = await Promise.all([
+const [firebaseText, appText, indexText, curriculumText, diagramText, dashboardText, targetsText, accountText, cssText, songViewText, practiceText, tunerText, listenerText, chromaText] = await Promise.all([
   read('firebase.json'), read('src/js/app.js'), read('index.html'),
   read('src/js/data/curriculum.js'), read('src/js/components/chordDiagram.js'),
   read('src/js/views/dashboard.js'), read('src/js/data/targets.js'),
   read('src/js/views/account.js'), read('src/css/styles.css'), read('src/js/views/song.js'), read('src/js/lib/practice.js'),
+  read('src/js/lib/pitch.js'), read('src/js/lib/listener.js'), read('src/js/lib/chroma.js'),
 ]);
 
 const firebase = JSON.parse(firebaseText);
@@ -51,6 +52,9 @@ assert.match(dashboardText, /Review the total honestly/,
   'practice copy must not claim a level meter can prove the source is guitar');
 assert.match(dashboardText, /beginRoomCheck/, 'practice tracking must calibrate to the selected room and microphone');
 assert.match(practiceText, /median \* 3/, 'practice threshold must rise above steady room noise');
+assert.match(tunerText, /room \* 2\.5/, 'tuner threshold must rise above the selected microphone’s idle noise');
+assert.match(listenerText, /calibrateChromaNoise/, 'chord listening must build a room-specific noise profile');
+assert.match(chromaText, /subtractChromaFloor/, 'chord listening must subtract the measured room spectrum');
 assert.match(targetsText, /How Great Is Our God[\s\S]*tutorial:/, 'pilot worship target should include a curated tutorial');
 assert.match(targetsText, /You Look Like You Love Me[\s\S]*bridge:/,
   'requested modern-country targets must include an actionable beginner bridge');

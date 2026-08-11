@@ -105,7 +105,15 @@ export default {
     setSelected(selected);
 
     this.listener = new ChordListener((frame) => {
-      const { chroma, active } = frame;
+      const { chroma, active, calibrating } = frame;
+      if (calibrating) {
+        judge.reset();
+        okStreak = 0;
+        hearEl.textContent = '';
+        verdict.className = 'verdict idle';
+        verdict.textContent = 'Room check: stay quiet for one second…';
+        return;
+      }
       judge.push(chroma, active);
 
       // Visualizer: bars + which of the chord's notes are ringing.

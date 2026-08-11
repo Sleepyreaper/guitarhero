@@ -44,4 +44,10 @@ assert.ok(automatic && Math.abs(automatic.freq - 110) < 0.8, 'automatic mode sho
 
 assert.equal(pitch.autoCorrelate(new Float32Array(size), sampleRate, 82.41), null, 'silence must be rejected');
 
+const roomHum = new Float32Array(size);
+for (let i = 0; i < size; i++) roomHum[i] = Math.sin(2 * Math.PI * 110 * i / sampleRate) * 0.01;
+assert.ok(pitch.autoCorrelate(roomHum, sampleRate, 110), 'a fixed global gate would mistake periodic room hum for a string');
+assert.equal(pitch.autoCorrelate(roomHum, sampleRate, 110, 0.02), null,
+  'the calibrated tuner gate must reject periodic sound below this room’s signal floor');
+
 console.log('pitch tests passed: six strings, ±100 cents, harmonic-heavy low strings, auto mode, silence');

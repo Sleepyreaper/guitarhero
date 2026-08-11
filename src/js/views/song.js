@@ -269,7 +269,13 @@ function playAlong(root, song, self) {
   drawUI();
 
   self._player = new ChordListener((frame) => {
-    const { chroma, active } = frame;
+    const { chroma, active, calibrating } = frame;
+    if (calibrating) {
+      judge.reset();
+      hearEl.textContent = 'Room check: stay quiet for one second…';
+      confFill.style.width = '0%';
+      return;
+    }
     judge.push(chroma, active);
     if (done()) { hearEl.textContent = ''; return; }
     if (!active) armed = true;

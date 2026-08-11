@@ -41,9 +41,10 @@ export function computeChroma(freqDb, sampleRate, fftSize, opts = {}) {
     if (pc >= 0) chroma[pc] += mag;
   }
 
+  const rawChroma = [...chroma];
   const max = Math.max(...chroma);
   if (max > 0) for (let i = 0; i < 12; i++) chroma[i] /= max;
-  return { chroma, maxDb, active: maxDb > gateDb };
+  return { chroma, rawChroma, maxDb, active: maxDb > gateDb };
 }
 
 // Unique pitch classes present in a chord's voicing, given its sounding frequencies.
@@ -93,6 +94,30 @@ export function cleanChroma(chroma, floor = 0.14) {
   }
   if (max > 0) for (let i = 0; i < 12; i++) out[i] /= max;
   return out;
+}
+
+export function subtractChromaFloor(chroma, floorProfile, strength = 1.1) {
+  const out = new Array(12);
+  let max = 0;
+  for (let i = 0; i < 12; i++) {
+    const value = Math.max(0, chroma[i] - (floorProfile?.[i] || 0) * strength);
+    out[i] = value;
+    if (value > max) max = value;
+  }
+  if (max > 0) for (let i = 0; i < 12; i++) out[i] /= max;
+  return out;
+}
+
+export function calibrateChromaNoise(samples, minimumGateDb = -72) {
+  const midpoint = (values) => {
+    const usable = values.filter(Number.isFinite).sort((a, b) => a - b);
+    if (!usable.length) return null;
+    const middle = usable.length >> 1;
+    return usable.length % 2 ? usable[middle] : (usable[middle - 1] + usable[middle]) / 2;
+  };
+  const profile = new Array(12).fill(0).map((_, pc) => midpoint(samples.map((sample) => sample.chroma[pc])) || 0);
+  const roomPeakDb = midpoint(samples.map((sample) => sample.maxDb));
+  return { profile, gateDb: Math.max(minimumGateDb, roomPeakDb === null ? minimumGateDb : roomPeakDb + 10) };
 }
 
 // Rank templates by cosine similarity to the chroma. Returns [{ name, sim }] desc.
