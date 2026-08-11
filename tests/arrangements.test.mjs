@@ -117,7 +117,14 @@ assert.deepEqual(ARRANGEMENTS['she-ll-be-comin'].bars.map((bar) => barChords(bar
 assert.deepEqual(barChangeBeats(ARRANGEMENTS['she-ll-be-comin'].bars[6], 4), [0, 3],
   'the final D7 must arrive on when she at beat 4');
 assert.equal(ARRANGEMENTS['she-ll-be-comin'].timing, 'verified');
-assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 11,
+assert.deepEqual(ARRANGEMENTS['when-the-saints'].bars, [
+  'G', 'G', 'G', 'G', 'G', 'G', 'D7', 'D7',
+  'G', 'G', 'C', 'C', 'G', 'D7', 'G', 'G',
+], 'When the Saints must use the complete sixteen-bar beginner-jam form');
+assert.equal(ARRANGEMENTS['when-the-saints'].cues[10], 'number');
+assert.equal(ARRANGEMENTS['when-the-saints'].cues[13], 'marching');
+assert.equal(ARRANGEMENTS['when-the-saints'].timing, 'verified');
+assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 12,
   'only independently checked arrangements may claim lyric-synchronized timing');
 assert.equal(ARRANGEMENTS['house-of-the-rising-sun'].groove, 'sixEight');
 assert.ok(Object.values(ARRANGEMENTS).some((item) => item.bars.some(Array.isArray)),
