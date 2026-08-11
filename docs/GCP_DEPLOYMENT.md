@@ -68,7 +68,9 @@ version-controlled rules with every release; never replace them with an allow-al
 The app saves locally first, merges existing browser progress into the account, and batches cloud
 writes on a ten-second delay. Sign-out clears a shared browser only after its final cloud write
 succeeds; if the network is unavailable, Campfire keeps the learner signed in and preserves the
-local copy for a retry. Practice audio is analyzed locally and is never uploaded.
+local copy for a retry. Newer profile choices and lesson feedback win when two devices merge;
+completed skills, personal bests, and practice totals keep the strongest result. Practice audio
+is analyzed locally and is never uploaded.
 
 ## Production domain: campfire.sleepyreaper.com
 

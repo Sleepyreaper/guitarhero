@@ -38,6 +38,14 @@ function mergeMaps(local = {}, remote = {}, reducer = (_, b) => b) {
   return merged;
 }
 
+function newestRecord(local, remote) {
+  if (!local) return remote || null;
+  if (!remote) return local;
+  const localTime = Number(local.updatedAt) || 0;
+  const remoteTime = Number(remote.updatedAt) || 0;
+  return remoteTime > localTime ? remote : local;
+}
+
 export function mergeStates(localState, remoteState) {
   const local = { ...defaults(), ...(localState || {}) };
   const remote = { ...defaults(), ...(remoteState || {}) };
@@ -50,8 +58,8 @@ export function mergeStates(localState, remoteState) {
     practiceSeconds: mergeMaps(local.practiceSeconds, remote.practiceSeconds, (a, b) => Math.max(a || 0, b || 0)),
     bestChanges: mergeMaps(local.bestChanges, remote.bestChanges, (a, b) => Math.max(a || 0, b || 0)),
     skillProofs: mergeMaps(local.skillProofs, remote.skillProofs, (a, b) => Math.max(a || 0, b || 0)),
-    feedback: mergeMaps(local.feedback, remote.feedback, (a) => a),
-    profile: local.profile || remote.profile || null,
+    feedback: mergeMaps(local.feedback, remote.feedback, newestRecord),
+    profile: newestRecord(local.profile, remote.profile),
     routine,
   };
 }
