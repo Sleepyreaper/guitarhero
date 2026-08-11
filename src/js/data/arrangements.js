@@ -60,10 +60,16 @@ const a = (bpm, meter, groove, section, bars, dynamics, lead, cues = null, timin
 });
 
 export const ARRANGEMENTS = {
-  'down-in-the-valley': a(72, 3, 'waltz', 'Verse practice loop',
-    ['G', 'G', 'D7', 'D7', 'D7', 'D7', 'G', 'G'],
+  'down-in-the-valley': a(72, 3, 'waltz', 'Verse',
+    ['G', 'D7', 'D7', 'G', 'G', 'D7', 'D7', 'G'],
     'Keep beat 1 firm and beats 2–3 soft; never rush the singer at the end of a line.',
-    'Between sung lines, answer with three notes from the G major scale; stop as soon as the next lyric begins.'),
+    'Between sung lines, answer with three notes from the G major scale; stop as soon as the next lyric begins.',
+    [
+      'Down in the valley, the', 'valley so low',
+      'Hang your head over, hear the', 'wind blow',
+      'Hear the wind blow, dear', 'hear the wind blow',
+      'Hang your head over, hear the', 'wind blow',
+    ], 'verified'),
   clementine: a(104, 3, 'waltz', 'Verse / chorus harmonic loop',
     ['G', 'G', 'G', 'D7', 'D7', 'D7', 'D7', 'G'],
     'Give it a light bounce, with a stronger first beat and short brushes on 2 and 3.',
