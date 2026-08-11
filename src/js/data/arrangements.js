@@ -55,8 +55,8 @@ export const GROOVES = {
   },
 };
 
-const a = (bpm, meter, groove, section, bars, dynamics, lead, cues = null) => ({
-  bpm, meter, groove, section, bars, dynamics, lead, ...(cues ? { cues } : {}),
+const a = (bpm, meter, groove, section, bars, dynamics, lead, cues = null, timing = 'practice') => ({
+  bpm, meter, groove, section, bars, dynamics, lead, timing, ...(cues ? { cues } : {}),
 });
 
 export const ARRANGEMENTS = {
@@ -101,7 +101,7 @@ export const ARRANGEMENTS = {
       'Kumbaya my', ['Lord, kumba', 'ya'],
       'Kumbaya my', ['Lord, kumba', 'ya'],
       ['Oh', 'Lord, kumba'], ['ya', '(let it ring)'],
-    ]),
+    ], 'verified'),
   'whole-world': a(96, 4, 'gospel', 'Verse loop',
     ['G', 'G', 'D7', 'G', 'G', 'C', 'G', ['D7', 'G']],
     'Lean slightly into beats 2 and 4 for a congregational gospel sway.',

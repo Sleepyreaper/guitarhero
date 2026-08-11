@@ -51,6 +51,8 @@ assert.match(songViewText, /groove\.events/, 'sing-along rhythm must come from t
 assert.match(songViewText, /accompaniment supplies harmony, pulse, and feel/, 'song pages must teach accompaniment versus melody');
 assert.match(songViewText, /Sing this now/, 'verified timed arrangements must expose synchronized lyric cues');
 assert.match(songViewText, /Rehearse chord order/, 'mic chord rehearsal must not be mislabeled as a timed play-along');
+assert.match(songViewText, /Practice with simplified backing/, 'unchecked arrangements must be labeled as practice reductions');
+assert.match(songViewText, /does not claim exact lyric timing/, 'practice reductions must state their timing limitation');
 assert.doesNotMatch(songViewText, /let bpm = 84/, 'songs must not all default to the same tempo');
 
 // Exercise the SVG renderer without introducing a package/build system.

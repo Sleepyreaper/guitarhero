@@ -119,6 +119,7 @@ function detail(root, id, self) {
   cleanup(self);
   const arrangement = arrangementFor(song);
   const groove = arrangement && GROOVES[arrangement.groove];
+  const verifiedTiming = arrangement?.timing === 'verified';
 
   root.innerHTML = `
     <a class="back-link" href="#/songs">← All songs</a>
@@ -131,19 +132,22 @@ function detail(root, id, self) {
 
     <div class="callout" style="margin:.6rem 0 1.1rem">${song.note}</div>
     ${arrangement ? `<section class="panel arrangement-guide" style="margin-top:1rem">
-      <p class="eyebrow">Make it sound like this song</p>
+      <p class="eyebrow">${verifiedTiming ? 'Verified singable arrangement' : 'Beginner accompaniment practice'}</p>
       <div class="grid arrangement-roles">
         <div><h3>Accompany the singer</h3><p><strong>${groove.label}</strong> at about ${arrangement.bpm} BPM.</p><p class="muted">${arrangement.dynamics}</p></div>
         <div><h3>Play lead without crowding</h3><p class="muted">${arrangement.lead}</p></div>
       </div>
       <p class="faint" style="margin-bottom:.35rem"><strong>${arrangement.section}:</strong></p>
       <div class="arrangement-bars">${arrangement.bars.map((bar, index) => `<span><small>${index + 1}</small>${barChords(bar).join(' / ')}</span>`).join('')}</div>
+      ${verifiedTiming
+        ? '<p class="faint"><strong>Timing checked:</strong> the chord changes are aligned to the displayed lyric cues.</p>'
+        : '<p class="faint"><strong>Practice reduction:</strong> this teaches the song\'s chord vocabulary and feel, but it is not yet a lyric-synchronized transcription.</p>'}
       <div class="callout"><strong>Important:</strong> accompaniment supplies harmony, pulse, and feel—the voice carries the recognizable melody. A lead intro or fill supplies melody only in the spaces.</div>
     </section>` : ''}
 
     <div class="btn-row" style="margin:1rem 0">
       <button class="btn btn-primary" id="pa-start">🎤 Rehearse chord order — I'll listen</button>
-      <button class="btn" id="sa-start">🔊 Sing with timed backing</button>
+      <button class="btn" id="sa-start">${verifiedTiming ? '🔊 Sing with timed backing' : '🔊 Practice with simplified backing'}</button>
     </div>
 
     <section class="panel">
@@ -327,7 +331,9 @@ function singAlong(root, song, self) {
   root.innerHTML = `
     <button class="back-link" id="sa-exit" style="background:none;border:none;cursor:pointer">← Back to song</button>
     <h1 style="margin:.2rem 0">${song.title}</h1>
-    <p class="faint" style="margin-top:0">Song-specific beginner backing: ${arrangement.section}. You get one count-in bar, then the written form loops.</p>
+    <p class="faint" style="margin-top:0">${arrangement.timing === 'verified'
+      ? `Verified lyric-aligned backing: ${arrangement.section}. You get one count-in bar, then the written form loops.`
+      : `Simplified accompaniment practice: ${arrangement.section}. It teaches chord changes and feel, but does not claim exact lyric timing.`}</p>
 
     <section class="panel" style="text-align:center">
       <div class="pa-progress" id="sa-progress"></div>
