@@ -144,6 +144,8 @@ assert.deepEqual(ARRANGEMENTS['red-river-valley'].bars.map((bar) => barChords(ba
 assert.deepEqual(barChangeBeats(ARRANGEMENTS['red-river-valley'].bars[7], 4), [0, 2]);
 assert.equal(ARRANGEMENTS['red-river-valley'].timing, 'verified');
 assert.equal(ARRANGEMENTS['red-river-valley'].cues.length, 16);
+assert.deepEqual(ARRANGEMENTS['red-river-valley'].cues[7], ['pathway a', 'while']);
+assert.deepEqual(ARRANGEMENTS['red-river-valley'].cues[15], ['loved you so', 'true']);
 assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 14,
   'only independently checked arrangements may claim lyric-synchronized timing');
 assert.equal(ARRANGEMENTS['house-of-the-rising-sun'].groove, 'sixEight');
