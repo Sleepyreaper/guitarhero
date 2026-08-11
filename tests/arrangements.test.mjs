@@ -176,7 +176,18 @@ assert.equal(ARRANGEMENTS['will-the-circle'].bpm, 120);
 assert.equal(ARRANGEMENTS['will-the-circle'].timing, 'verified');
 assert.equal(ARRANGEMENTS['will-the-circle'].cues[3], 'breathe');
 assert.equal(ARRANGEMENTS['will-the-circle'].cues[15], 'hold G');
-assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 18,
+assert.deepEqual(ARRANGEMENTS['what-a-friend'].bars.map((bar) => barChords(bar)), [
+  ['G'], ['C'], ['G'], ['D'], ['G'], ['C'], ['G'], ['D7', 'G'],
+  ['D'], ['G'], ['C'], ['G', 'D'], ['G'], ['C'], ['G'], ['D7', 'G'],
+], 'What a Friend must contain its complete sixteen-bar first verse');
+assert.deepEqual(barChangeBeats(ARRANGEMENTS['what-a-friend'].bars[7], 4), [0, 2]);
+assert.deepEqual(barChangeBeats(ARRANGEMENTS['what-a-friend'].bars[11], 4), [0, 2]);
+assert.deepEqual(barChangeBeats(ARRANGEMENTS['what-a-friend'].bars[15], 4), [0, 2]);
+assert.equal(ARRANGEMENTS['what-a-friend'].timing, 'verified');
+assert.equal(ARRANGEMENTS['what-a-friend'].cues.length, 16);
+assert.equal(SONGS.find((song) => song.id === 'what-a-friend').body[0].lines.length, 8,
+  'What a Friend must display the complete first verse');
+assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 19,
   'only independently checked arrangements may claim lyric-synchronized timing');
 assert.equal(ARRANGEMENTS['house-of-the-rising-sun'].groove, 'sixEight');
 assert.ok(Object.values(ARRANGEMENTS).some((item) => item.bars.some(Array.isArray)),
