@@ -72,6 +72,10 @@ assert.match(targetsText, /You Look Like You Love Me[\s\S]*bridge:/,
   'requested modern-country targets must include an actionable beginner bridge');
 assert.match(accountText, /learning preferences, chord-change records, and private lesson feedback/,
   'account privacy copy must accurately list cloud-synced learner data');
+assert.match(accountText, /const saved = await flushCloudProgress\(\)/,
+  'sign-out must verify the final cloud save before clearing this device');
+assert.match(accountText, /You are still signed in and your progress is safe on this device/,
+  'a failed final sync must preserve progress and explain the recovery path');
 assert.match(cssText, /@media \(max-width: 560px\)[\s\S]*\.app-nav \{[^}]*overflow-x: auto/,
   'phone navigation must remain reachable without consuming the screen in wrapped rows');
 assert.match(cssText, /\.app-nav a \{[^}]*min-height: 44px/,

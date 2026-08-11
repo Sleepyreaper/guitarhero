@@ -57,7 +57,7 @@ export function mergeStates(localState, remoteState) {
 }
 
 async function writeCloud(state = getState()) {
-  if (!cloud) return;
+  if (!cloud) return true;
   const { firestoreApi, db, uid } = cloud;
   const ref = firestoreApi.doc(db, 'users', uid, 'state', 'progress');
   try {
@@ -66,8 +66,12 @@ async function writeCloud(state = getState()) {
       schemaVersion: 1,
       updatedAt: firestoreApi.serverTimestamp(),
     }, { merge: true });
+    window.dispatchEvent(new CustomEvent('campfire:sync-status', { detail: { status: 'synced' } }));
+    return true;
   } catch (error) {
     console.warn('Campfire progress sync failed; local progress is safe.', error);
+    window.dispatchEvent(new CustomEvent('campfire:sync-status', { detail: { status: 'error' } }));
+    return false;
   }
 }
 
@@ -99,7 +103,7 @@ export async function connectCloudProgress(user, services) {
 export async function flushCloudProgress() {
   clearTimeout(cloudTimer);
   cloudTimer = null;
-  await writeCloud();
+  return writeCloud();
 }
 
 export function disconnectCloudProgress() {

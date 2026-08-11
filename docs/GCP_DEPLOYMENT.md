@@ -66,7 +66,9 @@ users/{firebase-auth-uid}/state/progress
 version-controlled rules with every release; never replace them with an allow-all test rule.
 
 The app saves locally first, merges existing browser progress into the account, and batches cloud
-writes on a ten-second delay. Practice audio is analyzed locally and is never uploaded.
+writes on a ten-second delay. Sign-out clears a shared browser only after its final cloud write
+succeeds; if the network is unavailable, Campfire keeps the learner signed in and preserves the
+local copy for a retry. Practice audio is analyzed locally and is never uploaded.
 
 ## Production domain: campfire.sleepyreaper.com
 

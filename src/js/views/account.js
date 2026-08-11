@@ -134,7 +134,11 @@ export default {
 
       root.querySelector('#sign-out')?.addEventListener('click', async () => {
         busy('Saving progress and signing out…');
-        await flushCloudProgress();
+        const saved = await flushCloudProgress();
+        if (!saved) {
+          busy('Could not reach cloud sync. You are still signed in and your progress is safe on this device. Check the connection, then try Sign out again.');
+          return;
+        }
         disconnectCloudProgress();
         clearLocalProgress();
         await authApi.signOut(auth);
