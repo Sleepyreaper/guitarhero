@@ -145,9 +145,11 @@ export const SONGS = [
     body: [
       { section: 'Verse', lines: [
         [{ c: 'G', t: 'Twinkle, twinkle, ' }, { c: 'C', t: 'little ' }, { c: 'G', t: 'star' }],
-        [{ c: 'G', t: 'How I ' }, { c: 'D', t: 'wonder what you ' }, { c: 'G', t: 'are' }],
-        [{ c: 'G', t: 'Up a' }, { c: 'C', t: 'bove the ' }, { c: 'G', t: 'world so ' }, { c: 'D', t: 'high' }],
+        [{ c: 'C', t: 'How I ' }, { c: 'G', t: 'wonder ' }, { c: 'D', t: 'what you ' }, { c: 'G', t: 'are' }],
+        [{ c: 'G', t: 'Up ' }, { c: 'C', t: 'above the ' }, { c: 'G', t: 'world so ' }, { c: 'D', t: 'high' }],
         [{ c: 'G', t: 'Like a ' }, { c: 'C', t: 'diamond ' }, { c: 'G', t: 'in the ' }, { c: 'D', t: 'sky' }],
+        [{ c: 'G', t: 'Twinkle, twinkle, ' }, { c: 'C', t: 'little ' }, { c: 'G', t: 'star' }],
+        [{ c: 'C', t: 'How I ' }, { c: 'G', t: 'wonder ' }, { c: 'D', t: 'what you ' }, { c: 'G', t: 'are' }],
       ] },
     ],
   },

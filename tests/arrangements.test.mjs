@@ -85,7 +85,12 @@ assert.deepEqual(ARRANGEMENTS.kumbaya.bars, [
 assert.deepEqual(ARRANGEMENTS.kumbaya.cues[0], 'Kumbaya my');
 assert.deepEqual(ARRANGEMENTS.kumbaya.cues[1], ['Lord, kumba', 'ya']);
 assert.equal(ARRANGEMENTS.kumbaya.timing, 'verified');
-assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 7,
+assert.deepEqual(ARRANGEMENTS['twinkle-twinkle'].bars, [
+  'G', ['C', 'G'], ['C', 'G'], ['D', 'G'], ['G', 'C'], ['G', 'D'],
+  ['G', 'C'], ['G', 'D'], 'G', ['C', 'G'], ['C', 'G'], ['D', 'G'],
+], 'Twinkle must use the complete 12-bar ABBA short form');
+assert.equal(ARRANGEMENTS['twinkle-twinkle'].timing, 'verified');
+assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 8,
   'only independently checked arrangements may claim lyric-synchronized timing');
 assert.equal(ARRANGEMENTS['house-of-the-rising-sun'].groove, 'sixEight');
 assert.ok(Object.values(ARRANGEMENTS).some((item) => item.bars.some(Array.isArray)),
