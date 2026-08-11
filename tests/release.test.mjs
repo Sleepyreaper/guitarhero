@@ -34,6 +34,8 @@ assert.match(curriculumText, /l1-5[\s\S]*songId: 'row-your-boat'/,
   'the first song milestone must be immediately playable with the learner\'s known G chord');
 assert.match(curriculumText, /l2-shady[\s\S]*Shady Grove \(Em \+ D\)/,
   'Shady Grove must wait until D is taught and use its real modal chord movement');
+assert.match(curriculumText, /l2-4[\s\S]*only G and D7/,
+  'the first church song must use its sourced two-chord beginner form');
 assert.doesNotMatch(curriculumText, /Play Along/,
   'curriculum must use the honest chord-rehearsal label');
 assert.match(curriculumText, /Accompaniment vs\. lead: choose your job[\s\S]*B–D–G/,
