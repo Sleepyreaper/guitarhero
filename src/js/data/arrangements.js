@@ -34,6 +34,13 @@ export const GROOVES = {
     label: 'Vocal space: full chord on 1, light brush on 3',
     events: [{ beat: 0, kind: 'full', gain: .18 }, { beat: 2, kind: 'brush', gain: .08 }],
   },
+  lullabyTwo: {
+    label: 'Gentle 2/4: warm chord on 1, quiet brush on 2',
+    events: [
+      { beat: 0, kind: 'full', gain: .16 },
+      { beat: 1, kind: 'brush', gain: .06 },
+    ],
+  },
   gospel: {
     label: 'Gospel sway: bass, brush, bass, brush',
     events: [
@@ -100,10 +107,16 @@ export const ARRANGEMENTS = {
       'Merrily, merrily, merrily, merrily',
       'Life is but a dream',
     ], 'verified'),
-  'hush-little-baby': a(70, 4, 'sparse', 'Lullaby verse loop',
-    ['G', 'G', 'D', 'D', 'D', 'D', 'G', 'G'],
+  'hush-little-baby': a(70, 2, 'lullabyTwo', 'Verse',
+    ['G', 'D7', 'D7', 'G', 'G', 'D7', 'D7', 'G'],
     'Let chords ring and make every change quieter than you think.',
-    'A lead part should be a soft two- or three-note echo after each line, never continuous picking under the singer.'),
+    'A lead part should be a soft two- or three-note echo after each line, never continuous picking under the singer.',
+    [
+      "Hush, little baby, don't", 'say a word',
+      "Papa's gonna buy you a", 'mockingbird',
+      "And if that mockingbird won't", 'sing',
+      "Papa's gonna buy you a", 'diamond ring',
+    ], 'verified'),
   'twinkle-twinkle': a(88, 4, 'straight', 'Verse harmonic loop',
     ['G', 'G', 'C', 'G', 'D', 'G', 'D', 'G'],
     'Use plain quarter-note downs first; the melody supplies the interest.',

@@ -36,6 +36,7 @@ for (const song of SONGS) {
     assert.ok(arrangement.cues?.length, `${song.title} verified timing requires synchronized lyric cues`);
   }
   if (song.time.startsWith('3/4')) assert.equal(arrangement.meter, 3, `${song.title} meter mismatch`);
+  if (song.time.startsWith('2/4')) assert.equal(arrangement.meter, 2, `${song.title} meter mismatch`);
   if (song.time.startsWith('4/4')) assert.equal(arrangement.meter, 4, `${song.title} meter mismatch`);
   if (song.time.startsWith('6/8')) assert.equal(arrangement.meter, 6, `${song.title} meter mismatch`);
 }
@@ -68,13 +69,18 @@ assert.deepEqual(ARRANGEMENTS.clementine.bars,
   ['G', 'G', 'G', 'D7', 'D7', 'G', 'D7', 'G'],
   'Clementine must return to G for forty-niner before its final D7-G phrase');
 assert.equal(ARRANGEMENTS.clementine.timing, 'verified');
+assert.deepEqual(ARRANGEMENTS['hush-little-baby'].bars,
+  ['G', 'D7', 'D7', 'G', 'G', 'D7', 'D7', 'G']);
+assert.equal(ARRANGEMENTS['hush-little-baby'].meter, 2);
+assert.equal(ARRANGEMENTS['hush-little-baby'].groove, 'lullabyTwo');
+assert.equal(ARRANGEMENTS['hush-little-baby'].timing, 'verified');
 assert.deepEqual(ARRANGEMENTS.kumbaya.bars, [
   'G', ['C', 'G'], 'G', ['C', 'D'], 'G', ['C', 'G'], ['C', 'G'], ['D', 'G'],
 ], 'Kumbaya must follow the lyric-aligned G-C-G / G-C-D form');
 assert.deepEqual(ARRANGEMENTS.kumbaya.cues[0], 'Kumbaya my');
 assert.deepEqual(ARRANGEMENTS.kumbaya.cues[1], ['Lord, kumba', 'ya']);
 assert.equal(ARRANGEMENTS.kumbaya.timing, 'verified');
-assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 6,
+assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 7,
   'only independently checked arrangements may claim lyric-synchronized timing');
 assert.equal(ARRANGEMENTS['house-of-the-rising-sun'].groove, 'sixEight');
 assert.ok(Object.values(ARRANGEMENTS).some((item) => item.bars.some(Array.isArray)),
