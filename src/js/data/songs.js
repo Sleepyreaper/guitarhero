@@ -419,10 +419,10 @@ export const SONGS = [
     note: 'The 1907 hymn at the roots of country & bluegrass. A steady gospel strum with a big, singable chorus.',
     body: [
       { section: 'Chorus', lines: [
-        [{ t: 'Will the ' }, { c: 'G', t: 'circle be un' }, { c: 'C', t: 'broken' }],
-        [{ c: 'G', t: 'by and by, Lord, ' }, { c: 'D7', t: 'by and by' }],
-        [{ t: "There's a " }, { c: 'G', t: 'better home a' }, { c: 'C', t: 'waiting' }],
-        [{ c: 'G', t: 'in the sky, Lord, ' }, { c: 'D7', t: 'in the ' }, { c: 'G', t: 'sky' }],
+        [{ c: 'G', t: 'Will the circle be unbroken' }],
+        [{ c: 'C', t: 'By and by, Lord, ' }, { c: 'G', t: 'by and by' }],
+        [{ c: 'G', t: "There's a better home awaiting" }],
+        [{ c: 'G', t: 'In the sky, Lord, ' }, { c: 'D7', t: 'in the ' }, { c: 'G', t: 'sky' }],
       ] },
     ],
   },
