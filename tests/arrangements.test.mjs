@@ -5,7 +5,7 @@ const load = async (path) => {
   const source = await readFile(new URL(`../${path}`, import.meta.url), 'utf8');
   return import(`data:text/javascript;base64,${Buffer.from(source).toString('base64')}`);
 };
-const [{ SONGS }, { ARRANGEMENTS, GROOVES, arrangementChordSequence }] = await Promise.all([
+const [{ SONGS }, { ARRANGEMENTS, GROOVES, arrangementChordSequence, barChords, barChangeBeats }] = await Promise.all([
   load('src/js/data/songs.js'), load('src/js/data/arrangements.js'),
 ]);
 
@@ -26,7 +26,7 @@ for (const song of SONGS) {
     assert.equal(arrangement.timing, 'verified', `${song.title} lyric cues require verified timing`);
     assert.equal(arrangement.cues.length, arrangement.bars.length, `${song.title} lyric cues must match its bars`);
     arrangement.bars.forEach((bar, index) => {
-      const chordSlots = Array.isArray(bar) ? bar.length : 1;
+      const chordSlots = barChords(bar).length;
       const cue = arrangement.cues[index];
       const cueSlots = Array.isArray(cue) ? cue.length : 1;
       assert.equal(cueSlots, chordSlots, `${song.title} bar ${index + 1} needs one lyric cue per chord change`);
@@ -40,6 +40,13 @@ for (const song of SONGS) {
   } else {
     assert.equal(arrangement.verification, undefined, `${song.title} practice timing must not imply verification`);
   }
+  arrangement.bars.forEach((bar, index) => {
+    const beats = barChangeBeats(bar, arrangement.meter);
+    assert.equal(beats.length, barChords(bar).length, `${song.title} bar ${index + 1} change map mismatch`);
+    assert.equal(beats[0], 0, `${song.title} bar ${index + 1} must begin with a chord on beat 1`);
+    assert.ok(beats.every((beat, slot) => beat >= 0 && beat < arrangement.meter && (!slot || beat > beats[slot - 1])),
+      `${song.title} bar ${index + 1} chord changes must rise within the bar`);
+  });
   if (song.time.startsWith('3/4')) assert.equal(arrangement.meter, 3, `${song.title} meter mismatch`);
   if (song.time.startsWith('2/4')) assert.equal(arrangement.meter, 2, `${song.title} meter mismatch`);
   if (song.time.startsWith('4/4')) assert.equal(arrangement.meter, 4, `${song.title} meter mismatch`);
@@ -97,7 +104,14 @@ assert.deepEqual(GROOVES.actionClap.barEvents.map((events) => events ? events.ma
   [null, [0, 1], null, [0, 1], null, null, null, [0, 1]],
   'action bars 2, 4, and 8 must leave beats 3 and 4 silent for claps');
 assert.equal(ARRANGEMENTS['if-youre-happy'].timing, 'verified');
-assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 9,
+assert.deepEqual(ARRANGEMENTS['old-macdonald'].bars[0].changes,
+  [{ beat: 0, chord: 'G' }, { beat: 2, chord: 'C' }, { beat: 3, chord: 'G' }],
+  'Old MacDonald must change G-C-G on beats 1, 3, and 4 of its opening bar');
+assert.deepEqual(ARRANGEMENTS['old-macdonald'].bars.map((bar) => barChords(bar)), [
+  ['G', 'C', 'G'], ['D', 'G'], ['G', 'C', 'G'], ['D', 'G'], ['G'], ['G'], ['G', 'C', 'G'], ['D', 'G'],
+]);
+assert.equal(ARRANGEMENTS['old-macdonald'].timing, 'verified');
+assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 10,
   'only independently checked arrangements may claim lyric-synchronized timing');
 assert.equal(ARRANGEMENTS['house-of-the-rising-sun'].groove, 'sixEight');
 assert.ok(Object.values(ARRANGEMENTS).some((item) => item.bars.some(Array.isArray)),

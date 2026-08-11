@@ -1,6 +1,6 @@
 // Beginner accompaniment arrangements for every public-domain song in Campfire.
 // These are deliberately playable reductions, not transcriptions of one recording.
-// Repeated chords are meaningful bars; arrays mean evenly split chords within one bar.
+// Repeated chords are meaningful bars; arrays divide a bar evenly, while { changes } pins chords to exact beats.
 
 export const GROOVES = {
   waltz: {
@@ -83,6 +83,7 @@ const a = (bpm, meter, groove, section, bars, dynamics, lead, cues = null, timin
   bpm, meter, groove, section, bars, dynamics, lead, timing,
   ...(cues ? { cues } : {}), ...(verification ? { verification } : {}),
 });
+const at = (...changes) => ({ changes: changes.map(([beat, chord]) => ({ beat, chord })) });
 
 export const ARRANGEMENTS = {
   'down-in-the-valley': a(72, 3, 'waltz', 'Verse',
@@ -161,10 +162,22 @@ export const ARRANGEMENTS = {
       'happy and you know it, clap your',
       'hands (clap clap)',
     ], 'verified', { label: 'Make Music Easy three-chord action-song score', url: 'https://www.makemusiceasy.com/wp-content/uploads/2019/05/If-Youre-Happy-and-You-Know-It-Easy-Chords.pdf', checked: '2026-08-10' }),
-  'old-macdonald': a(108, 4, 'boomChuck', 'Verse loop',
-    ['G', 'G', 'D', 'G', 'G', 'G', 'D', 'G', 'C', 'G', 'D', 'G'],
+  'old-macdonald': a(108, 4, 'boomChuck', 'Complete eight-bar animal verse',
+    [
+      at([0, 'G'], [2, 'C'], [3, 'G']), at([0, 'D'], [2, 'G']),
+      at([0, 'G'], [2, 'C'], [3, 'G']), at([0, 'D'], [2, 'G']),
+      'G', 'G',
+      at([0, 'G'], [2, 'C'], [3, 'G']), at([0, 'D'], [2, 'G']),
+    ],
     'Keep boom-chuck steady and leave the animal noises uncluttered.',
-    'Echo the E-I-E-I-O melody on the top strings after the singer; that recognizable answer is enough lead.'),
+    'Echo the E-I-E-I-O melody on the top strings after the singer; that recognizable answer is enough lead.',
+    [
+      ['Old MacDonald', 'had a', 'farm'], ['E-I-E-I-', 'O; and'],
+      ['on his farm he', 'had a', 'cow'], ['E-I-E-I-', 'O; with a'],
+      'moo-moo here and a moo-moo there',
+      'Here a moo, there a moo, everywhere a moo-moo',
+      ['Old MacDonald', 'had a', 'farm'], ['E-I-E-I-', 'O'],
+    ], 'verified', { label: 'Singing Bell G-major guitar score', url: 'https://www.singing-bell.com/wp-content/uploads/2021/12/Old-MacDonald-Had-a-Farm-Guitar-Chords-Sheet-Music_Singing-Bell.pdf', checked: '2026-08-10' }),
   kumbaya: a(68, 4, 'sparse', 'Verse loop',
     ['G', ['C', 'G'], 'G', ['C', 'D'], 'G', ['C', 'G'], ['C', 'G'], ['D', 'G']],
     'One full chord can last a whole phrase. Follow the breath, not your urge to fill space.',
@@ -244,7 +257,13 @@ export function arrangementFor(song) {
 }
 
 export function barChords(bar) {
+  if (bar?.changes) return bar.changes.map(({ chord }) => chord);
   return Array.isArray(bar) ? bar : [bar];
+}
+
+export function barChangeBeats(bar, meter) {
+  if (bar?.changes) return bar.changes.map(({ beat }) => beat);
+  return barChords(bar).map((_, index, chords) => index * (meter / chords.length));
 }
 
 export function arrangementChordSequence(song) {

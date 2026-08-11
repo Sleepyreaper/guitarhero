@@ -63,6 +63,7 @@ assert.match(cssText, /\.coach-pick button \{[^}]*min-height: 44px/,
 assert.match(songViewText, /arrangement\.bpm/, 'sing-along tempo must come from the song arrangement');
 assert.match(songViewText, /groove\.events/, 'sing-along rhythm must come from the song groove');
 assert.match(songViewText, /groove\.barEvents/, 'action songs must be able to leave silence in specific bars');
+assert.match(songViewText, /barChangeBeats/, 'song playback must support chord changes on exact beats');
 assert.match(songViewText, /accompaniment supplies harmony, pulse, and feel/, 'song pages must teach accompaniment versus melody');
 assert.match(songViewText, /Sing this now/, 'verified timed arrangements must expose synchronized lyric cues');
 assert.match(songViewText, /arrangement\.verification\.url/, 'verified timing claims must expose their evidence');

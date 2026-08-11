@@ -1,5 +1,5 @@
 import { SONGS, SONG_BY_ID, GENRES } from '../data/songs.js';
-import { GROOVES, arrangementFor, arrangementChordSequence, barChords } from '../data/arrangements.js';
+import { GROOVES, arrangementFor, arrangementChordSequence, barChords, barChangeBeats } from '../data/arrangements.js';
 import { TARGET_SONGS, chartSearchUrl } from '../data/targets.js';
 import { CHORD_BY_NAME, chordFrequencies } from '../data/chords.js';
 import { chordSVG } from '../components/chordDiagram.js';
@@ -391,7 +391,10 @@ function singAlong(root, song, self) {
 
   const chordAtBeat = (bar, beat) => {
     const chords = barChords(bar);
-    return chords[Math.min(chords.length - 1, Math.floor(beat / (beatsPerBar / chords.length)))];
+    const changeBeats = barChangeBeats(bar, beatsPerBar);
+    let index = 0;
+    changeBeats.forEach((changeBeat, candidate) => { if (changeBeat <= beat) index = candidate; });
+    return chords[index];
   };
 
   const scheduler = () => {
@@ -411,11 +414,12 @@ function singAlong(root, song, self) {
           const chordName = chordAtBeat(bar, event.beat);
           scheduleStroke(event, chordName, nextBarTime + event.beat * seconds);
         });
+        const changeBeats = barChangeBeats(bar, beatsPerBar);
         barChords(bar).forEach((chordName, slot) => {
           const barCue = lyricCues[idx];
           const cueParts = Array.isArray(barCue) ? barCue : [barCue];
           const cue = cueParts[Math.min(slot, cueParts.length - 1)] || null;
-          uiQueue.push({ time: nextBarTime + slot * (beatsPerBar / barChords(bar).length) * seconds, idx, chordName, cue });
+          uiQueue.push({ time: nextBarTime + changeBeats[slot] * seconds, idx, chordName, cue });
         });
         barIndex++;
       }

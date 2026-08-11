@@ -190,11 +190,11 @@ export const SONGS = [
     note: 'Let your kid pick the animal each time — endless verses, endless giggles. Mostly G with a C and D.',
     body: [
       { section: 'Verse', lines: [
-        [{ c: 'G', t: 'Old MacDonald had a farm, ' }, { c: 'D', t: 'E-I-E-I-' }, { c: 'G', t: 'O' }],
-        [{ t: 'And ' }, { c: 'G', t: 'on his farm he had a cow, ' }, { c: 'D', t: 'E-I-E-I-' }, { c: 'G', t: 'O' }],
+        [{ c: 'G', t: 'Old MacDonald ' }, { c: 'C', t: 'had a ' }, { c: 'G', t: 'farm, ' }, { c: 'D', t: 'E-I-E-I-' }, { c: 'G', t: 'O' }],
+        [{ t: 'And ' }, { c: 'G', t: 'on his farm he ' }, { c: 'C', t: 'had a ' }, { c: 'G', t: 'cow, ' }, { c: 'D', t: 'E-I-E-I-' }, { c: 'G', t: 'O' }],
         [{ t: 'With a ' }, { c: 'G', t: 'moo-moo here and a moo-moo there' }],
-        [{ c: 'C', t: 'Here a moo, there a moo, ' }, { c: 'G', t: 'everywhere a moo-moo' }],
-        [{ c: 'G', t: 'Old MacDonald had a farm, ' }, { c: 'D', t: 'E-I-E-I-' }, { c: 'G', t: 'O' }],
+        [{ c: 'G', t: 'Here a moo, there a moo, everywhere a moo-moo' }],
+        [{ c: 'G', t: 'Old MacDonald ' }, { c: 'C', t: 'had a ' }, { c: 'G', t: 'farm, ' }, { c: 'D', t: 'E-I-E-I-' }, { c: 'G', t: 'O' }],
       ] },
     ],
   },
