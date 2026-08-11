@@ -137,7 +137,14 @@ const ohSusannaSong = SONGS.find(song => song.id === 'oh-susanna');
 assert.equal(ohSusannaSong.time, '2/4');
 assert.match(ohSusannaSong.note, /Quick 2\/4/);
 assert.doesNotMatch(ohSusannaSong.note, /4\/4/);
-assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 13,
+assert.deepEqual(ARRANGEMENTS['red-river-valley'].bars.map((bar) => barChords(bar)), [
+  ['G'], ['G'], ['D7'], ['D7'], ['G'], ['C'], ['G'], ['D7', 'G'],
+  ['G'], ['G'], ['D7'], ['D7'], ['G'], ['C'], ['G'], ['D7', 'G'],
+], 'Red River Valley must contain the complete eight-bar verse and repeated chorus form');
+assert.deepEqual(barChangeBeats(ARRANGEMENTS['red-river-valley'].bars[7], 4), [0, 2]);
+assert.equal(ARRANGEMENTS['red-river-valley'].timing, 'verified');
+assert.equal(ARRANGEMENTS['red-river-valley'].cues.length, 16);
+assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 14,
   'only independently checked arrangements may claim lyric-synchronized timing');
 assert.equal(ARRANGEMENTS['house-of-the-rising-sun'].groove, 'sixEight');
 assert.ok(Object.values(ARRANGEMENTS).some((item) => item.bars.some(Array.isArray)),
