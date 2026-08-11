@@ -146,7 +146,14 @@ assert.equal(ARRANGEMENTS['red-river-valley'].timing, 'verified');
 assert.equal(ARRANGEMENTS['red-river-valley'].cues.length, 16);
 assert.deepEqual(ARRANGEMENTS['red-river-valley'].cues[7], ['pathway a', 'while']);
 assert.deepEqual(ARRANGEMENTS['red-river-valley'].cues[15], ['loved you so', 'true']);
-assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 14,
+assert.deepEqual(ARRANGEMENTS['swing-low'].bars.map((bar) => barChords(bar)), [
+  ['G'], ['C', 'G'], ['G'], ['D7'], ['G'], ['C', 'G'], ['G'], ['D7', 'G'],
+], 'Swing Low must follow its complete eight-bar refrain cadence');
+assert.deepEqual(barChangeBeats(ARRANGEMENTS['swing-low'].bars[1], 4), [0, 2]);
+assert.deepEqual(barChangeBeats(ARRANGEMENTS['swing-low'].bars[7], 4), [0, 2]);
+assert.equal(ARRANGEMENTS['swing-low'].timing, 'verified');
+assert.equal(ARRANGEMENTS['swing-low'].cues.length, 8);
+assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 15,
   'only independently checked arrangements may claim lyric-synchronized timing');
 assert.equal(ARRANGEMENTS['house-of-the-rising-sun'].groove, 'sixEight');
 assert.ok(Object.values(ARRANGEMENTS).some((item) => item.bars.some(Array.isArray)),
