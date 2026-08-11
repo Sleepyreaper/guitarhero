@@ -105,7 +105,7 @@ export const CURRICULUM = [
         goal: 'Play through the chorus without stopping the strumming hand.',
         steps: [
           'One bar of Em, one bar of G — that\'s the whole song. Four down-strums each.',
-          'Open the song and use Play Along — it\'ll listen and follow you.',
+          'Open the song and use Rehearse chord order — the mic advances after each clean Em or G.',
           'Proof that two chords is already real music. This is your first song. 🎉',
         ] },
     ],
@@ -117,6 +117,8 @@ export const CURRICULUM = [
     lessons: [
       { id: 'l2-1', title: 'Add C and D', min: 12, chords: ['C', 'D'],
         objective: 'Learn the last two chords of the beginner core.',
+        video: { id: 'f18EV2dr008', title: 'How to Play the C Chord', teacher: 'JustinGuitar', watchFor: 'C is the harder shape here: copy the finger angle, check every string, and notice how the low E is avoided.' },
+        proof: { id: 'clean-c-d', title: 'My C and D both ring cleanly', check: 'Pick through each chord one string at a time. Every intended string rings, muted strings stay out, then form each shape twice from the air.' },
         steps: [
           'C: finger 3 / 2 / 1 on the A, D, and B strings. Don’t strum the low E.',
           'D: fingers on G, B, and high-e — strum only the top four strings.',
@@ -304,11 +306,12 @@ export const CURRICULUM = [
           'To end: land on the home chord (the “1”) and let it ring, or repeat the last line and slow down together.',
           'Lost mid-song? Just vamp the home chord in time until you hear where she is, then hop back on. Keeping time > playing the “right” chord.',
         ] },
-      { id: 'l7-5', title: 'Do it for real: sing-along mode', min: 10, songId: 'house-of-the-rising-sun',
+      { id: 'l7-5', title: 'Do it for real: sing-along mode', min: 10, songId: 'kumbaya',
         objective: 'Put it together — let the app play so your singer can sing, then take over the part yourself.',
+        proof: { id: 'back-a-singer', title: 'I can take over from the backing track', check: 'Sing or hum one Kumbaya verse with the timed backing, restart, then play the same G–C–G phrases yourself without stopping the pulse.' },
         steps: [
-          'Open a song and hit “🔊 Sing along — I’ll play”. Set a tempo that fits her voice.',
-          'Have her sing to the app first so you both learn how it sits. Then mute the app and YOU play the same chords in that same steady time.',
+          'Open Kumbaya and choose “Sing with timed backing.” Set a tempo that feels relaxed.',
+          'Follow the “Sing this now” cue through one verse. Then pause the app and YOU play those same lyric-aligned changes.',
           'Congratulations — that’s accompanying. Everything else is just more songs.',
         ] },
     ],
