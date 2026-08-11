@@ -234,7 +234,7 @@ ol.steps li { margin: .3rem 0; }
 .coach-head h2 { margin: .1rem 0 0; }
 .coach-pick { display: flex; gap: .4rem; flex-wrap: wrap; margin: .9rem 0; }
 .coach-pick button {
-  font: inherit; font-weight: 800; cursor: pointer; padding: .35rem .7rem; border-radius: 999px;
+  min-height: 44px; font: inherit; font-weight: 800; cursor: pointer; padding: .35rem .7rem; border-radius: 999px;
   border: 1px solid var(--line); background: var(--panel-2); color: var(--muted);
 }
 .coach-pick button.sel { background: var(--rust); border-color: var(--rust); color: #fff; }

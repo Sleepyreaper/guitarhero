@@ -46,6 +46,8 @@ assert.match(cssText, /@media \(max-width: 560px\)[\s\S]*\.app-nav \{[^}]*overfl
   'phone navigation must remain reachable without consuming the screen in wrapped rows');
 assert.match(cssText, /\.app-nav a \{[^}]*min-height: 44px/,
   'phone navigation targets must remain finger-friendly');
+assert.match(cssText, /\.coach-pick button \{[^}]*min-height: 44px/,
+  'phone chord selector targets must remain finger-friendly');
 assert.match(songViewText, /arrangement\.bpm/, 'sing-along tempo must come from the song arrangement');
 assert.match(songViewText, /groove\.events/, 'sing-along rhythm must come from the song groove');
 assert.match(songViewText, /accompaniment supplies harmony, pulse, and feel/, 'song pages must teach accompaniment versus melody');
