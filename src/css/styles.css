@@ -331,6 +331,7 @@ ol.steps li { margin: .3rem 0; }
 .chip-row { display: flex; gap: .45rem; flex-wrap: wrap; margin: 0 0 1.2rem; }
 .chip-btn {
   font: inherit; font-weight: 700; font-size: .88rem; cursor: pointer;
+  min-height: 44px;
   padding: .4rem .85rem; border-radius: 999px;
   border: 1px solid var(--line); background: var(--panel-2); color: var(--muted);
   transition: all .12s;

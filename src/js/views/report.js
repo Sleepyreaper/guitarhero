@@ -16,6 +16,8 @@ export default {
     const titles = Object.fromEntries(ALL_LESSONS.map((lesson) => [lesson.id, lesson.title]));
     const report = buildPilotReport(getState(), titles);
     const text = formatPilotReport(report);
+    const stuckCount = report.feedbackCounts.stuck || 0;
+    const micCount = report.feedbackCounts['listener-wrong'] || 0;
     root.innerHTML = `
       <p class="eyebrow">Private pilot handoff</p>
       <h1>Your Campfire report</h1>
@@ -30,6 +32,7 @@ export default {
 
       <section class="panel" style="margin-top:1rem">
         <h2>Lesson feedback</h2>
+        ${(stuckCount || micCount) ? `<div class="callout"><strong>Needs attention:</strong> ${stuckCount} stuck response${stuckCount === 1 ? '' : 's'} · ${micCount} microphone mismatch${micCount === 1 ? '' : 'es'}.</div>` : ''}
         ${report.lessonFeedback.length ? `<ul>${report.lessonFeedback.map((item) => `<li><strong>${esc(item.lesson)}</strong>: ${esc(LABELS[item.rating] || item.rating)}</li>`).join('')}</ul>` : '<p class="muted">No lesson feedback yet. Use the buttons at the bottom of any lesson.</p>'}
       </section>
 

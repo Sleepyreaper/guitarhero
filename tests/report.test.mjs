@@ -26,6 +26,7 @@ for (const secret of ['secret-uid', 'learner@example.com', 'must-never-appear', 
 }
 const text = formatPilotReport(report);
 assert.match(text, /Meet your guitar: clear/);
+assert.match(text, /Feedback summary: clear 1 · stuck 0 · microphone wrong 0/);
 assert.match(text, /excludes name, email, account ID, audio/);
 
 console.log('report tests passed: aggregation, useful feedback, and identity/date/audio redaction');

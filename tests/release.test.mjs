@@ -84,6 +84,8 @@ assert.match(cssText, /\.coach-pick button \{[^}]*min-height: 44px/,
   'phone chord selector targets must remain finger-friendly');
 assert.match(cssText, /\.routine-step \.lesson-check \{[^}]*width: 44px[^}]*height: 44px/,
   'daily practice completion controls must be finger-sized');
+assert.match(cssText, /\.chip-btn \{[^}]*min-height: 44px/,
+  'lesson feedback and song filters must remain finger-friendly');
 assert.match(routineText, /aria-label="Mark \$\{s\.title\}/,
   'daily practice completion controls must name their individual step');
 assert.match(songViewText, /arrangement\.bpm/, 'sing-along tempo must come from the song arrangement');

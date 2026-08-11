@@ -35,6 +35,11 @@ export function formatPilotReport(report) {
   const changes = Object.keys(report.bestChordChanges).length
     ? Object.entries(report.bestChordChanges).map(([pair, count]) => `${pair}: ${count}`).join(', ')
     : 'none yet';
+  const summary = [
+    `clear ${report.feedbackCounts.clear || 0}`,
+    `stuck ${report.feedbackCounts.stuck || 0}`,
+    `microphone wrong ${report.feedbackCounts['listener-wrong'] || 0}`,
+  ].join(' · ');
 
   return `Campfire pilot report
 Learning path: ${report.learningPath}
@@ -45,6 +50,7 @@ Practice days: ${report.practicedDays}
 Practice minutes: ${report.totalPracticeMinutes}
 Skill checks passed: ${report.skillChecksPassed}
 Best chord changes: ${changes}
+Feedback summary: ${summary}
 
 Lesson feedback:
 ${feedback}
