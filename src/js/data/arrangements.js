@@ -87,8 +87,8 @@ export const GROOVES = {
     label: 'Fingerpicked 3/4: bass, high, middle',
     events: [
       { beat: 0, kind: 'bass', gain: .19 },
-      { beat: 1, kind: 'pick', string: 5, gain: .10 },
-      { beat: 2, kind: 'pick', string: 3, gain: .10 },
+      { beat: 1, kind: 'pick', fromTop: 1, gain: .10 },
+      { beat: 2, kind: 'pick', fromTop: 2, gain: .10 },
     ],
   },
 };
@@ -319,10 +319,15 @@ export const ARRANGEMENTS = {
     ['There is', 'a house', 'in New', 'Orleans', 'They call', 'the Rising', 'Sun', 'breathe',
       "And it's", 'been the ruin', 'of many', 'a poor boy', 'And God', 'I know I’m', 'one', 'turn around'],
     'verified', { label: 'TraditionalSongs 16-bar Am broken-chord score', url: 'https://www.traditionalsongs.org/the-house-of-the-rising-sun.html', checked: '2026-08-10' }),
-  'scarborough-fair': a(72, 3, 'fingerWaltz', 'Modal verse loop',
-    ['Em', 'D', 'Em', 'Em', 'Em', 'G', 'D', 'Em', 'Em', 'Am', 'Em', 'Em', 'Em', 'D', 'Em', 'Em'],
+  'scarborough-fair': a(90, 3, 'fingerWaltz', 'Complete first verse',
+    ['Am', 'Am', 'Em', 'Am', 'Am', 'Am', 'Am', 'D', 'Am', 'Am', 'Am', 'Em', 'Am', 'G', 'G',
+      'Am', 'G', 'Em', 'Am', 'Am', 'Am', 'Am'],
     'Keep the bass separate from the upper notes and avoid a bright pop-style strum.',
-    'Use the vocal melody as the lead. Between lines, let open Em notes ring instead of adding a blues lick.'),
+    'Use the vocal melody as the lead. Between lines, let the open Am chord ring instead of adding a blues lick.',
+    ['Are you', 'going to', 'Scarborough', 'Fair', 'breathe', 'Parsley,', 'sage,', 'rosemary', 'and thyme', 'breathe',
+      'Remember', 'me to', 'one who lives', 'there', 'breathe', 'She once', 'was a true', 'love of', 'mine',
+      'hold Am', 'hold Am', 'turn around'],
+    'verified', { label: 'Good Guitarist 22-bar traditional beginner chart', url: 'https://goodguitarist.com/wp-content/uploads/2024/04/scarborough-fair-chord-chart.pdf', checked: '2026-08-10' }),
 };
 
 export function arrangementFor(song) {

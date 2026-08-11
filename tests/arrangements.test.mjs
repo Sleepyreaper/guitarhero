@@ -211,7 +211,16 @@ assert.deepEqual(SONGS.find((song) => song.id === 'house-of-the-rising-sun').bod
   ['Am', 'E', 'Am'], 'the final lyric line must begin on Am and resolve through E to Am');
 assert.deepEqual(GROOVES.sixEight.events.map(({ string, fromTop }) => string ?? -fromTop), [0, 1, 2, -1, -2, -3],
   'the 6/8 arpeggio must travel bass-to-treble and back');
-assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 22,
+assert.deepEqual(ARRANGEMENTS['scarborough-fair'].bars, [
+  'Am', 'Am', 'Em', 'Am', 'Am', 'Am', 'Am', 'D', 'Am', 'Am', 'Am', 'Em', 'Am', 'G', 'G',
+  'Am', 'G', 'Em', 'Am', 'Am', 'Am', 'Am',
+], 'Scarborough Fair must use its complete twenty-two-bar beginner verse');
+assert.deepEqual(SONGS.find((song) => song.id === 'scarborough-fair').chords, ['Am', 'Em', 'D', 'G']);
+assert.equal(ARRANGEMENTS['scarborough-fair'].timing, 'verified');
+assert.equal(ARRANGEMENTS['scarborough-fair'].cues.length, 22);
+assert.deepEqual(GROOVES.fingerWaltz.events.map(({ kind, fromTop }) => kind === 'bass' ? 'bass' : fromTop),
+  ['bass', 1, 2], 'the finger-waltz pattern must adapt its high notes to every chord shape');
+assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 23,
   'only independently checked arrangements may claim lyric-synchronized timing');
 assert.equal(ARRANGEMENTS['house-of-the-rising-sun'].groove, 'sixEight');
 assert.ok(Object.values(ARRANGEMENTS).some((item) => item.bars.some(Array.isArray)),
