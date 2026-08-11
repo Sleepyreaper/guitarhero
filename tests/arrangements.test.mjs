@@ -160,7 +160,15 @@ assert.deepEqual(SONGS.find((song) => song.id === 'simple-gifts').chords, ['G', 
 assert.equal(ARRANGEMENTS['simple-gifts'].bpm, 100);
 assert.equal(ARRANGEMENTS['simple-gifts'].timing, 'verified');
 assert.equal(ARRANGEMENTS['simple-gifts'].cues.length, 8);
-assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 16,
+assert.deepEqual(ARRANGEMENTS['streets-of-laredo'].bars, [
+  'G', 'G', 'G', 'D7', 'G', 'G', 'G', 'D7',
+  'G', 'G', 'G', 'D7', 'G', 'G', 'D7', 'G',
+], 'Streets of Laredo must use its complete sixteen-bar cowboy-waltz verse');
+assert.deepEqual(SONGS.find((song) => song.id === 'streets-of-laredo').chords, ['G', 'D7']);
+assert.equal(ARRANGEMENTS['streets-of-laredo'].meter, 3);
+assert.equal(ARRANGEMENTS['streets-of-laredo'].timing, 'verified');
+assert.equal(ARRANGEMENTS['streets-of-laredo'].cues.length, 16);
+assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 17,
   'only independently checked arrangements may claim lyric-synchronized timing');
 assert.equal(ARRANGEMENTS['house-of-the-rising-sun'].groove, 'sixEight');
 assert.ok(Object.values(ARRANGEMENTS).some((item) => item.bars.some(Array.isArray)),
