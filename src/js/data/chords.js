@@ -16,6 +16,7 @@ export const CHORDS = [
   { name: 'A',  label: 'A major', frets: [-1, 0, 2, 2, 2, 0], fingers: [0, 0, 1, 2, 3, 0], baseFret: 1, group: 'core', tip: 'Three fingers cramped in one fret — squeeze them together.' },
   { name: 'E',  label: 'E major', frets: [0, 2, 2, 1, 0, 0], fingers: [0, 2, 3, 1, 0, 0], baseFret: 1, group: 'core', tip: 'Strum all six strings. Full and bright.' },
   { name: 'D7', label: 'D dom 7', frets: [-1, -1, 0, 2, 1, 2], fingers: [0, 0, 0, 2, 1, 3], baseFret: 1, group: 'extra', tip: 'The classic bluesy/gospel resolve back to G.' },
+  { name: 'A7', label: 'A dom 7', frets: [-1, 0, 2, 0, 2, 0], fingers: [0, 0, 1, 0, 2, 0], baseFret: 1, group: 'extra', tip: 'Start from A major and lift the finger on the G string. In country songs it pulls naturally toward D or D7.' },
   { name: 'G7', label: 'G dom 7', frets: [3, 2, 0, 0, 0, 1], fingers: [3, 2, 0, 0, 0, 1], baseFret: 1, group: 'extra', tip: 'Adds a little grit — common in country turnarounds.' },
   { name: 'Cadd9', label: 'C add 9', frets: [-1, 3, 2, 0, 3, 3], fingers: [0, 2, 1, 0, 3, 4], baseFret: 1, group: 'extra', tip: 'A modern worship staple — pairs beautifully with G.' },
   { name: 'Dsus4', label: 'D sus 4', frets: [-1, -1, 0, 2, 3, 3], fingers: [0, 0, 0, 1, 2, 3], baseFret: 1, group: 'extra', tip: 'Add and release the pinky over a D for that ringing folk lift.' },

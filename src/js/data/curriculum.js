@@ -212,8 +212,10 @@ export const CURRICULUM = [
           'Practice D→A and E→A — the backbone of countless country tunes.',
         ] },
       { id: 'l4-3', title: 'SONG: Home on the Range', min: 12, songId: 'home-on-the-range',
-        objective: 'A flowing waltz that stretches your G–C–D changes.',
+        objective: 'Play a complete country waltz and turn A major into A7 with one finger lift.',
         steps: [
+          'Make A7 from A major by lifting the finger on the G string: x02020.',
+          'Practice A7→D7 slowly; that country pull carries “antelope play.”',
           'Long phrases — keep the 3/4 strum steady even while you think ahead.',
           'Aim for smooth transitions, not speed.',
         ] },

@@ -194,7 +194,14 @@ assert.deepEqual(ARRANGEMENTS['amazing-grace'].bars.map((bar) => barChords(bar))
 assert.deepEqual(barChangeBeats(ARRANGEMENTS['amazing-grace'].bars[13], 3), [0, 2]);
 assert.equal(ARRANGEMENTS['amazing-grace'].timing, 'verified');
 assert.equal(ARRANGEMENTS['amazing-grace'].cues.length, 16);
-assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 20,
+assert.deepEqual(ARRANGEMENTS['home-on-the-range'].bars, [
+  'G', 'G', 'C', 'C', 'G', 'A7', 'D7', 'D7',
+  'G', 'G', 'C', 'C', 'G', 'D7', 'G', 'G',
+], 'Home on the Range must contain its complete sixteen-bar first verse');
+assert.deepEqual(SONGS.find((song) => song.id === 'home-on-the-range').chords, ['G', 'C', 'A7', 'D7']);
+assert.equal(ARRANGEMENTS['home-on-the-range'].timing, 'verified');
+assert.equal(ARRANGEMENTS['home-on-the-range'].cues.length, 16);
+assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 21,
   'only independently checked arrangements may claim lyric-synchronized timing');
 assert.equal(ARRANGEMENTS['house-of-the-rising-sun'].groove, 'sixEight');
 assert.ok(Object.values(ARRANGEMENTS).some((item) => item.bars.some(Array.isArray)),
