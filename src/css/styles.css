@@ -304,7 +304,7 @@ ol.steps li { margin: .3rem 0; }
 /* ---------- daily routine ---------- */
 .routine-step { display: flex; align-items: center; gap: .9rem; }
 .routine-step.done { border-color: var(--green-dk); }
-.routine-step .lesson-check { cursor: pointer; background: var(--panel-2); }
+.routine-step .lesson-check { width: 44px; height: 44px; cursor: pointer; background: var(--panel-2); }
 
 /* ---------- chord-change trainer ---------- */
 .train-pick { display: flex; align-items: center; justify-content: center; gap: 1.2rem; flex-wrap: wrap; margin-bottom: 1rem; }

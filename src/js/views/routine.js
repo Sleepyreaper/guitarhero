@@ -68,7 +68,8 @@ export default {
             const done = isRoutineStepDone(s.id);
             return `
               <div class="panel routine-step ${done ? 'done' : ''}">
-                <button class="lesson-check ${done ? 'done' : ''}" data-step="${s.id}" aria-label="toggle done">${done ? '✓' : ''}</button>
+                <button class="lesson-check ${done ? 'done' : ''}" data-step="${s.id}"
+                  aria-label="Mark ${s.title} ${done ? 'not done' : 'done'}">${done ? '✓' : ''}</button>
                 <div style="flex:1">
                   <div style="display:flex;align-items:baseline;gap:.5rem;flex-wrap:wrap">
                     <span style="font-size:1.2rem">${s.ico}</span>

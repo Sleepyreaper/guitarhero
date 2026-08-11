@@ -82,6 +82,10 @@ assert.match(cssText, /\.app-nav a \{[^}]*min-height: 44px/,
   'phone navigation targets must remain finger-friendly');
 assert.match(cssText, /\.coach-pick button \{[^}]*min-height: 44px/,
   'phone chord selector targets must remain finger-friendly');
+assert.match(cssText, /\.routine-step \.lesson-check \{[^}]*width: 44px[^}]*height: 44px/,
+  'daily practice completion controls must be finger-sized');
+assert.match(routineText, /aria-label="Mark \$\{s\.title\}/,
+  'daily practice completion controls must name their individual step');
 assert.match(songViewText, /arrangement\.bpm/, 'sing-along tempo must come from the song arrangement');
 assert.match(songViewText, /groove\.events/, 'sing-along rhythm must come from the song groove');
 assert.match(songViewText, /groove\.barEvents/, 'action songs must be able to leave silence in specific bars');
