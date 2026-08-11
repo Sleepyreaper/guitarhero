@@ -43,15 +43,16 @@ for (const song of SONGS) {
 assert.ok(new Set(Object.values(ARRANGEMENTS).map((item) => item.groove)).size >= 7,
   'the songbook must not collapse into one generic strum');
 assert.equal(ARRANGEMENTS['shady-grove'].groove, 'boomChuck');
-assert.deepEqual(ARRANGEMENTS['shady-grove'].bars.slice(0, 4), ['Em', 'G', 'Em', 'G'],
-  'Shady Grove must honor its one-bar Em / one-bar G beginner instruction');
+assert.deepEqual(ARRANGEMENTS['shady-grove'].bars, ['Em', 'D', 'Em', 'Em', 'Em', 'D', 'D', 'Em'],
+  'Shady Grove must use the traditional minor-home / lowered-seven chorus form');
+assert.equal(ARRANGEMENTS['shady-grove'].timing, 'verified');
 assert.deepEqual(ARRANGEMENTS.kumbaya.bars, [
   'G', ['C', 'G'], 'G', ['C', 'D'], 'G', ['C', 'G'], ['C', 'G'], ['D', 'G'],
 ], 'Kumbaya must follow the lyric-aligned G-C-G / G-C-D form');
 assert.deepEqual(ARRANGEMENTS.kumbaya.cues[0], 'Kumbaya my');
 assert.deepEqual(ARRANGEMENTS.kumbaya.cues[1], ['Lord, kumba', 'ya']);
 assert.equal(ARRANGEMENTS.kumbaya.timing, 'verified');
-assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 1,
+assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 2,
   'only independently checked arrangements may claim lyric-synchronized timing');
 assert.equal(ARRANGEMENTS['house-of-the-rising-sun'].groove, 'sixEight');
 assert.ok(Object.values(ARRANGEMENTS).some((item) => item.bars.some(Array.isArray)),

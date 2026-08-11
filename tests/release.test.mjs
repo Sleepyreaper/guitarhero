@@ -30,6 +30,10 @@ assert.match(curriculumText, /l2-1[\s\S]*f18EV2dr008[\s\S]*clean-c-d/,
   'the difficult C\/D mechanical step needs demonstration and honest proof');
 assert.match(curriculumText, /l7-5[\s\S]*songId: 'kumbaya'[\s\S]*back-a-singer/,
   'the first singer handoff must use a lyric-verified arrangement');
+assert.match(curriculumText, /l1-5[\s\S]*songId: 'row-your-boat'/,
+  'the first song milestone must be immediately playable with the learner\'s known G chord');
+assert.match(curriculumText, /l2-shady[\s\S]*Shady Grove \(Em \+ D\)/,
+  'Shady Grove must wait until D is taught and use its real modal chord movement');
 assert.doesNotMatch(curriculumText, /Play Along/,
   'curriculum must use the honest chord-rehearsal label');
 assert.match(curriculumText, /Accompaniment vs\. lead: choose your job[\s\S]*B–D–G/,
