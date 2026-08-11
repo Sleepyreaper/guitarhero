@@ -46,12 +46,16 @@ export const SONGS = [
     note: 'A two-chord Gold Rush singalong (1884). Same easy G ↔ D7 change as Down in the Valley, in a lilting 3/4.',
     body: [
       { section: 'Verse', lines: [
-        [{ c: 'G', t: 'In a cavern, in a canyon, ' }, { c: 'D7', t: 'excavating for a mine' }],
-        [{ c: 'D7', t: 'Dwelt a miner, forty-niner, ' }, { c: 'G', t: 'and his daughter Clementine' }],
+        [{ c: 'G', t: 'In a cavern, in a canyon' }],
+        [{ c: 'G', t: 'Excavating for a ' }, { c: 'D7', t: 'mine' }],
+        [{ c: 'D7', t: 'Dwelt a miner, forty-' }, { c: 'G', t: 'niner' }],
+        [{ c: 'D7', t: 'And his daughter, Clemen' }, { c: 'G', t: 'tine' }],
       ] },
       { section: 'Chorus', lines: [
-        [{ c: 'G', t: 'Oh my darling, oh my darling, ' }, { c: 'D7', t: 'oh my darling Clementine' }],
-        [{ c: 'D7', t: 'You are lost and gone forever, ' }, { c: 'G', t: 'dreadful sorry, Clementine' }],
+        [{ c: 'G', t: 'Oh my darling, oh my darling' }],
+        [{ c: 'G', t: 'Oh my darling, Clemen' }, { c: 'D7', t: 'tine' }],
+        [{ c: 'D7', t: 'You are lost and gone for' }, { c: 'G', t: 'ever' }],
+        [{ c: 'D7', t: 'Dreadful sorry, Clemen' }, { c: 'G', t: 'tine' }],
       ] },
     ],
   },

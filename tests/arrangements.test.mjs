@@ -63,13 +63,18 @@ assert.deepEqual(ARRANGEMENTS['whole-world'].bars,
   ['G', 'G', 'D7', 'D7', 'G', 'G', 'D7', 'G'],
   'Whole World must use the sourced two-chord beginner verse form');
 assert.equal(ARRANGEMENTS['whole-world'].timing, 'verified');
+assert.equal(ARRANGEMENTS.clementine.bpm, 90);
+assert.deepEqual(ARRANGEMENTS.clementine.bars,
+  ['G', 'G', 'G', 'D7', 'D7', 'G', 'D7', 'G'],
+  'Clementine must return to G for forty-niner before its final D7-G phrase');
+assert.equal(ARRANGEMENTS.clementine.timing, 'verified');
 assert.deepEqual(ARRANGEMENTS.kumbaya.bars, [
   'G', ['C', 'G'], 'G', ['C', 'D'], 'G', ['C', 'G'], ['C', 'G'], ['D', 'G'],
 ], 'Kumbaya must follow the lyric-aligned G-C-G / G-C-D form');
 assert.deepEqual(ARRANGEMENTS.kumbaya.cues[0], 'Kumbaya my');
 assert.deepEqual(ARRANGEMENTS.kumbaya.cues[1], ['Lord, kumba', 'ya']);
 assert.equal(ARRANGEMENTS.kumbaya.timing, 'verified');
-assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 5,
+assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 6,
   'only independently checked arrangements may claim lyric-synchronized timing');
 assert.equal(ARRANGEMENTS['house-of-the-rising-sun'].groove, 'sixEight');
 assert.ok(Object.values(ARRANGEMENTS).some((item) => item.bars.some(Array.isArray)),
