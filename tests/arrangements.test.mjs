@@ -187,7 +187,14 @@ assert.equal(ARRANGEMENTS['what-a-friend'].timing, 'verified');
 assert.equal(ARRANGEMENTS['what-a-friend'].cues.length, 16);
 assert.equal(SONGS.find((song) => song.id === 'what-a-friend').body[0].lines.length, 8,
   'What a Friend must display the complete first verse');
-assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 19,
+assert.deepEqual(ARRANGEMENTS['amazing-grace'].bars.map((bar) => barChords(bar)), [
+  ['G'], ['G7'], ['C'], ['G'], ['G'], ['G'], ['D'], ['D'],
+  ['G'], ['G7'], ['C'], ['G'], ['Em'], ['G', 'D7'], ['G'], ['G'],
+], 'Amazing Grace must contain the complete sixteen-bar NEW BRITAIN form');
+assert.deepEqual(barChangeBeats(ARRANGEMENTS['amazing-grace'].bars[13], 3), [0, 2]);
+assert.equal(ARRANGEMENTS['amazing-grace'].timing, 'verified');
+assert.equal(ARRANGEMENTS['amazing-grace'].cues.length, 16);
+assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 20,
   'only independently checked arrangements may claim lyric-synchronized timing');
 assert.equal(ARRANGEMENTS['house-of-the-rising-sun'].groove, 'sixEight');
 assert.ok(Object.values(ARRANGEMENTS).some((item) => item.bars.some(Array.isArray)),
