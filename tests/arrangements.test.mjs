@@ -201,7 +201,17 @@ assert.deepEqual(ARRANGEMENTS['home-on-the-range'].bars, [
 assert.deepEqual(SONGS.find((song) => song.id === 'home-on-the-range').chords, ['G', 'C', 'A7', 'D7']);
 assert.equal(ARRANGEMENTS['home-on-the-range'].timing, 'verified');
 assert.equal(ARRANGEMENTS['home-on-the-range'].cues.length, 16);
-assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 21,
+assert.deepEqual(ARRANGEMENTS['house-of-the-rising-sun'].bars, [
+  'Am', 'C', 'D', 'Fmaj7', 'Am', 'C', 'E', 'E',
+  'Am', 'C', 'D', 'Fmaj7', 'Am', 'E', 'Am', 'E',
+], 'House of the Rising Sun must retain its complete sixteen-bar verse');
+assert.equal(ARRANGEMENTS['house-of-the-rising-sun'].timing, 'verified');
+assert.equal(ARRANGEMENTS['house-of-the-rising-sun'].cues.length, 16);
+assert.deepEqual(SONGS.find((song) => song.id === 'house-of-the-rising-sun').body[0].lines[3].map(({ c }) => c),
+  ['Am', 'E', 'Am'], 'the final lyric line must begin on Am and resolve through E to Am');
+assert.deepEqual(GROOVES.sixEight.events.map(({ string, fromTop }) => string ?? -fromTop), [0, 1, 2, -1, -2, -3],
+  'the 6/8 arpeggio must travel bass-to-treble and back');
+assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 22,
   'only independently checked arrangements may claim lyric-synchronized timing');
 assert.equal(ARRANGEMENTS['house-of-the-rising-sun'].groove, 'sixEight');
 assert.ok(Object.values(ARRANGEMENTS).some((item) => item.bars.some(Array.isArray)),

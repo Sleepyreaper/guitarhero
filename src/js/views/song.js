@@ -383,7 +383,11 @@ function singAlong(root, song, self) {
     if (event.kind === 'bass') { notes = freqs.slice(0, 1); spread = 0; }
     if (event.kind === 'brush') notes = freqs.slice(-4);
     if (event.kind === 'up') notes = freqs.slice(-4).reverse();
-    if (event.kind === 'pick') { notes = [freqs[event.string % freqs.length]]; spread = 0; }
+    if (event.kind === 'pick') {
+      const index = event.fromTop ? freqs.length - event.fromTop : event.string % freqs.length;
+      notes = [freqs[Math.max(0, index)]];
+      spread = 0;
+    }
     strumAt(notes, atTime, event.gain, spread);
   };
 

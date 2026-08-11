@@ -514,7 +514,7 @@ export const SONGS = [
         [{ t: 'There ' }, { c: 'Am', t: 'is a ' }, { c: 'C', t: 'house in ' }, { c: 'D', t: 'New Or' }, { c: 'Fmaj7', t: 'leans' }],
         [{ t: 'They ' }, { c: 'Am', t: 'call the ' }, { c: 'C', t: 'Rising ' }, { c: 'E', t: 'Sun' }],
         [{ t: 'And it\'s ' }, { c: 'Am', t: 'been the ' }, { c: 'C', t: 'ruin of ' }, { c: 'D', t: 'many a poor ' }, { c: 'Fmaj7', t: 'boy' }],
-        [{ t: 'And ' }, { c: 'E', t: 'God, I know I\'m ' }, { c: 'Am', t: 'one' }],
+        [{ c: 'Am', t: 'And God, ' }, { c: 'E', t: 'I know I\'m ' }, { c: 'Am', t: 'one' }],
       ] },
     ],
   },
