@@ -37,6 +37,14 @@ assert.match(curriculumText, /l2-shady[\s\S]*Shady Grove \(Em \+ D\)/,
   'Shady Grove must wait until D is taught and use its real modal chord movement');
 assert.match(curriculumText, /l2-4[\s\S]*only G and D7/,
   'the first church song must use its sourced two-chord beginner form');
+assert.match(curriculumText, /l2-3[\s\S]*chords: \['D7'\][\s\S]*xx0212/,
+  'the first D7 song must teach and display D7 before requiring it');
+assert.match(curriculumText, /l3-3[\s\S]*chords: \['G7'\][\s\S]*G7 is 320001/,
+  'Amazing Grace must accurately teach and display its previously unseen G7 shape');
+assert.doesNotMatch(curriculumText, /G7 just lifts one finger off G/,
+  'curriculum must not teach the mechanically false G-to-G7 shortcut');
+assert.match(curriculumText, /l4-3[\s\S]*chords: \['A7'\][\s\S]*x02020/,
+  'Home on the Range must display A7 while teaching its one-finger lift from A');
 assert.match(curriculumText, /l3-4[\s\S]*quick 2\/4 country pulse[\s\S]*bass note on 1/,
   'Oh Susanna lesson must teach its real two-beat country meter');
 assert.doesNotMatch(curriculumText, /Play Along/,
