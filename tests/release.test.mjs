@@ -69,6 +69,10 @@ assert.match(dashboardText, /Review the total honestly/,
 assert.match(dashboardText, /beginRoomCheck/, 'practice tracking must calibrate to the selected room and microphone');
 assert.match(practiceText, /median \* 3/, 'practice threshold must rise above steady room noise');
 assert.match(tunerText, /room \* 2\.5/, 'tuner threshold must rise above the selected microphone’s idle noise');
+assert.match(tunerText, /signal, room gate, clarity, and target lock/,
+  'the real-mic diagnostic must tell the tester which measurements to compare');
+assert.match(tunerText, /checkCopy\.disabled = tested !== 6/,
+  'the calibration report must require comparable samples from all six strings');
 assert.match(listenerText, /calibrateChromaNoise/, 'chord listening must build a room-specific noise profile');
 assert.match(chromaText, /subtractChromaFloor/, 'chord listening must subtract the measured room spectrum');
 assert.match(targetsText, /How Great Is Our God[\s\S]*tutorial:/, 'pilot worship target should include a curated tutorial');

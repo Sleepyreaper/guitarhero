@@ -6,15 +6,21 @@ const median = (values) => {
 };
 
 export function createMicCheck(strings) {
-  return strings.map((string) => ({ string, frames: 0, signal: 0, clear: 0, locked: 0, frequencies: [], clarities: [] }));
+  return strings.map((string) => ({
+    string, frames: 0, signal: 0, clear: 0, locked: 0,
+    frequencies: [], clarities: [], levels: [], signalFloors: [],
+  }));
 }
 
 export function addMicCheckReading(row, reading, targetFreq, minClarity = 0.6) {
   // Ignore room silence between plucks so leaving a string selected cannot make its
   // score decay. A row represents audible guitar frames, not elapsed wall time.
-  if (reading.level < 0.004) return;
+  const signalFloor = Math.max(0.004, Number(reading.signalFloor) || 0.004);
+  if (reading.level < signalFloor) return;
   row.frames += 1;
-  if (reading.level >= 0.008) row.signal += 1;
+  row.levels.push(reading.level);
+  row.signalFloors.push(signalFloor);
+  if (reading.level >= Math.max(0.008, signalFloor * 1.25)) row.signal += 1;
   if (!reading.raw || reading.raw.clarity < minClarity) return;
 
   row.clear += 1;
@@ -33,7 +39,9 @@ export function summarizeMicCheck(row) {
     lockPct: pct(row.locked, row.clear),
     medianFreq: median(row.frequencies),
     medianClarity: median(row.clarities),
-    sampled: row.frames >= 20 && row.signal >= 5,
+    medianLevel: median(row.levels),
+    medianSignalFloor: median(row.signalFloors),
+    sampled: row.frames >= 20 && (row.signal >= 5 || row.clear >= 5),
   };
 }
 
@@ -46,7 +54,9 @@ export function formatMicCheck(rows, micLabel = 'unknown microphone', sampleRate
   rows.map(summarizeMicCheck).forEach((row) => {
     const frequency = row.medianFreq ? `${row.medianFreq.toFixed(1)} Hz` : '--';
     const clarity = row.medianClarity ? row.medianClarity.toFixed(2) : '--';
-    lines.push(`${row.label}: signal ${row.signalPct}% | clear ${row.clearPct}% | target lock ${row.lockPct}% | median ${frequency} | clarity ${clarity}`);
+    const level = row.medianLevel ? row.medianLevel.toFixed(4) : '--';
+    const floor = row.medianSignalFloor ? row.medianSignalFloor.toFixed(4) : '--';
+    lines.push(`${row.label}: signal ${row.signalPct}% | clear ${row.clearPct}% | target lock ${row.lockPct}% | median ${frequency} | clarity ${clarity} | input ${level} | room gate ${floor}`);
   });
   return lines.join('\n');
 }

@@ -93,9 +93,9 @@ export default {
           <span>lock ${row.lockPct}%</span>
         </div>`).join('');
       const tested = summaries.filter((row) => row.sampled).length;
-      checkCopy.disabled = tested === 0;
+      checkCopy.disabled = tested !== 6;
       checkStatus.textContent = tested === 6
-        ? 'All six sampled. Copy the report if any string still feels unreliable.'
+        ? 'All six sampled. Copy the report so signal, room gate, clarity, and target lock can be compared.'
         : `${tested}/6 strings sampled. Let each selected string ring for about 2 seconds.`;
     };
     paintMicCheck();

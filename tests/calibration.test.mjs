@@ -4,19 +4,26 @@ import { calibrateChromaNoise, subtractChromaFloor } from '../src/js/lib/chroma.
 
 const strings = [{ label: 'Low E (6th)', midi: 40 }];
 const [row] = createMicCheck(strings);
-for (let i = 0; i < 25; i++) addMicCheckReading(row, { level: 0.02, raw: { freq: 82.41, clarity: 0.8 } }, 82.41);
+for (let i = 0; i < 25; i++) addMicCheckReading(row, { level: 0.02, signalFloor: 0.005, raw: { freq: 82.41, clarity: 0.8 } }, 82.41);
 const summary = summarizeMicCheck(row);
 assert.equal(summary.signalPct, 100);
 assert.equal(summary.clearPct, 100);
 assert.equal(summary.lockPct, 100);
 assert.equal(summary.sampled, true);
 assert.match(formatMicCheck([row], 'Elgato Wave', 48000), /Low E.*target lock 100%/);
+assert.match(formatMicCheck([row], 'Elgato Wave', 48000), /input 0\.0200 \| room gate 0\.0050/);
+
+const [quietButClear] = createMicCheck(strings);
+for (let i = 0; i < 25; i++) addMicCheckReading(quietButClear,
+  { level: 0.006, signalFloor: 0.004, raw: { freq: 82.41, clarity: 0.75 } }, 82.41);
+assert.equal(summarizeMicCheck(quietButClear).sampled, true,
+  'a quiet guitar with a clear pitch must still complete the diagnostic');
 
 const [quiet] = createMicCheck(strings);
 for (let i = 0; i < 25; i++) addMicCheckReading(quiet, { level: 0.001, raw: null }, 82.41);
 assert.deepEqual(summarizeMicCheck(quiet), {
   label: 'Low E (6th)', signalPct: 0, clearPct: 0, lockPct: 0,
-  medianFreq: null, medianClarity: null, sampled: false,
+  medianFreq: null, medianClarity: null, medianLevel: null, medianSignalFloor: null, sampled: false,
 });
 
 const roomProfile = [0.04, 0.01, 0.02, 0.01, 0.03, 0.01, 0.01, 0.02, 0.01, 0.03, 0.01, 0.02];
