@@ -25,6 +25,18 @@ function expandLearned(set) {
   return out;
 }
 
+export function rankPlayableSongs(songs, genre) {
+  const preferred = genre === 'mixed' ? null : genre;
+  return [...songs].sort((a, b) => {
+    const score = (song) => {
+      if (preferred && song.genres.includes(preferred)) return 0;
+      if (!song.genres.every((item) => item === 'kids')) return 1;
+      return 2;
+    };
+    return score(a) - score(b) || (a.level || 0) - (b.level || 0) || a.title.localeCompare(b.title);
+  });
+}
+
 const fmt = (sec) => `${Math.floor(sec / 60)}:${String(Math.floor(sec % 60)).padStart(2, '0')}`;
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
@@ -142,8 +154,8 @@ export default {
 
     const learnedBase = [...new Set(ALL_LESSONS.filter((l) => l.chords && isDone(l.id)).flatMap((l) => l.chords))];
     const learned = expandLearned(new Set(learnedBase));
-    const canPlay = SONGS.filter((so) => so.chords.every((c) => learned.has(c)));
-    const canPlayTargets = TARGET_SONGS.filter((t) => t.chords.every((c) => learned.has(c)));
+    const canPlay = rankPlayableSongs(SONGS.filter((so) => so.chords.every((c) => learned.has(c))), profile.genre);
+    const canPlayTargets = rankPlayableSongs(TARGET_SONGS.filter((t) => t.chords.every((c) => learned.has(c))), profile.genre);
     const nextChordLesson = ALL_LESSONS.find((l) => l.chords && !isDone(l.id) && l.chords.some((c) => !learned.has(c)));
     const newChords = nextChordLesson ? nextChordLesson.chords.filter((c) => !learned.has(c)) : [];
     const nextHint = newChords.length
@@ -156,10 +168,13 @@ export default {
     } else if (canPlay.length === 0) {
       unlockHtml = `<p class="muted" style="margin:.3rem 0 0">You know <strong>${learnedBase.join(', ')}</strong>. ${nextHint}</p>`;
     } else {
+      const dashboardSongs = canPlay.slice(0, 6);
+      const moreSongs = canPlay.length - dashboardSongs.length;
       unlockHtml = `
         <div class="tag-row" style="margin-top:.55rem">
-          ${canPlay.map((so) => `<a class="pill green" style="text-decoration:none" href="#/songs/${so.id}">${so.title}</a>`).join('')}
+          ${dashboardSongs.map((so) => `<a class="pill green" style="text-decoration:none" href="#/songs/${so.id}">${so.title}</a>`).join('')}
         </div>
+        ${moreSongs > 0 ? `<p class="muted" style="margin:.6rem 0 0">+ ${moreSongs} more unlocked in the <a href="#/songs">full songbook</a>.</p>` : ''}
         ${canPlayTargets.length ? `<p class="muted" style="margin:.6rem 0 0">+ ${canPlayTargets.length} radio song${canPlayTargets.length > 1 ? 's' : ''} you can aim for — see <a href="#/songs">Songs</a>.</p>` : ''}
         <p class="faint" style="margin:.5rem 0 0">${nextHint}</p>`;
     }

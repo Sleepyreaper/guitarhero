@@ -29,6 +29,8 @@ assert.match(curriculumText, /youtube\.com|video:/, 'curriculum should contain v
 assert.match(curriculumText, /Accompaniment vs\. lead: choose your job[\s\S]*B–D–G/,
   'curriculum must explicitly teach the different jobs of backing and lead guitar');
 assert.match(dashboardText, /Your first setlist/, 'music preference must produce a visible personalized setlist');
+assert.match(dashboardText, /rankPlayableSongs/, 'unlocked songs must prioritize the learner\'s chosen style');
+assert.match(dashboardText, /canPlay\.slice\(0, 6\)/, 'the phone dashboard must keep unlocked songs focused');
 assert.match(dashboardText, /href: '#\/learn\/l1-4', doneId: 'l1-5'/,
   'day seven must teach strumming before remaining open until the first song is complete');
 assert.match(dashboardText, /Review the total honestly/,
