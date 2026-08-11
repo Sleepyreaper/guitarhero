@@ -15,6 +15,8 @@ for (const song of SONGS) {
   assert.ok(arrangement, `${song.title} is missing an arrangement`);
   assert.ok(['practice', 'verified'].includes(arrangement.timing), `${song.title} needs an honest timing status`);
   assert.ok(GROOVES[arrangement.groove], `${song.title} has an unknown groove`);
+  assert.ok(GROOVES[arrangement.groove].events.every((event) => event.beat >= 0 && event.beat < arrangement.meter),
+    `${song.title} groove events must stay inside its ${arrangement.meter}-beat bar`);
   assert.ok(arrangement.bpm >= 50 && arrangement.bpm <= 130, `${song.title} tempo is unreasonable`);
   assert.ok(arrangement.bars.length >= 4, `${song.title} needs a meaningful harmonic loop`);
   assert.ok(arrangement.dynamics.length > 30, `${song.title} needs accompaniment coaching`);
@@ -124,7 +126,14 @@ assert.deepEqual(ARRANGEMENTS['when-the-saints'].bars, [
 assert.equal(ARRANGEMENTS['when-the-saints'].cues[10], 'number');
 assert.equal(ARRANGEMENTS['when-the-saints'].cues[13], 'marching');
 assert.equal(ARRANGEMENTS['when-the-saints'].timing, 'verified');
-assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 12,
+assert.deepEqual(ARRANGEMENTS['oh-susanna'].bars, [
+  'G', 'G', 'G', 'D7', 'G', 'G', 'D7', 'G',
+  'C', 'C', 'G', 'D7', 'G', 'G', 'D7', 'G',
+], 'Oh Susanna must contain its complete 2/4 verse excerpt and chorus');
+assert.equal(ARRANGEMENTS['oh-susanna'].meter, 2);
+assert.equal(ARRANGEMENTS['oh-susanna'].groove, 'countryTwo');
+assert.equal(ARRANGEMENTS['oh-susanna'].timing, 'verified');
+assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 13,
   'only independently checked arrangements may claim lyric-synchronized timing');
 assert.equal(ARRANGEMENTS['house-of-the-rising-sun'].groove, 'sixEight');
 assert.ok(Object.values(ARRANGEMENTS).some((item) => item.bars.some(Array.isArray)),

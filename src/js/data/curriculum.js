@@ -185,9 +185,10 @@ export const CURRICULUM = [
           'Take the G→G7→C move slowly; G7 just lifts one finger off G.',
         ] },
       { id: 'l3-4', title: 'SONG: Oh! Susanna', min: 10, songId: 'oh-susanna',
-        objective: 'A bouncy 4/4 with the D–DU–UDU groove.',
+        objective: 'A quick 2/4 country pulse through a complete verse excerpt and chorus.',
         steps: [
-          'Use the all-purpose strum through the verse and chorus.',
+          'Count 1-2: play a bass note on 1 and a short chord brush on 2.',
+          'Notice that the verse uses G and D7; C arrives to lift the start of the chorus.',
           'Keep it light and bouncy — this one is meant to be fun.',
         ] },
     ],

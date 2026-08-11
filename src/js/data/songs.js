@@ -294,19 +294,19 @@ export const SONGS = [
     level: 2,
     key: 'G',
     capo: 0,
-    time: '4/4',
-    strum: 'D–DU–UDU, bouncy',
+    time: '2/4',
+    strum: 'Bass on 1, short chord brush on 2',
     difficulty: 'Easy',
     chords: ['G', 'C', 'D7'],
     note: 'Stephen Foster, 1848 — the original American singalong. Bouncy 4/4 with a classic I–IV–V chorus.',
     body: [
       { section: 'Verse', lines: [
-        [{ c: 'G', t: 'I come from Alabama with my ' }, { c: 'D7', t: 'banjo on my ' }, { c: 'G', t: 'knee' }],
+        [{ c: 'G', t: 'I come from Alabama with my ' }, { c: 'D7', t: 'banjo on my knee' }],
         [{ t: "I'm " }, { c: 'G', t: 'going to Louisiana, my ' }, { c: 'D7', t: 'true love for to ' }, { c: 'G', t: 'see' }],
       ] },
       { section: 'Chorus', lines: [
         [{ t: 'Oh! ' }, { c: 'C', t: 'Susanna, oh ' }, { c: 'G', t: "don't you cry for " }, { c: 'D7', t: 'me' }],
-        [{ t: 'For I ' }, { c: 'G', t: 'come from Ala' }, { c: 'C', t: 'bama with my ' }, { c: 'G', t: 'banjo ' }, { c: 'D7', t: 'on my ' }, { c: 'G', t: 'knee' }],
+        [{ t: 'For I ' }, { c: 'G', t: 'come from Alabama with my ' }, { c: 'D7', t: 'banjo on my ' }, { c: 'G', t: 'knee' }],
       ] },
     ],
   },

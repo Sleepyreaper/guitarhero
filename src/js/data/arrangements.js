@@ -22,6 +22,13 @@ export const GROOVES = {
       { beat: 2, kind: 'bass', gain: .18 }, { beat: 3, kind: 'brush', gain: .12 },
     ],
   },
+  countryTwo: {
+    label: 'Quick country 2/4: bass on 1, short chord on 2',
+    events: [
+      { beat: 0, kind: 'bass', gain: .21 },
+      { beat: 1, kind: 'brush', gain: .11 },
+    ],
+  },
   folk: {
     label: 'Folk down-up: D, D-U, U-D-U',
     events: [
@@ -222,10 +229,16 @@ export const ARRANGEMENTS = {
       'want to', 'be in that', 'number', '(hold); when the',
       'saints go', 'marching', 'in', '(let it ring)',
     ], 'verified', { label: 'TraditionalSongs sixteen-bar G / C / D7 form', url: 'https://www.traditionalsongs.org/when-the-saints-go-marching-in.html', checked: '2026-08-10' }),
-  'oh-susanna': a(112, 4, 'boomChuck', 'Verse / chorus loop',
-    ['G', 'G', 'D7', 'G', 'G', 'G', 'D7', 'G', 'C', 'G', 'D7', 'G'],
+  'oh-susanna': a(112, 2, 'countryTwo', 'Complete verse excerpt and chorus',
+    ['G', 'G', 'G', 'D7', 'G', 'G', 'D7', 'G', 'C', 'C', 'G', 'D7', 'G', 'G', 'D7', 'G'],
     'Use an alternating-bass feel and keep chord brushes short and bouncy.',
-    'Play the first “Oh! Susanna” melody as a two-bar intro, then use a G-to-D7 bass walk only between vocal lines.'),
+    'Play the first “Oh! Susanna” melody as a two-bar intro, then use a G-to-D7 bass walk only between vocal lines.',
+    [
+      'I come from', 'Alabama with my', 'banjo on my', "knee; I'm",
+      'going to', 'Louisiana, my true love', 'for to', 'see; Oh!',
+      'Susanna', "oh, don't you", 'cry for', 'me; For I',
+      'come from', 'Alabama with my', 'banjo on my', 'knee',
+    ], 'verified', { label: 'Singing Bell 2/4 three-chord guitar score, transposed A to G', url: 'https://www.singing-bell.com/wp-content/uploads/2022/03/Oh-Susanna-Guitar-Chords-Sheet-Music_Singing-Bell.pdf', checked: '2026-08-10' }),
   'red-river-valley': a(84, 4, 'boomChuck', 'Verse loop',
     ['G', 'C', 'G', 'G', 'G', 'D7', 'D7', 'D7', 'G', 'C', 'G', ['D7', 'G']],
     'Relax behind the beat; long vocal phrases need an unhurried country pulse.',
