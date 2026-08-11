@@ -2,12 +2,13 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
-const [firebaseText, appText, indexText, curriculumText, diagramText, dashboardText, targetsText, accountText, cssText, songViewText, practiceText, tunerText, listenerText, chromaText, routineText] = await Promise.all([
+const [firebaseText, appText, indexText, curriculumText, diagramText, dashboardText, targetsText, accountText, cssText, songViewText, practiceText, pitchText, listenerText, chromaText, routineText, tunerViewText] = await Promise.all([
   read('firebase.json'), read('src/js/app.js'), read('index.html'),
   read('src/js/data/curriculum.js'), read('src/js/components/chordDiagram.js'),
   read('src/js/views/dashboard.js'), read('src/js/data/targets.js'),
   read('src/js/views/account.js'), read('src/css/styles.css'), read('src/js/views/song.js'), read('src/js/lib/practice.js'),
   read('src/js/lib/pitch.js'), read('src/js/lib/listener.js'), read('src/js/lib/chroma.js'), read('src/js/views/routine.js'),
+  read('src/js/views/tuner.js'),
 ]);
 
 const firebase = JSON.parse(firebaseText);
@@ -68,10 +69,10 @@ assert.match(dashboardText, /Review the total honestly/,
   'practice copy must not claim a level meter can prove the source is guitar');
 assert.match(dashboardText, /beginRoomCheck/, 'practice tracking must calibrate to the selected room and microphone');
 assert.match(practiceText, /median \* 3/, 'practice threshold must rise above steady room noise');
-assert.match(tunerText, /room \* 2\.5/, 'tuner threshold must rise above the selected microphone’s idle noise');
-assert.match(tunerText, /signal, room gate, clarity, and target lock/,
+assert.match(pitchText, /room \* 2\.5/, 'tuner threshold must rise above the selected microphone’s idle noise');
+assert.match(tunerViewText, /signal, room gate, clarity, and target lock/,
   'the real-mic diagnostic must tell the tester which measurements to compare');
-assert.match(tunerText, /checkCopy\.disabled = tested !== 6/,
+assert.match(tunerViewText, /checkCopy\.disabled = tested !== 6/,
   'the calibration report must require comparable samples from all six strings');
 assert.match(listenerText, /calibrateChromaNoise/, 'chord listening must build a room-specific noise profile');
 assert.match(chromaText, /subtractChromaFloor/, 'chord listening must subtract the measured room spectrum');
