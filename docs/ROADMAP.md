@@ -31,7 +31,8 @@
       the on-screen readouts (needs real-mic data points from the user)
 - [x] Automatic room-noise gates for the tuner plus measured pitch-class noise subtraction for
       chord analysis; reruns whenever the learner switches microphones
-- [ ] Capo transposer on song charts (shift chords by N frets, keep easy shapes)
+- [x] Capo key finder on song charts (keep easy shapes, show the sounding key, and transpose
+      backing plus mic recognition to the selected fret)
 - [ ] Nashville-number toggle on charts (show 1–4–5 instead of letters)
 - [x] Chord-change trainer game (count clean changes in 60s, save personal best)
 - [x] Strum-pattern player (visual/audible patterns to strum against)

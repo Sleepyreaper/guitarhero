@@ -3,6 +3,7 @@
 // chord + confidence, using relative template matching (robust to room/mic differences).
 import { CHORDS, chordFrequencies } from '../data/chords.js';
 import { chordPitchClasses, cleanChroma, matchChroma } from './chroma.js';
+import { rotatePitchVector } from './capo.js';
 
 // One pitch-class template per chord in the library, built from its actual voiced notes.
 export const TEMPLATES = CHORDS.map((c) => {
@@ -12,15 +13,19 @@ export const TEMPLATES = CHORDS.map((c) => {
   return { name: c.name, vec, pcs };
 });
 
-export function rankChords(chroma) {
-  return matchChroma(cleanChroma(chroma), TEMPLATES);
+export function rankChords(chroma, capo = 0) {
+  const templates = capo
+    ? TEMPLATES.map((template) => ({ ...template, vec: rotatePitchVector(template.vec, capo) }))
+    : TEMPLATES;
+  return matchChroma(cleanChroma(chroma), templates);
 }
 
 // Feeds on chroma frames, keeps a short exponential average so a single strum settles,
 // and reports the current best-matching chord with a 0..1 confidence.
 export class ChordJudge {
-  constructor(alpha = 0.35) {
+  constructor(alpha = 0.35, capo = 0) {
     this.alpha = alpha;
+    this.capo = capo;
     this.ema = new Array(12).fill(0);
     this.active = false;
   }
@@ -36,7 +41,7 @@ export class ChordJudge {
 
   // { name, sim, margin } — margin is how far ahead of the runner-up (confidence in the pick).
   best() {
-    const ranked = rankChords(this.ema);
+    const ranked = rankChords(this.ema, this.capo);
     const top = ranked[0] || { name: null, sim: 0 };
     const second = ranked[1] || { sim: 0 };
     return { name: top.name, sim: top.sim, margin: top.sim - second.sim, ranked };

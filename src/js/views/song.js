@@ -9,6 +9,7 @@ import { ChordListener } from '../lib/listener.js';
 import { ChordJudge } from '../lib/coach.js';
 import { isConfidentMatch } from '../lib/confidence.js';
 import { listAudioInputs, activeDeviceId } from '../lib/devices.js';
+import { transposeFrequencies, transposeKey } from '../lib/capo.js';
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const cap = (s) => s[0].toUpperCase() + s.slice(1);
@@ -120,6 +121,7 @@ function detail(root, id, self) {
   const arrangement = arrangementFor(song);
   const groove = arrangement && GROOVES[arrangement.groove];
   const verifiedTiming = arrangement?.timing === 'verified';
+  const capo = self._capoBySong?.[song.id] ?? song.capo ?? 0;
 
   root.innerHTML = `
     <a class="back-link" href="#/songs">← All songs</a>
@@ -128,9 +130,17 @@ function detail(root, id, self) {
       <span class="pill">${song.difficulty}</span>
     </div>
     <h1 style="margin-top:.4rem">${song.title}</h1>
-    <p class="faint" style="margin-top:0">Key of ${song.key} · ${song.time}${song.capo ? ` · Capo ${song.capo}` : ' · No capo'}</p>
+    <p class="faint" style="margin-top:0">Written in ${song.key} shapes · ${song.time}</p>
 
     <div class="callout" style="margin:.6rem 0 1.1rem">${song.note}</div>
+    <section class="panel capo-finder" aria-labelledby="capo-title">
+      <div><p class="eyebrow">Match the singer</p><h3 id="capo-title">Capo key finder</h3></div>
+      <label>Capo fret
+        <select id="capo-fret">${Array.from({ length: 8 }, (_, fret) => `<option value="${fret}" ${fret === capo ? 'selected' : ''}>${fret === 0 ? 'None' : fret}</option>`).join('')}</select>
+      </label>
+      <p id="capo-result"><strong>Play ${song.key} shapes</strong> · sounds in <strong>${transposeKey(song.key, capo)}</strong></p>
+      <p class="faint">Move one fret at a time until the first line feels comfortable to sing. The diagrams and chord names stay the same; Campfire's listening and backing follow your capo choice.</p>
+    </section>
     ${arrangement ? `<section class="panel arrangement-guide" style="margin-top:1rem">
       <p class="eyebrow">${verifiedTiming ? 'Verified singable arrangement' : 'Beginner accompaniment practice'}</p>
       <div class="grid arrangement-roles">
@@ -181,10 +191,17 @@ function detail(root, id, self) {
     const btn = e.target.closest('.btn-play');
     if (btn) {
       const chord = CHORD_BY_NAME[btn.dataset.chord];
-      if (chord) strum(chordFrequencies(chord));
+      if (chord) strum(transposeFrequencies(chordFrequencies(chord), capo));
     }
   };
+  self._onChange = (e) => {
+    if (e.target.id !== 'capo-fret') return;
+    self._capoBySong ||= {};
+    self._capoBySong[song.id] = Number(e.target.value);
+    detail(root, song.id, self);
+  };
   root.addEventListener('click', self._onClick);
+  root.addEventListener('change', self._onChange);
   self._root = root;
 }
 
@@ -197,7 +214,8 @@ function playAlong(root, song, self) {
   let okStreak = 0;
   let armed = true;
   const SIM_OK = 0.86;
-  const judge = new ChordJudge();
+  const capo = self._capoBySong?.[song.id] ?? song.capo ?? 0;
+  const judge = new ChordJudge(0.35, capo);
 
   root.innerHTML = `
     <button class="back-link" id="pa-exit" style="background:none;border:none;cursor:pointer">← Back to song</button>
@@ -322,6 +340,7 @@ function playAlong(root, song, self) {
 function singAlong(root, song, self) {
   cleanup(self);
   const arrangement = arrangementFor(song);
+  const capo = self._capoBySong?.[song.id] ?? song.capo ?? 0;
   const bars = arrangement.bars;
   const beatsPerBar = arrangement.meter;
   const groove = GROOVES[arrangement.groove];
@@ -383,7 +402,7 @@ function singAlong(root, song, self) {
   const scheduleStroke = (event, chordName, atTime) => {
     const chord = CHORD_BY_NAME[chordName];
     if (!chord) return;
-    const freqs = chordFrequencies(chord);
+    const freqs = transposeFrequencies(chordFrequencies(chord), capo);
     let notes = freqs;
     let spread = .024;
     if (event.kind === 'bass') { notes = freqs.slice(0, 1); spread = 0; }
@@ -475,10 +494,12 @@ function cleanup(self) {
   if (self._player) { self._player.stop(); self._player = null; }
   if (self._accompanist) { self._accompanist(); self._accompanist = null; }
   if (self._onClick && self._root) { self._root.removeEventListener('click', self._onClick); self._onClick = null; }
+  if (self._onChange && self._root) { self._root.removeEventListener('change', self._onChange); self._onChange = null; }
 }
 
 export default {
   _genre: 'all',
+  _capoBySong: {},
   render(root, param) {
     if (param) detail(root, param, this);
     else list(root, this);

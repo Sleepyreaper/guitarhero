@@ -86,6 +86,10 @@ assert.match(songViewText, /Rehearse chord order/, 'mic chord rehearsal must not
 assert.match(songViewText, /Practice with simplified backing/, 'unchecked arrangements must be labeled as practice reductions');
 assert.match(songViewText, /does not claim exact lyric timing/, 'practice reductions must state their timing limitation');
 assert.doesNotMatch(songViewText, /let bpm = 84/, 'songs must not all default to the same tempo');
+assert.match(songViewText, /Capo key finder/, 'song charts must help a learner match a singer without changing shapes');
+assert.match(songViewText, /new ChordJudge\(0\.35, capo\)/, 'song listening must recognize shapes shifted by the selected capo');
+assert.match(songViewText, /transposeFrequencies\(chordFrequencies\(chord\), capo\)/,
+  'heard chords and timed backing must sound at the selected capo pitch');
 
 // Exercise the SVG renderer without introducing a package/build system.
 const isolatedDiagram = diagramText.replace("import { getProfile } from '../lib/storage.js';", 'const getProfile = () => null;');
