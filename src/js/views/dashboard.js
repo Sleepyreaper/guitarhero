@@ -18,11 +18,10 @@ const TOOLS = [
   { href: '#/metronome', ico: '🥁', h: 'Metronome', p: 'Build rock-solid timing from day one.' },
 ];
 
-const EQUIV = { D: ['D7'], G: ['G7'], Em: ['Em7'], C: ['Cadd9'] };
-function expandLearned(set) {
-  const out = new Set(set);
-  for (const c of set) (EQUIV[c] || []).forEach((e) => out.add(e));
-  return out;
+export function learnedShapes(chords) {
+  // Related chords are not interchangeable skills. D7, G7, Em7, and Cadd9 each
+  // require a different physical shape and only unlock after an explicit lesson.
+  return new Set(chords);
 }
 
 export function rankPlayableSongs(songs, genre) {
@@ -153,7 +152,7 @@ export default {
     const next = ALL_LESSONS.find((l) => !isDone(l.id)) || ALL_LESSONS[total - 1];
 
     const learnedBase = [...new Set(ALL_LESSONS.filter((l) => l.chords && isDone(l.id)).flatMap((l) => l.chords))];
-    const learned = expandLearned(new Set(learnedBase));
+    const learned = learnedShapes(learnedBase);
     const canPlay = rankPlayableSongs(SONGS.filter((so) => so.chords.every((c) => learned.has(c))), profile.genre);
     const canPlayTargets = rankPlayableSongs(TARGET_SONGS.filter((t) => t.chords.every((c) => learned.has(c))), profile.genre);
     const nextChordLesson = ALL_LESSONS.find((l) => l.chords && !isDone(l.id) && l.chords.some((c) => !learned.has(c)));

@@ -54,6 +54,7 @@ assert.match(curriculumText, /Accompaniment vs\. lead: choose your job[\s\S]*Bâ€
 assert.match(dashboardText, /Your first setlist/, 'music preference must produce a visible personalized setlist');
 assert.match(dashboardText, /rankPlayableSongs/, 'unlocked songs must prioritize the learner\'s chosen style');
 assert.match(dashboardText, /canPlay\.slice\(0, 6\)/, 'the phone dashboard must keep unlocked songs focused');
+assert.doesNotMatch(dashboardText, /EQUIV/, 'related chords must not silently unlock physically different shapes');
 assert.match(dashboardText, /href: '#\/learn\/l1-4', doneId: 'l1-5'/,
   'day seven must teach strumming before remaining open until the first song is complete');
 assert.match(dashboardText, /Review the total honestly/,

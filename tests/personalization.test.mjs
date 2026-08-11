@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { rankPlayableSongs } from '../src/js/views/dashboard.js';
+import { learnedShapes, rankPlayableSongs } from '../src/js/views/dashboard.js';
 
 const songs = [
   { title: 'Kids only', genres: ['kids'], level: 1 },
@@ -13,4 +13,11 @@ assert.deepEqual(rankPlayableSongs(songs, 'church').map((song) => song.title), [
 ]);
 assert.equal(songs[0].title, 'Kids only', 'ranking must not mutate shared song data');
 
-console.log('personalization tests passed: preferred genre first, kids-only material last');
+const learned = learnedShapes(['Em', 'G', 'C', 'D']);
+assert.deepEqual([...learned], ['Em', 'G', 'C', 'D']);
+for (const unlearnedShape of ['Em7', 'G7', 'Cadd9', 'D7']) {
+  assert.equal(learned.has(unlearnedShape), false,
+    `${unlearnedShape} must not unlock just because a related major/minor shape was learned`);
+}
+
+console.log('personalization tests passed: preferred genre first and only explicitly learned shapes unlock songs');
