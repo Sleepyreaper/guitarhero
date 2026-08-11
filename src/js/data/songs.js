@@ -162,7 +162,7 @@ export const SONGS = [
     key: 'G',
     capo: 0,
     time: '4/4',
-    strum: 'Down on 1 and 2; stop on 3 and 4 for the claps',
+    strum: 'Steady downs; in clap bars, play 1 and 2 then stop on 3 and 4',
     difficulty: 'Easy',
     chords: ['G', 'C', 'D'],
     note: 'Made for getting little ones moving — clap, stomp, shout “hooray!” Let them fill in the actions.',

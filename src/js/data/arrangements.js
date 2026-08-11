@@ -149,7 +149,7 @@ export const ARRANGEMENTS = {
     ], 'verified', { label: 'TraditionalSongs G-major short-version chart', url: 'https://www.traditionalsongs.org/twinkle-twinkle-little-star.html', checked: '2026-08-10' }),
   'if-youre-happy': a(104, 4, 'actionClap', 'Complete eight-bar action verse',
     ['G', 'D', 'D', 'G', 'C', 'G', 'D', 'G'],
-    'Strum beats 1 and 2, then lift your picking hand away for beats 3 and 4. The silence makes room for the claps.',
+    'Keep four steady beats through sung phrases. In each clap bar, strum beats 1 and 2, then lift your picking hand away for beats 3 and 4.',
     'Do not add a fill over the claps. If someone else sings, your best lead contribution is the rhythmic stop.',
     [
       "If you're happy and you know it, clap your",
