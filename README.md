@@ -76,8 +76,8 @@ run). Because it builds from source, after a `git pull` you rebuild with
 - **🎸 Chord library** — the beginner "big 8" open chords plus worship/folk extras, each with an
   SVG diagram and a "hear it" strum so you know what a clean chord should sound like.
 - **🥁 Metronome** — sample-accurate Web Audio scheduler with tap tempo and visual beats.
-- **📚 Learn** — an 8-unit, 33-lesson song-first curriculum (see `docs/PEDAGOGY.md`) with progress, skill checks, and streaks.
-- **🎵 Songs** — 23 public-domain play-along charts plus copyright-safe modern-song targets.
+- **📚 Learn** — an 8-unit, 34-lesson song-first curriculum (see `docs/PEDAGOGY.md`) with progress, skill checks, and streaks.
+- **🎵 Songs** — 23 source-checked, lyric-synchronized public-domain play-alongs plus copyright-safe modern-song targets.
 
 ## Project layout
 

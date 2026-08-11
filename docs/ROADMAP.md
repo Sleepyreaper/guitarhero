@@ -5,8 +5,9 @@
 - [x] Mic **tuner** with autocorrelation pitch detection + cents needle
 - [x] **Chord library** (big-8 open chords + worship/folk extras) with SVG diagrams + "hear it" strum
 - [x] **Metronome** — lookahead scheduler, tap tempo, beats-per-bar, visual beats
-- [x] **Curriculum** — 8 units, 33 lessons, song-first, progress, proof checks, and streak tracking
-- [x] **Songs** — 23 public-domain play-along charts (chord-over-lyric), genre-tagged
+- [x] **Curriculum** — 8 units, 34 lessons, song-first, progress, proof checks, and streak tracking
+- [x] **Songs** — 23 source-checked public-domain play-along charts with verified forms and
+      lyric-synchronized chord cues, genre-tagged
       (country/folk/americana/church), sorted easiest→hardest, with per-song strum patterns +
       a genre filter
 - [x] **Chord Coach** — mic listens to a strummed chord and verifies it via a chromagram
@@ -28,7 +29,8 @@
 - [x] Auto-calibrated practice noise gate for quiet guitars and different rooms/microphones
 - [ ] **Calibrate on a real guitar** — dial SIM_OK / cleanChroma floor / tuner minClarity from
       the on-screen readouts (needs real-mic data points from the user)
-- [ ] Auto noise-floor subtraction for pitch/chord analysis (practice tracking already calibrates)
+- [x] Automatic room-noise gates for the tuner plus measured pitch-class noise subtraction for
+      chord analysis; reruns whenever the learner switches microphones
 - [ ] Capo transposer on song charts (shift chords by N frets, keep easy shapes)
 - [ ] Nashville-number toggle on charts (show 1–4–5 instead of letters)
 - [x] Chord-change trainer game (count clean changes in 60s, save personal best)
