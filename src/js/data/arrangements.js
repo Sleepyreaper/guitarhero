@@ -62,8 +62,9 @@ export const GROOVES = {
   },
 };
 
-const a = (bpm, meter, groove, section, bars, dynamics, lead, cues = null, timing = 'practice') => ({
-  bpm, meter, groove, section, bars, dynamics, lead, timing, ...(cues ? { cues } : {}),
+const a = (bpm, meter, groove, section, bars, dynamics, lead, cues = null, timing = 'practice', verification = null) => ({
+  bpm, meter, groove, section, bars, dynamics, lead, timing,
+  ...(cues ? { cues } : {}), ...(verification ? { verification } : {}),
 });
 
 export const ARRANGEMENTS = {
@@ -76,7 +77,7 @@ export const ARRANGEMENTS = {
       'Hang your head over, hear the', 'wind blow',
       'Hear the wind blow, dear', 'hear the wind blow',
       'Hang your head over, hear the', 'wind blow',
-    ], 'verified'),
+    ], 'verified', { label: 'Songdrops G / D7 chart', url: 'https://www.songdrops.com/classic-childrens-songs-lyrics-guitar-chords/down-in-the-valley-guitar-chords-and-lyrics-to-the-old-classic-children%E2%80%99s-song.html', checked: '2026-08-10' }),
   clementine: a(90, 3, 'waltz', 'Verse / chorus',
     ['G', 'G', 'G', 'D7', 'D7', 'G', 'D7', 'G'],
     'Give it a light bounce, with a stronger first beat and short brushes on 2 and 3.',
@@ -86,7 +87,7 @@ export const ARRANGEMENTS = {
       'Excavating for a', 'mine',
       'Dwelt a miner, forty-', 'niner',
       'And his daughter, Clemen', 'tine',
-    ], 'verified'),
+    ], 'verified', { label: 'TraditionalSongs G / D7 chart', url: 'https://traditionalsongs.org/oh-my-darling-clementine.html', checked: '2026-08-10' }),
   'shady-grove': a(92, 4, 'boomChuck', 'Chorus',
     ['Em', 'D', 'Em', 'Em', 'Em', 'D', 'D', 'Em'],
     'Keep the low pulse dry and even. Old-time drive comes from rhythm, not a busy strum.',
@@ -96,7 +97,7 @@ export const ARRANGEMENTS = {
       'Shady Grove, my', 'darling',
       'Shady Grove, my', 'little love',
       "I'm bound to go", 'away',
-    ], 'verified'),
+    ], 'verified', { label: 'Heartwood traditional modal chart', url: 'https://www.heartwoodguitar.com/chords/garcia-jerry-and-david-grisman-shady-grove/', checked: '2026-08-10' }),
   'row-your-boat': a(92, 4, 'sparse', 'One-chord verse',
     ['G', 'G', 'G', 'G'],
     'Stay quiet enough to hear both parts if you sing it as a round.',
@@ -106,7 +107,7 @@ export const ARRANGEMENTS = {
       'Gently down the stream',
       'Merrily, merrily, merrily, merrily',
       'Life is but a dream',
-    ], 'verified'),
+    ], 'verified', { label: 'Public-domain 1917 sheet music', url: 'https://commons.wikimedia.org/wiki/File%3A28_Row_Row_Row_Your_Boat.png', checked: '2026-08-10' }),
   'hush-little-baby': a(70, 2, 'lullabyTwo', 'Verse',
     ['G', 'D7', 'D7', 'G', 'G', 'D7', 'D7', 'G'],
     'Let chords ring and make every change quieter than you think.',
@@ -116,7 +117,7 @@ export const ARRANGEMENTS = {
       "Papa's gonna buy you a", 'mockingbird',
       "And if that mockingbird won't", 'sing',
       "Papa's gonna buy you a", 'diamond ring',
-    ], 'verified'),
+    ], 'verified', { label: 'Singing Bell G / D7 guitar sheet', url: 'https://www.singing-bell.com/wp-content/uploads/2022/01/Hush-Little-Baby-Guitar-Chords-Sheet-Music_Singing-Bell.pdf', checked: '2026-08-10' }),
   'twinkle-twinkle': a(88, 4, 'straight', 'Verse harmonic loop',
     ['G', 'G', 'C', 'G', 'D', 'G', 'D', 'G'],
     'Use plain quarter-note downs first; the melody supplies the interest.',
@@ -138,7 +139,7 @@ export const ARRANGEMENTS = {
       'Kumbaya my', ['Lord, kumba', 'ya'],
       'Kumbaya my', ['Lord, kumba', 'ya'],
       ['Oh', 'Lord, kumba'], ['ya', '(let it ring)'],
-    ], 'verified'),
+    ], 'verified', { label: 'RiffSpot traditional chord-and-lyric chart', url: 'https://riffspot.com/music/chords-and-lyrics/kumbaya/120/', checked: '2026-08-10' }),
   'whole-world': a(96, 4, 'gospel', 'Verse loop',
     ['G', 'G', 'D7', 'D7', 'G', 'G', 'D7', 'G'],
     'Lean slightly into beats 2 and 4 for a congregational gospel sway.',
@@ -148,7 +149,7 @@ export const ARRANGEMENTS = {
       "He's got the whole world", 'in His hands',
       "He's got the whole world", 'in His hands',
       "He's got the whole world", 'in His hands',
-    ], 'verified'),
+    ], 'verified', { label: 'Primeau two-chord beginner chart', url: 'https://www.primeauguitar.com/hes-got-the-whole-world-in-his-hands-guitar-chord-chart/', checked: '2026-08-10' }),
   'she-ll-be-comin': a(116, 4, 'boomChuck', 'Verse loop',
     ['G', 'G', 'G', 'D7', 'D7', 'G', 'C', 'G', ['D7', 'G']],
     'Short bass notes and crisp off-beat chords create the train-like country drive.',

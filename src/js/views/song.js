@@ -140,7 +140,7 @@ function detail(root, id, self) {
       <p class="faint" style="margin-bottom:.35rem"><strong>${arrangement.section}:</strong></p>
       <div class="arrangement-bars">${arrangement.bars.map((bar, index) => `<span><small>${index + 1}</small>${barChords(bar).join(' / ')}</span>`).join('')}</div>
       ${verifiedTiming
-        ? '<p class="faint"><strong>Timing checked:</strong> the chord changes are aligned to the displayed lyric cues.</p>'
+        ? `<p class="faint"><strong>Timing checked:</strong> the chord changes are aligned to the displayed lyric cues. <a href="${arrangement.verification.url}" target="_blank" rel="noopener noreferrer">${arrangement.verification.label} â†—</a> Â· checked ${arrangement.verification.checked}.</p>`
         : '<p class="faint"><strong>Practice reduction:</strong> this teaches the song\'s chord vocabulary and feel, but it is not yet a lyric-synchronized transcription.</p>'}
       <div class="callout"><strong>Important:</strong> accompaniment supplies harmony, pulse, and feel—the voice carries the recognizable melody. A lead intro or fill supplies melody only in the spaces.</div>
     </section>` : ''}

@@ -34,6 +34,11 @@ for (const song of SONGS) {
   }
   if (arrangement.timing === 'verified') {
     assert.ok(arrangement.cues?.length, `${song.title} verified timing requires synchronized lyric cues`);
+    assert.match(arrangement.verification?.url || '', /^https:\/\//, `${song.title} needs a verification source`);
+    assert.ok(arrangement.verification.label.length > 8, `${song.title} needs a useful verification label`);
+    assert.match(arrangement.verification.checked, /^\d{4}-\d{2}-\d{2}$/, `${song.title} needs a verification date`);
+  } else {
+    assert.equal(arrangement.verification, undefined, `${song.title} practice timing must not imply verification`);
   }
   if (song.time.startsWith('3/4')) assert.equal(arrangement.meter, 3, `${song.title} meter mismatch`);
   if (song.time.startsWith('2/4')) assert.equal(arrangement.meter, 2, `${song.title} meter mismatch`);
