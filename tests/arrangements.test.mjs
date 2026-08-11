@@ -46,13 +46,20 @@ assert.equal(ARRANGEMENTS['shady-grove'].groove, 'boomChuck');
 assert.deepEqual(ARRANGEMENTS['shady-grove'].bars, ['Em', 'D', 'Em', 'Em', 'Em', 'D', 'D', 'Em'],
   'Shady Grove must use the traditional minor-home / lowered-seven chorus form');
 assert.equal(ARRANGEMENTS['shady-grove'].timing, 'verified');
+assert.deepEqual(ARRANGEMENTS['row-your-boat'].cues, [
+  'Row, row, row your boat',
+  'Gently down the stream',
+  'Merrily, merrily, merrily, merrily',
+  'Life is but a dream',
+]);
+assert.equal(ARRANGEMENTS['row-your-boat'].timing, 'verified');
 assert.deepEqual(ARRANGEMENTS.kumbaya.bars, [
   'G', ['C', 'G'], 'G', ['C', 'D'], 'G', ['C', 'G'], ['C', 'G'], ['D', 'G'],
 ], 'Kumbaya must follow the lyric-aligned G-C-G / G-C-D form');
 assert.deepEqual(ARRANGEMENTS.kumbaya.cues[0], 'Kumbaya my');
 assert.deepEqual(ARRANGEMENTS.kumbaya.cues[1], ['Lord, kumba', 'ya']);
 assert.equal(ARRANGEMENTS.kumbaya.timing, 'verified');
-assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 2,
+assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 3,
   'only independently checked arrangements may claim lyric-synchronized timing');
 assert.equal(ARRANGEMENTS['house-of-the-rising-sun'].groove, 'sixEight');
 assert.ok(Object.values(ARRANGEMENTS).some((item) => item.bars.some(Array.isArray)),
