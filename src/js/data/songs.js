@@ -210,7 +210,7 @@ export const SONGS = [
         [{ c: 'G', t: 'Kumbaya my ' }, { c: 'C', t: 'Lord, kumba' }, { c: 'G', t: 'ya' }],
         [{ c: 'G', t: 'Kumbaya my ' }, { c: 'C', t: 'Lord, kumba' }, { c: 'D', t: 'ya' }],
         [{ c: 'G', t: 'Kumbaya my ' }, { c: 'C', t: 'Lord, kumba' }, { c: 'G', t: 'ya' }],
-        [{ t: 'Oh ' }, { c: 'G', t: 'Lord, kumba' }, { c: 'D', t: 'ya' }],
+        [{ c: 'C', t: 'Oh ' }, { c: 'G', t: 'Lord, kumba' }, { c: 'D', t: 'ya' }, { c: 'G', t: '' }],
       ] },
     ],
   },

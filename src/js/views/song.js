@@ -142,8 +142,8 @@ function detail(root, id, self) {
     </section>` : ''}
 
     <div class="btn-row" style="margin:1rem 0">
-      <button class="btn btn-primary" id="pa-start">🎤 Play along — I'll listen</button>
-      <button class="btn" id="sa-start">🔊 Sing along — I'll play</button>
+      <button class="btn btn-primary" id="pa-start">🎤 Rehearse chord order — I'll listen</button>
+      <button class="btn" id="sa-start">🔊 Sing with timed backing</button>
     </div>
 
     <section class="panel">
@@ -315,6 +315,7 @@ function singAlong(root, song, self) {
   const bars = arrangement.bars;
   const beatsPerBar = arrangement.meter;
   const groove = GROOVES[arrangement.groove];
+  const lyricCues = arrangement.cues || [];
   let bpm = arrangement.bpm;
   let playing = false;
   let barIndex = 0;
@@ -334,6 +335,10 @@ function singAlong(root, song, self) {
         <div class="pa-name" id="sa-name">–</div>
         <div id="sa-diagram"></div>
       </div>
+      ${lyricCues.length ? `<div class="sing-cue-wrap">
+        <p class="eyebrow">Sing this now</p>
+        <div id="sa-cue" class="sing-cue">Get ready...</div>
+      </div>` : ''}
       <div class="bpm-display" style="font-size:2rem;margin-top:.6rem"><span id="sa-bpm">${bpm}</span> <small>BPM</small></div>
       <input id="sa-slider" type="range" min="50" max="130" value="${bpm}" style="max-width:280px" />
       <div class="btn-row" style="justify-content:center;margin-top:.6rem">
@@ -350,8 +355,9 @@ function singAlong(root, song, self) {
   const bpmEl = root.querySelector('#sa-bpm');
   const slider = root.querySelector('#sa-slider');
   const toggle = root.querySelector('#sa-toggle');
+  const cueEl = root.querySelector('#sa-cue');
 
-  const drawUI = (activeIdx, activeChord) => {
+  const drawUI = (activeIdx, activeChord, cue = null) => {
     progressEl.innerHTML = bars
       .map((bar, i) => `<span class="pa-chip ${i === activeIdx ? 'current' : ''}">${barChords(bar).join(' / ')}</span>`)
       .join('');
@@ -359,6 +365,7 @@ function singAlong(root, song, self) {
     const chord = CHORD_BY_NAME[chordName];
     nameEl.textContent = chordName || '–';
     diagramEl.innerHTML = chord ? chordSVG(chord, { w: 132, h: 164 }) : '';
+    if (cueEl && cue) cueEl.textContent = cue;
   };
 
   const scheduleStroke = (event, chordName, atTime) => {
@@ -398,7 +405,10 @@ function singAlong(root, song, self) {
           scheduleStroke(event, chordName, nextBarTime + event.beat * seconds);
         });
         barChords(bar).forEach((chordName, slot) => {
-          uiQueue.push({ time: nextBarTime + slot * (beatsPerBar / barChords(bar).length) * seconds, idx, chordName });
+          const barCue = lyricCues[idx];
+          const cueParts = Array.isArray(barCue) ? barCue : [barCue];
+          const cue = cueParts[Math.min(slot, cueParts.length - 1)] || null;
+          uiQueue.push({ time: nextBarTime + slot * (beatsPerBar / barChords(bar).length) * seconds, idx, chordName, cue });
         });
         barIndex++;
       }
@@ -406,8 +416,11 @@ function singAlong(root, song, self) {
     }
     while (uiQueue.length && uiQueue[0].time <= ac.currentTime) {
       const item = uiQueue.shift();
-      if (item.count) { nameEl.textContent = 'Count in…'; diagramEl.innerHTML = ''; }
-      else drawUI(item.idx, item.chordName);
+      if (item.count) {
+        nameEl.textContent = 'Count in…';
+        diagramEl.innerHTML = '';
+        if (cueEl) cueEl.textContent = 'Get ready...';
+      } else drawUI(item.idx, item.chordName, item.cue);
     }
   };
 

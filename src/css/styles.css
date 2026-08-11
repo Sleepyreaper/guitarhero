@@ -317,6 +317,9 @@ ol.steps li { margin: .3rem 0; }
 .pa-chip.current { background: var(--rust); border-color: var(--rust); color: #fff; transform: scale(1.08); box-shadow: 0 0 16px rgba(210,102,47,.5); }
 .pa-current { display: flex; flex-direction: column; align-items: center; gap: .3rem; }
 .pa-name { font-size: 2.6rem; font-weight: 800; color: var(--gold); line-height: 1; }
+.sing-cue-wrap { margin: .9rem auto; padding: .75rem 1rem; max-width: 520px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel-2); }
+.sing-cue-wrap .eyebrow { margin: 0 0 .25rem; }
+.sing-cue { min-height: 1.4em; color: var(--text); font-size: clamp(1.25rem, 4vw, 2rem); font-weight: 800; line-height: 1.2; }
 
 /* ---------- genre filter chips ---------- */
 .chip-row { display: flex; gap: .45rem; flex-wrap: wrap; margin: 0 0 1.2rem; }

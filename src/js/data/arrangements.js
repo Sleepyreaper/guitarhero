@@ -55,8 +55,8 @@ export const GROOVES = {
   },
 };
 
-const a = (bpm, meter, groove, section, bars, dynamics, lead) => ({
-  bpm, meter, groove, section, bars, dynamics, lead,
+const a = (bpm, meter, groove, section, bars, dynamics, lead, cues = null) => ({
+  bpm, meter, groove, section, bars, dynamics, lead, ...(cues ? { cues } : {}),
 });
 
 export const ARRANGEMENTS = {
@@ -93,9 +93,15 @@ export const ARRANGEMENTS = {
     'Keep boom-chuck steady and leave the animal noises uncluttered.',
     'Echo the E-I-E-I-O melody on the top strings after the singer; that recognizable answer is enough lead.'),
   kumbaya: a(68, 4, 'sparse', 'Verse loop',
-    ['G', 'G', 'C', 'G', 'G', 'C', 'D', 'G', 'C', 'G', 'D', 'G'],
+    ['G', ['C', 'G'], 'G', ['C', 'D'], 'G', ['C', 'G'], ['C', 'G'], ['D', 'G']],
     'One full chord can last a whole phrase. Follow the breath, not your urge to fill space.',
-    'Pick a quiet descending G-major answer after “kumbaya”; avoid playing over the held word “Lord.”'),
+    'Pick a quiet descending G-major answer after “kumbaya”; avoid playing over the held word “Lord.”',
+    [
+      'Kumbaya my', ['Lord, kumba', 'ya'],
+      'Kumbaya my', ['Lord, kumba', 'ya'],
+      'Kumbaya my', ['Lord, kumba', 'ya'],
+      ['Oh', 'Lord, kumba'], ['ya', '(let it ring)'],
+    ]),
   'whole-world': a(96, 4, 'gospel', 'Verse loop',
     ['G', 'G', 'D7', 'G', 'G', 'C', 'G', ['D7', 'G']],
     'Lean slightly into beats 2 and 4 for a congregational gospel sway.',
