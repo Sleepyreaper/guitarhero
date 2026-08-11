@@ -111,7 +111,13 @@ assert.deepEqual(ARRANGEMENTS['old-macdonald'].bars.map((bar) => barChords(bar))
   ['G', 'C', 'G'], ['D', 'G'], ['G', 'C', 'G'], ['D', 'G'], ['G'], ['G'], ['G', 'C', 'G'], ['D', 'G'],
 ]);
 assert.equal(ARRANGEMENTS['old-macdonald'].timing, 'verified');
-assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 10,
+assert.deepEqual(ARRANGEMENTS['she-ll-be-comin'].bars.map((bar) => barChords(bar)), [
+  ['G'], ['G'], ['D7'], ['D7'], ['G'], ['C'], ['G', 'D7'], ['G'],
+], 'Coming Round the Mountain must follow its complete eight-bar G-D7-G-C cadence');
+assert.deepEqual(barChangeBeats(ARRANGEMENTS['she-ll-be-comin'].bars[6], 4), [0, 3],
+  'the final D7 must arrive on when she at beat 4');
+assert.equal(ARRANGEMENTS['she-ll-be-comin'].timing, 'verified');
+assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 11,
   'only independently checked arrangements may claim lyric-synchronized timing');
 assert.equal(ARRANGEMENTS['house-of-the-rising-sun'].groove, 'sixEight');
 assert.ok(Object.values(ARRANGEMENTS).some((item) => item.bars.some(Array.isArray)),

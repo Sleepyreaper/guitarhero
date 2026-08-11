@@ -258,9 +258,9 @@ export const SONGS = [
     body: [
       { section: 'Verse', lines: [
         [{ c: 'G', t: "She'll be comin' 'round the mountain when she comes" }],
-        [{ t: "She'll be comin' 'round the mountain when she " }, { c: 'D7', t: 'comes' }],
-        [{ t: "She'll be " }, { c: 'G', t: "comin' 'round the " }, { c: 'C', t: "mountain, she'll be comin' 'round the " }, { c: 'G', t: 'mountain' }],
-        [{ t: "She'll be " }, { c: 'G', t: "comin' 'round the " }, { c: 'D7', t: 'mountain when she ' }, { c: 'G', t: 'comes' }],
+        [{ t: "She'll be " }, { c: 'D7', t: "comin' 'round the mountain when she comes" }],
+        [{ t: "She'll be " }, { c: 'G', t: "comin' 'round the mountain, she'll be " }, { c: 'C', t: "comin' 'round the mountain" }],
+        [{ t: "She'll be " }, { c: 'G', t: "comin' 'round the mountain " }, { c: 'D7', t: 'when she ' }, { c: 'G', t: 'comes' }],
       ] },
     ],
   },
