@@ -44,6 +44,24 @@ const NAV_HREF = {
 const root = document.getElementById('app');
 let current = null;
 
+function showRouteError(error, failedView) {
+  if (current !== failedView) return; // an older async view failed after navigation
+  console.error('Campfire could not render this screen.', error);
+  root.innerHTML = `
+    <section class="panel" role="alert">
+      <p class="eyebrow">Campfire hit a snag</p>
+      <h1>This screen did not load</h1>
+      <p class="lead">Your saved progress is still safe. Refresh this screen, or return home and keep practicing.</p>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="retry-screen" type="button">Refresh screen</button>
+        <a class="btn" href="#/">Return home</a>
+      </div>
+    </section>`;
+  root.querySelector('#retry-screen').addEventListener('click', () => location.reload());
+  root.tabIndex = -1;
+  root.focus({ preventScroll: true });
+}
+
 function parseHash() {
   const raw = location.hash.replace(/^#\/?/, '');
   const [section, param] = raw.split('/');
@@ -65,12 +83,21 @@ function route() {
   const view = ROUTES[section] || dashboard;
 
   // Let the outgoing view clean up (stop mic/metronome audio, remove listeners).
-  if (current && typeof current.destroy === 'function') current.destroy();
+  if (current && typeof current.destroy === 'function') {
+    try { current.destroy(); } catch (error) { console.warn('Campfire screen cleanup failed.', error); }
+  }
 
   root.innerHTML = '';
   setActiveNav(ROUTES[section] ? section : 'home');
   current = view;
-  view.render(root, param);
+  try {
+    const rendering = view.render(root, param);
+    if (rendering && typeof rendering.catch === 'function') {
+      rendering.catch((error) => showRouteError(error, view));
+    }
+  } catch (error) {
+    showRouteError(error, view);
+  }
   window.scrollTo(0, 0);
   // Hash navigation replaces the main view without a full page load. Move keyboard and
   // screen-reader focus to the new content so mobile/assistive users are not stranded in nav.

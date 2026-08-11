@@ -25,6 +25,10 @@ assert.match(appText, /report from '.\/views\/report\.js'/, 'pilot report must b
 assert.match(appText, /aria-current/, 'active navigation must be announced to assistive technology');
 assert.match(appText, /root\.focus\(\{ preventScroll: true \}\)/,
   'hash navigation must move focus to the newly rendered main content');
+assert.match(appText, /showRouteError/, 'route failures must show a recovery screen instead of a blank main area');
+assert.match(appText, /Your saved progress is still safe/, 'the recovery screen must reassure the learner without exposing error details');
+assert.match(appText, /rendering\.catch\(\(error\) => showRouteError/,
+  'asynchronous account or service views must use the same route recovery path');
 assert.match(indexText, /href="#\/privacy"/, 'privacy page must be linked from every screen');
 assert.match(curriculumText, /youtube\.com|video:/, 'curriculum should contain video demonstrations');
 assert.match(curriculumText, /l2-1[\s\S]*f18EV2dr008[\s\S]*clean-c-d/,
