@@ -53,7 +53,10 @@ function parseHash() {
 function setActiveNav(section) {
   const href = NAV_HREF[section];
   document.querySelectorAll('#app-nav a').forEach((a) => {
-    a.classList.toggle('active', a.getAttribute('href') === href);
+    const active = a.getAttribute('href') === href;
+    a.classList.toggle('active', active);
+    if (active) a.setAttribute('aria-current', 'page');
+    else a.removeAttribute('aria-current');
   });
 }
 
@@ -69,6 +72,10 @@ function route() {
   current = view;
   view.render(root, param);
   window.scrollTo(0, 0);
+  // Hash navigation replaces the main view without a full page load. Move keyboard and
+  // screen-reader focus to the new content so mobile/assistive users are not stranded in nav.
+  root.tabIndex = -1;
+  root.focus({ preventScroll: true });
 }
 
 window.addEventListener('hashchange', route);

@@ -1,3 +1,13 @@
+export function calibratedPracticeGate(samples, minimum = 0.006) {
+  const usable = samples.filter((value) => Number.isFinite(value) && value >= 0).sort((a, b) => a - b);
+  if (!usable.length) return minimum;
+  const middle = Math.floor(usable.length / 2);
+  const median = usable.length % 2 ? usable[middle] : (usable[middle - 1] + usable[middle]) / 2;
+  // Three times the room's median level rejects steady fan/HVAC noise while the minimum
+  // remains sensitive to a quietly played acoustic guitar.
+  return Math.max(minimum, median * 3);
+}
+
 // A lightweight mic level meter for learner-reviewed practice tracking. It measures input
 // loudness (RMS) each frame — no pitch/chord work — so the timer accrues only while the
 // selected microphone hears sound. The UI accurately asks the learner to review the total.

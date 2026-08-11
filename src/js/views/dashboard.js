@@ -4,7 +4,7 @@ import { TARGET_SONGS, chartSearchUrl } from '../data/targets.js';
 import {
   addPracticeSeconds, doneCount, getProfile, isDone, saveProfile, streak, todaySeconds,
 } from '../lib/storage.js';
-import { PracticeMeter } from '../lib/practice.js';
+import { calibratedPracticeGate, PracticeMeter } from '../lib/practice.js';
 import { listAudioInputs, activeDeviceId } from '../lib/devices.js';
 
 const TOOLS = [
@@ -25,7 +25,6 @@ function expandLearned(set) {
   return out;
 }
 
-const PLAY_GATE = 0.02; // RMS above this = you're actually making sound
 const fmt = (sec) => `${Math.floor(sec / 60)}:${String(Math.floor(sec % 60)).padStart(2, '0')}`;
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
@@ -186,12 +185,13 @@ export default {
           <div>
             <p class="eyebrow" style="margin:0">🎸 Practice</p>
             <h2 style="margin:.1rem 0">Played today: <span id="pt-time">${fmt(todaySeconds())}</span></h2>
-            <p class="faint" style="margin:0">Mic-confirmed tracking — the clock moves only during seconds when your selected mic hears sound. Review the total honestly.</p>
+            <p class="faint" style="margin:0">Mic-assisted tracking: after a quiet room check, the clock moves only when the selected mic hears sound above that room level. Review the total honestly.</p>
           </div>
           <div class="stat"><div class="n" id="pt-streak">${streak()}</div><div class="l">day streak</div></div>
         </div>
         <div id="pt-mic" class="mic-row" hidden><label class="mic-label">Mic <select id="pt-mic-select"></select></label></div>
         <div class="level-wrap" style="justify-content:center;margin:.7rem 0 .3rem"><span class="level-tag">you</span><div class="level-meter"><div id="pt-level" class="level-fill"></div></div></div>
+        <p id="pt-status" class="faint" style="text-align:center;margin:.25rem 0" aria-live="polite">Start a session, then stay quiet for the two-second room check.</p>
         <div class="btn-row" style="justify-content:center;margin-top:.6rem">
           <button class="btn btn-primary" id="pt-toggle">🎤 Start practice session</button>
           <a class="btn" href="#/routine">📋 Today's plan</a>
@@ -245,12 +245,33 @@ export default {
     const micRow = root.querySelector('#pt-mic');
     const micSelect = root.querySelector('#pt-mic-select');
     const errEl = root.querySelector('#pt-err');
+    const statusEl = root.querySelector('#pt-status');
 
     let heardThisSecond = false;
+    let roomSamples = [];
+    let calibratingUntil = 0;
+    let playGate = 0.006;
+
+    const beginRoomCheck = () => {
+      roomSamples = [];
+      calibratingUntil = performance.now() + 2000;
+      playGate = Infinity;
+      heardThisSecond = false;
+      statusEl.textContent = 'Room check: stay quiet for two seconds...';
+    };
 
     this.meter = new PracticeMeter((level) => {
       levelFill.style.width = `${Math.min(100, Math.round(level * 400))}%`;
-      const playing = level > PLAY_GATE;
+      if (performance.now() < calibratingUntil) {
+        roomSamples.push(level);
+        levelFill.classList.remove('live');
+        return;
+      }
+      if (playGate === Infinity) {
+        playGate = calibratedPracticeGate(roomSamples);
+        statusEl.textContent = 'Tracking sound now. Play normally, then review the total honestly.';
+      }
+      const playing = level > playGate;
       levelFill.classList.toggle('live', playing);
       if (playing) heardThisSecond = true;
     });
@@ -266,7 +287,7 @@ export default {
     micSelect.addEventListener('change', async () => {
       if (!this.meter.running) return;
       this.meter.stop();
-      try { await this.meter.start(micSelect.value); } catch { errEl.textContent = "Couldn't switch mic."; }
+      try { await this.meter.start(micSelect.value); beginRoomCheck(); } catch { errEl.textContent = "Couldn't switch mic."; }
     });
 
     toggle.addEventListener('click', async () => {
@@ -277,11 +298,13 @@ export default {
         toggle.textContent = '🎤 Start practice session';
         toggle.classList.add('btn-primary');
         levelFill.style.width = '0%';
+        statusEl.textContent = 'Stopped. The saved total remains on this device or your account.';
         return;
       }
       try {
         errEl.textContent = '';
         await this.meter.start(micSelect.value || undefined);
+        beginRoomCheck();
         toggle.textContent = '⏹ Stop practicing';
         toggle.classList.remove('btn-primary');
         await populateMics();

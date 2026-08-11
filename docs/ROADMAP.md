@@ -5,8 +5,8 @@
 - [x] Mic **tuner** with autocorrelation pitch detection + cents needle
 - [x] **Chord library** (big-8 open chords + worship/folk extras) with SVG diagrams + "hear it" strum
 - [x] **Metronome** — lookahead scheduler, tap tempo, beats-per-bar, visual beats
-- [x] **Curriculum** — 6 units, ~24 lessons, song-first, progress + streak tracking
-- [x] **Songs** — 15 public-domain play-along charts (chord-over-lyric), genre-tagged
+- [x] **Curriculum** — 8 units, 33 lessons, song-first, progress, proof checks, and streak tracking
+- [x] **Songs** — 23 public-domain play-along charts (chord-over-lyric), genre-tagged
       (country/folk/americana/church), sorted easiest→hardest, with per-song strum patterns +
       a genre filter
 - [x] **Chord Coach** — mic listens to a strummed chord and verifies it via a chromagram
@@ -23,13 +23,16 @@
       playing (`lib/practice.js` + `lib/storage.js`)
 - [x] **"Playing with a singer" unit** — time-first, capo-to-her-key, leaving space, count-ins
 - [x] **"Beat the buzz"** fundamentals lesson (fret placement, verified with the tuner)
+- [x] Song-specific accompaniment forms, tempos, meters, grooves, dynamics, and lead guidance
+- [x] Six-string tuner diagnostic report with signal, clarity, and target-lock measurements
+- [x] Auto-calibrated practice noise gate for quiet guitars and different rooms/microphones
 - [ ] **Calibrate on a real guitar** — dial SIM_OK / cleanChroma floor / tuner minClarity from
       the on-screen readouts (needs real-mic data points from the user)
-- [ ] Auto noise-floor baseline (sample the room when idle, subtract it)
+- [ ] Auto noise-floor subtraction for pitch/chord analysis (practice tracking already calibrates)
 - [ ] Capo transposer on song charts (shift chords by N frets, keep easy shapes)
 - [ ] Nashville-number toggle on charts (show 1–4–5 instead of letters)
-- [ ] Chord-change trainer game (count clean changes in 60s, save personal best)
-- [ ] Strum-pattern player (visual/audible D/DU/UDU patterns to strum against)
+- [x] Chord-change trainer game (count clean changes in 60s, save personal best)
+- [x] Strum-pattern player (visual/audible patterns to strum against)
 
 ## Later
 - [ ] Open-ended "what chord am I playing?" mode (bestMatch across all templates)
@@ -37,7 +40,8 @@
       dependency, so weigh against the no-build constraint
 - [ ] User song import (paste ChordPro / plain chord-over-lyric text)
 - [ ] Even more public-domain songs; "songs you can play now" based on chords you've learned
-- [ ] Left-handed diagram mode; alternate tunings in the tuner
+- [x] Left-handed diagram mode
+- [ ] Alternate tunings in the tuner
 - [ ] Practice reminders / daily-goal notifications
 - [ ] PWA: installable + offline (add manifest + service worker)
 - [ ] Optional migration to Vite + React/TS if the app grows (state is getting complex)

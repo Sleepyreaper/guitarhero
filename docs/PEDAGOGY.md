@@ -19,8 +19,8 @@ open chords, which is exactly why beginners can succeed in them fast.
    song. Each unit in the app ends on a playable song.
 5. **Short, frequent practice.** 15–20 minutes six days a week beats one long weekly session.
    New motor learning responds best to daily repetition.
-6. **Rhythm is a first-class skill.** A metronome from day one; the all-purpose **D–DU–UDU**
-   strum fits most beginner songs.
+6. **Rhythm is a first-class skill.** A metronome from day one; **D–DU–UDU** is a useful common
+   starter pattern, then every play-along teaches the meter and groove that actually fit that song.
 7. **Tune first, always.** An out-of-tune guitar makes correct playing sound wrong and kills
    confidence — hence the built-in tuner and its place in Unit 0.
 8. **Capo + numbers for worship/jams.** A capo lets beginners keep easy open shapes while matching
@@ -30,7 +30,7 @@ open chords, which is exactly why beginners can succeed in them fast.
 
 - **Week 1–2:** clean first chords (Em, G), first two-chord song (*Down in the Valley*).
 - **Week 3–4:** G–C–D changes, a steady strum, first three-chord songs.
-- **Month 2:** the all-purpose strum, several full songs, minor chords.
+- **Month 2:** a common down-up strum plus song-specific grooves, several full songs, minor chords.
 - **Month 3+:** capo/number system, first fingerpicking — americana territory.
 
 Most beginners can strum through simple songs within 4–8 weeks of consistent daily practice.
@@ -46,6 +46,7 @@ Most beginners can strum through simple songs within 4–8 weeks of consistent d
 | 4 | Minor colors (Am, E, A) | *Home on the Range* |
 | 5 | Capo & Nashville numbers | *Simple Gifts* (with capo) |
 | 6 | Fingerstyle first steps | *Amazing Grace* fingerpicked |
+| 7 | Accompanying a singer, dynamics, and lead fills | A real sing-along |
 
 ## Song selection & licensing
 

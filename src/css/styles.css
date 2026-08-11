@@ -63,6 +63,7 @@ a:hover { color: var(--rust-2); }
 
 /* ---------- layout ---------- */
 .app-main { flex: 1; width: 100%; max-width: 980px; margin: 0 auto; padding: 1.6rem 1.2rem 3rem; }
+.app-main:focus { outline: none; }
 .app-footer {
   display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem;
   padding: 1rem 1.4rem; border-top: 1px solid var(--line);
