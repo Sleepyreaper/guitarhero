@@ -61,7 +61,7 @@ export default {
         <p class="lead">Not sure what to practice? Do these four, in order. Small and daily beats long and rare —
         this is the whole routine.</p>
 
-        <div class="progress-track" style="margin:0 0 1.2rem"><div class="progress-fill" style="width:${Math.round((doneN / STEPS.length) * 100)}%"></div></div>
+        <div class="progress-track" style="margin:0 0 1.2rem"><div class="progress-fill" style="width:${Math.round((doneN / steps.length) * 100)}%"></div></div>
 
         <div class="stack">
           ${steps.map((s) => {

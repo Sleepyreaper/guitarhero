@@ -57,6 +57,7 @@ assert.match(dashboardText, /canPlay\.slice\(0, 6\)/, 'the phone dashboard must 
 assert.doesNotMatch(dashboardText, /EQUIV/, 'related chords must not silently unlock physically different shapes');
 assert.match(routineText, /buildRoutine/, 'daily practice must be derived from the learner’s completed skills');
 assert.match(routineText, /No song is unlocked yet/, 'a zero-chord learner must get a valid musical fallback instead of a dead end');
+assert.doesNotMatch(routineText, /STEPS\.length/, 'adaptive routine rendering must not reference the removed fixed step list');
 assert.match(dashboardText, /href: '#\/learn\/l1-4', doneId: 'l1-5'/,
   'day seven must teach strumming before remaining open until the first song is complete');
 assert.match(dashboardText, /Review the total honestly/,
