@@ -90,7 +90,14 @@ assert.deepEqual(ARRANGEMENTS['twinkle-twinkle'].bars, [
   ['G', 'C'], ['G', 'D'], 'G', ['C', 'G'], ['C', 'G'], ['D', 'G'],
 ], 'Twinkle must use the complete 12-bar ABBA short form');
 assert.equal(ARRANGEMENTS['twinkle-twinkle'].timing, 'verified');
-assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 8,
+assert.deepEqual(ARRANGEMENTS['if-youre-happy'].bars, ['G', 'D', 'D', 'G', 'C', 'G', 'D', 'G'],
+  'If You Are Happy must use its complete eight-bar three-chord form');
+assert.equal(ARRANGEMENTS['if-youre-happy'].groove, 'actionClap');
+assert.deepEqual(GROOVES.actionClap.barEvents.map((events) => events ? events.map((event) => event.beat) : null),
+  [null, [0, 1], null, [0, 1], null, null, null, [0, 1]],
+  'action bars 2, 4, and 8 must leave beats 3 and 4 silent for claps');
+assert.equal(ARRANGEMENTS['if-youre-happy'].timing, 'verified');
+assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 9,
   'only independently checked arrangements may claim lyric-synchronized timing');
 assert.equal(ARRANGEMENTS['house-of-the-rising-sun'].groove, 'sixEight');
 assert.ok(Object.values(ARRANGEMENTS).some((item) => item.bars.some(Array.isArray)),

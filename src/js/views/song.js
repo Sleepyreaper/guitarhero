@@ -406,7 +406,8 @@ function singAlong(root, song, self) {
       } else {
         const idx = barIndex % bars.length;
         const bar = bars[idx];
-        groove.events.forEach((event) => {
+        const barEvents = groove.barEvents?.[idx % groove.barEvents.length] || groove.events;
+        barEvents.forEach((event) => {
           const chordName = chordAtBeat(bar, event.beat);
           scheduleStroke(event, chordName, nextBarTime + event.beat * seconds);
         });
