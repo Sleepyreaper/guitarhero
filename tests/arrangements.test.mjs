@@ -153,7 +153,14 @@ assert.deepEqual(barChangeBeats(ARRANGEMENTS['swing-low'].bars[1], 4), [0, 2]);
 assert.deepEqual(barChangeBeats(ARRANGEMENTS['swing-low'].bars[7], 4), [0, 2]);
 assert.equal(ARRANGEMENTS['swing-low'].timing, 'verified');
 assert.equal(ARRANGEMENTS['swing-low'].cues.length, 8);
-assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 15,
+assert.deepEqual(ARRANGEMENTS['simple-gifts'].bars, [
+  'G', 'G', 'D', 'D', 'G', 'G', 'D', 'G',
+], 'Simple Gifts first stanza must use its complete eight-bar two-chord form');
+assert.deepEqual(SONGS.find((song) => song.id === 'simple-gifts').chords, ['G', 'D']);
+assert.equal(ARRANGEMENTS['simple-gifts'].bpm, 100);
+assert.equal(ARRANGEMENTS['simple-gifts'].timing, 'verified');
+assert.equal(ARRANGEMENTS['simple-gifts'].cues.length, 8);
+assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 16,
   'only independently checked arrangements may claim lyric-synchronized timing');
 assert.equal(ARRANGEMENTS['house-of-the-rising-sun'].groove, 'sixEight');
 assert.ok(Object.values(ARRANGEMENTS).some((item) => item.bars.some(Array.isArray)),
