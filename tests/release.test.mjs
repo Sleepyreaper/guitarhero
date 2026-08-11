@@ -2,12 +2,12 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
-const [firebaseText, appText, indexText, curriculumText, diagramText, dashboardText, targetsText, accountText, cssText, songViewText, practiceText, tunerText, listenerText, chromaText] = await Promise.all([
+const [firebaseText, appText, indexText, curriculumText, diagramText, dashboardText, targetsText, accountText, cssText, songViewText, practiceText, tunerText, listenerText, chromaText, routineText] = await Promise.all([
   read('firebase.json'), read('src/js/app.js'), read('index.html'),
   read('src/js/data/curriculum.js'), read('src/js/components/chordDiagram.js'),
   read('src/js/views/dashboard.js'), read('src/js/data/targets.js'),
   read('src/js/views/account.js'), read('src/css/styles.css'), read('src/js/views/song.js'), read('src/js/lib/practice.js'),
-  read('src/js/lib/pitch.js'), read('src/js/lib/listener.js'), read('src/js/lib/chroma.js'),
+  read('src/js/lib/pitch.js'), read('src/js/lib/listener.js'), read('src/js/lib/chroma.js'), read('src/js/views/routine.js'),
 ]);
 
 const firebase = JSON.parse(firebaseText);
@@ -55,6 +55,8 @@ assert.match(dashboardText, /Your first setlist/, 'music preference must produce
 assert.match(dashboardText, /rankPlayableSongs/, 'unlocked songs must prioritize the learner\'s chosen style');
 assert.match(dashboardText, /canPlay\.slice\(0, 6\)/, 'the phone dashboard must keep unlocked songs focused');
 assert.doesNotMatch(dashboardText, /EQUIV/, 'related chords must not silently unlock physically different shapes');
+assert.match(routineText, /buildRoutine/, 'daily practice must be derived from the learner’s completed skills');
+assert.match(routineText, /No song is unlocked yet/, 'a zero-chord learner must get a valid musical fallback instead of a dead end');
 assert.match(dashboardText, /href: '#\/learn\/l1-4', doneId: 'l1-5'/,
   'day seven must teach strumming before remaining open until the first song is complete');
 assert.match(dashboardText, /Review the total honestly/,
