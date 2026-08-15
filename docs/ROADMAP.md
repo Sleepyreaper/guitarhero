@@ -27,8 +27,10 @@
 - [x] Song-specific accompaniment forms, tempos, meters, grooves, dynamics, and lead guidance
 - [x] Six-string tuner diagnostic report with signal, clarity, and target-lock measurements
 - [x] Auto-calibrated practice noise gate for quiet guitars and different rooms/microphones
-- [ ] **Calibrate on a real guitar** — dial SIM_OK / cleanChroma floor / tuner minClarity from
-      the on-screen readouts (needs real-mic data points from the user)
+- [x] **Real-guitar tuner calibration** — validated all six strings with an Elgato Wave:3 at
+      96 kHz; target lock was 89–100% and median clarity was 0.87–0.99 (`AUDIO_CALIBRATION.md`)
+- [ ] **Real-guitar chord-listener calibration** — capture Coach results for Em, G, C, and D,
+      then adjust SIM_OK / cleanChroma only if the measured results justify it
 - [x] Automatic room-noise gates for the tuner plus measured pitch-class noise subtraction for
       chord analysis; reruns whenever the learner switches microphones
 - [x] Capo key finder on song charts (keep easy shapes, show the sounding key, and transpose
