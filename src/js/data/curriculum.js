@@ -230,6 +230,7 @@ export const CURRICULUM = [
     lessons: [
       { id: 'l5-1', title: 'What a capo does', min: 6,
         objective: 'Use a capo to raise the key without new chord shapes.',
+        video: { id: 'Y22MT3etzwM', title: 'Using a Capo', teacher: 'JustinGuitar', watchFor: 'Place it just behind the fret, check that every string rings, and hear how the same shape moves to a higher key.' },
         steps: [
           'Clamp the capo just behind a fret; it becomes your new “nut”.',
           'Your G shape at the 2nd fret now sounds as an A chord.',
