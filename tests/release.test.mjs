@@ -111,6 +111,10 @@ assert.match(accountText, /const saved = await flushCloudProgress\(\)/,
   'sign-out must verify the final cloud save before clearing this device');
 assert.match(accountText, /You are still signed in and your progress is safe on this device/,
   'a failed final sync must preserve progress and explain the recovery path');
+assert.match(accountText, /Signed in — sync needs attention/,
+  'the account page must not claim synchronization after a cloud failure');
+assert.match(accountText, /campfire:sync-status/,
+  'the visible account state must follow real cloud-write outcomes');
 assert.match(cssText, /@media \(max-width: 560px\)[\s\S]*\.app-nav \{[^}]*overflow-x: auto/,
   'phone navigation must remain reachable without consuming the screen in wrapped rows');
 assert.match(cssText, /\.onboarding-form fieldset \{[^}]*min-width: 0/,

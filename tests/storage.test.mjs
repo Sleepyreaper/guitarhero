@@ -2,7 +2,9 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
 const source = await readFile(new URL('../src/js/lib/storage.js', import.meta.url), 'utf8');
-const { mergeStates } = await import(`data:text/javascript;base64,${Buffer.from(source).toString('base64')}`);
+const { getCloudStatus, mergeStates } = await import(`data:text/javascript;base64,${Buffer.from(source).toString('base64')}`);
+
+assert.equal(getCloudStatus(), 'local', 'cloud status must begin honestly in local-only mode');
 
 const local = {
   done: { localLesson: 20, sharedLesson: 10 },

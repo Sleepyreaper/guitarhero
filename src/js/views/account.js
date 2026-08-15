@@ -1,5 +1,5 @@
 import { getFirebaseServices } from '../lib/firebase.js';
-import { clearLocalProgress, disconnectCloudProgress, flushCloudProgress } from '../lib/storage.js';
+import { clearLocalProgress, disconnectCloudProgress, flushCloudProgress, getCloudStatus } from '../lib/storage.js';
 
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
@@ -36,13 +36,20 @@ export default {
     const paint = () => {
       const user = auth.currentUser;
       const permanent = user && !user.isAnonymous;
+      const syncStatus = getCloudStatus();
+      const syncHeading = syncStatus === 'synced' ? 'Progress is synced'
+        : syncStatus === 'error' ? 'Signed in — sync needs attention' : 'Connecting your progress…';
       root.innerHTML = `
         <section class="panel auth-panel">
           <p class="eyebrow">Campfire account</p>
-          <h1>${permanent ? 'Progress is synced' : 'Save your progress anywhere'}</h1>
+          <h1>${permanent ? syncHeading : 'Save your progress anywhere'}</h1>
           ${permanent ? `
             <p>Signed in as <strong>${esc(user.displayName || user.email || 'Campfire learner')}</strong>.</p>
-            <p class="muted">Lessons, verified practice time, routines, and chord-change records follow you to every device.</p>
+            <p class="muted">${syncStatus === 'error'
+              ? 'Cloud sync could not be reached. Your progress is safe in this browser; keep this page open and try again when the connection returns.'
+              : syncStatus === 'synced'
+                ? 'Lessons, verified practice time, routines, and chord-change records follow you to every device.'
+                : 'Your browser progress is safe while Campfire connects to your cloud copy.'}</p>
             <div class="btn-row">
               <button class="btn" id="sign-out">Sign out</button>
               <button class="btn btn-ghost" id="delete-account">Delete account</button>
@@ -168,11 +175,15 @@ export default {
     };
 
     this.unsubscribe = authApi.onAuthStateChanged(auth, paint);
+    this.syncListener = () => paint();
+    window.addEventListener('campfire:sync-status', this.syncListener);
     paint();
   },
   destroy() {
     this.root = null;
     this.unsubscribe?.();
     this.unsubscribe = null;
+    window.removeEventListener('campfire:sync-status', this.syncListener);
+    this.syncListener = null;
   },
 };

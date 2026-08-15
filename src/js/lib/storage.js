@@ -5,6 +5,16 @@ const KEY = 'campfire.progress.v1';
 const MIN_DAY_SECONDS = 60; // a day counts toward the streak after 1 minute of real playing
 let cloud = null;
 let cloudTimer = null;
+let cloudStatus = 'local';
+
+function setCloudStatus(status) {
+  cloudStatus = status;
+  window.dispatchEvent(new CustomEvent('campfire:sync-status', { detail: { status } }));
+}
+
+export function getCloudStatus() {
+  return cloudStatus;
+}
 
 function load() {
   try {
@@ -74,11 +84,11 @@ async function writeCloud(state = getState()) {
       schemaVersion: 1,
       updatedAt: firestoreApi.serverTimestamp(),
     }, { merge: true });
-    window.dispatchEvent(new CustomEvent('campfire:sync-status', { detail: { status: 'synced' } }));
+    setCloudStatus('synced');
     return true;
   } catch (error) {
     console.warn('Campfire progress sync failed; local progress is safe.', error);
-    window.dispatchEvent(new CustomEvent('campfire:sync-status', { detail: { status: 'error' } }));
+    setCloudStatus('error');
     return false;
   }
 }
@@ -96,6 +106,7 @@ export async function connectCloudProgress(user, services) {
   if (cloud?.uid === user.uid) return;
   if (cloud) await writeCloud();
   cloud = { uid: user.uid, db: services.db, firestoreApi: services.firestoreApi };
+  setCloudStatus('syncing');
   const ref = services.firestoreApi.doc(services.db, 'users', user.uid, 'state', 'progress');
   try {
     const snapshot = await services.firestoreApi.getDoc(ref);
@@ -105,6 +116,7 @@ export async function connectCloudProgress(user, services) {
     window.dispatchEvent(new CustomEvent('campfire:progress-sync'));
   } catch (error) {
     console.warn('Cloud progress could not be loaded; continuing locally.', error);
+    setCloudStatus('error');
   }
 }
 
@@ -118,6 +130,7 @@ export function disconnectCloudProgress() {
   clearTimeout(cloudTimer);
   cloudTimer = null;
   cloud = null;
+  setCloudStatus('local');
 }
 
 // Used after a deliberate sign-out on a shared device. This does not queue a
