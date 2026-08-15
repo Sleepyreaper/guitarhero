@@ -31,3 +31,18 @@ admits quiet, clean notes. No tuner threshold change is justified by this check.
 This evidence validates monophonic string tuning only. The polyphonic Chord Coach still needs a
 separate real-guitar check with Em, G, C, and D before its similarity or chroma thresholds are
 treated as calibrated.
+
+## 2026-08-15 — four-chord Coach baseline
+
+- Microphone: Elgato Wave:3 (USB `0fd9:0070`)
+- Room gate: -69.1 dB
+- Input medians: Em -42.8 dB, G -51.6 dB, C -46.2 dB, D -43.0 dB
+- Best-match medians: Em 0.86, G 0.80, C/Fmaj7 0.81, D 0.81
+- Target lock with the original open-ended 0.88 policy: Em 8%, G 5%, C 0%, D 15%
+
+Every chord cleared the room gate by at least 17 dB, ruling out microphone level as the cause of
+the low lock rates. Em, G, and D were the winning shapes but fell below an overly strict 0.88
+similarity floor. C was absorbed by the richer Fmaj7 template even though guided practice already
+knows the intended shape. The follow-up policy uses 0.78 similarity plus complete target-note
+coverage for the selected chord, while preserving open-ended best-match reporting. A second
+four-chord report is required before this calibration is marked complete.

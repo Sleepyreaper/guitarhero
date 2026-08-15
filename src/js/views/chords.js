@@ -4,7 +4,7 @@ import { strum } from '../lib/audio.js';
 import { ChordListener } from '../lib/listener.js';
 import { chordPitchClasses, evaluateChord, PC_NAMES, pcNames } from '../lib/chroma.js';
 import { ChordJudge } from '../lib/coach.js';
-import { isConfidentMatch } from '../lib/confidence.js';
+import { isConfidentMatch, isGuidedMatch } from '../lib/confidence.js';
 import { listAudioInputs, activeDeviceId } from '../lib/devices.js';
 import { addChordCheckReading, createChordCheck, formatChordCheck, summarizeChordCheck } from '../lib/chordCalibration.js';
 
@@ -101,7 +101,7 @@ export default {
     let okStreak = 0;
     let chordCheck = createChordCheck();
     let lastCheckSample = 0;
-    const SIM_OK = 0.88; // cosine similarity that counts as "you're playing this chord"
+    const SIM_OK = 0.78; // calibrated guided-match floor from the 2026-08-15 Elgato guitar check
 
     const paintChordCheck = () => {
       const summaries = chordCheck.map(summarizeChordCheck);
@@ -169,30 +169,32 @@ export default {
       // Best-match verdict (relative — self-calibrates to the room).
       const best = judge.best();
       const pct = Math.round(best.sim * 100);
-      const confident = isConfidentMatch(best, SIM_OK);
+      const openConfident = isConfidentMatch(best);
+      const targetMatch = best.ranked.find((item) => item.name === selected.name);
+      const ev = evaluateChord(chroma, expectedPCs, { presentThresh: PRESENT });
+      const confident = isGuidedMatch(targetMatch, ev, SIM_OK);
       const checkRow = chordCheck.find((row) => row.target === selected.name);
       if (checkRow && performance.now() - lastCheckSample >= 80) {
-        addChordCheckReading(checkRow, best, frame, confident);
+        addChordCheckReading(checkRow, best, frame, openConfident, confident, targetMatch?.sim);
         lastCheckSample = performance.now();
         if (checkRow.samples.length % 6 === 0) paintChordCheck();
       }
       hearEl.textContent = best.name
-        ? `${confident ? `I hear: ${best.name}` : 'I hear the chord, but the exact shape is uncertain'} · ${pct}%`
+        ? `${openConfident ? `I hear: ${best.name}` : 'I hear the chord, but the exact shape is uncertain'} · ${pct}%`
         : '';
 
-      const onTarget = best.name === selected.name && confident;
+      const onTarget = confident;
       okStreak = onTarget ? Math.min(okStreak + 1, 10) : Math.max(okStreak - 2, 0);
 
       if (okStreak >= 5) {
         verdict.className = 'verdict ok';
         verdict.textContent = `✓ That's a clean ${selected.name}!`;
-      } else if (best.name === selected.name) {
+      } else if (best.name === selected.name || targetMatch?.sim >= SIM_OK) {
         verdict.className = 'verdict almost';
-        const ev = evaluateChord(chroma, expectedPCs, { presentThresh: PRESENT });
         verdict.textContent = ev.missing.length
           ? `Almost — let the ${pcNames(ev.missing).join(' & ')} ring out.`
           : `Getting there — let it ring cleanly.`;
-      } else if (best.name && confident) {
+      } else if (best.name && openConfident) {
         verdict.className = 'verdict almost';
         verdict.textContent = `That sounds more like ${best.name} — aim for ${selected.name}.`;
       } else if (best.name) {
@@ -253,8 +255,8 @@ export default {
     });
 
     checkCopy.addEventListener('click', async () => {
-      const micLabel = micSelect.selectedOptions[0]?.textContent || this.listener.stream?.getAudioTracks()[0]?.label;
-      const report = formatChordCheck(chordCheck, micLabel, this.listener.audioCtx?.sampleRate);
+      const micLabel = micSelect.selectedOptions[0]?.textContent || this.listener.lastMicLabel;
+      const report = formatChordCheck(chordCheck, micLabel, this.listener.lastSampleRate);
       try {
         await navigator.clipboard.writeText(report);
         checkStatus.textContent = 'Diagnostic report copied. It contains measurements only; no audio or account details.';

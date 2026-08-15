@@ -19,6 +19,8 @@ export class ChordListener {
     this.roomSamples = [];
     this.noiseProfile = new Array(12).fill(0);
     this.noiseGateDb = -72;
+    this.lastSampleRate = null;
+    this.lastMicLabel = null;
   }
 
   async start(deviceId) {
@@ -28,6 +30,8 @@ export class ChordListener {
     const audio = { echoCancellation: false, autoGainControl: false, noiseSuppression: false };
     if (deviceId) audio.deviceId = { exact: deviceId };
     this.stream = await navigator.mediaDevices.getUserMedia({ audio });
+    this.lastSampleRate = this.audioCtx.sampleRate;
+    this.lastMicLabel = this.stream.getAudioTracks()[0]?.label || null;
     const src = this.audioCtx.createMediaStreamSource(this.stream);
     this.analyser = this.audioCtx.createAnalyser();
     this.analyser.fftSize = this.fftSize;

@@ -12,15 +12,17 @@ export function createChordCheck(targets = ['Em', 'G', 'C', 'D']) {
   return targets.map((target) => ({ target, samples: [] }));
 }
 
-export function addChordCheckReading(row, best, frame, confident) {
+export function addChordCheckReading(row, best, frame, clear, targetLocked, targetSimilarity = null) {
   if (!row || !frame?.active || !best?.name || row.samples.length >= MAX_SAMPLES) return;
   row.samples.push({
     heard: best.name,
     similarity: Number(best.sim) || 0,
     margin: Number(best.margin) || 0,
-    confident: !!confident,
+    clear: !!clear,
+    targetLocked: !!targetLocked,
     maxDb: Number.isFinite(frame.maxDb) ? frame.maxDb : null,
     noiseGateDb: Number.isFinite(frame.noiseGateDb) ? frame.noiseGateDb : null,
+    targetSimilarity: Number.isFinite(targetSimilarity) ? targetSimilarity : null,
   });
 }
 
@@ -35,12 +37,13 @@ export function summarizeChordCheck(row) {
   return {
     target: row.target,
     heard,
-    clearPct: pct((sample) => sample.confident),
-    targetPct: pct((sample) => sample.heard === row.target && sample.confident),
+    clearPct: pct((sample) => sample.clear),
+    targetPct: pct((sample) => sample.targetLocked),
     medianSimilarity: median(samples.map((sample) => sample.similarity)),
     medianMargin: median(samples.map((sample) => sample.margin)),
     medianMaxDb: median(samples.map((sample) => sample.maxDb).filter(Number.isFinite)),
     medianNoiseGateDb: median(samples.map((sample) => sample.noiseGateDb).filter(Number.isFinite)),
+    medianTargetSimilarity: median(samples.map((sample) => sample.targetSimilarity).filter(Number.isFinite)),
     count: samples.length,
     sampled: samples.length >= REQUIRED_SAMPLES,
   };
@@ -55,7 +58,7 @@ export function formatChordCheck(rows, micLabel = 'unknown microphone', sampleRa
     `Sample rate: ${rate}`,
     ...rows.map((row) => {
       const item = summarizeChordCheck(row);
-      return `${item.target}: heard ${item.heard} | clear ${item.clearPct}% | target lock ${item.targetPct}% | median similarity ${fmt(item.medianSimilarity)} | median margin ${fmt(item.medianMargin, 3)} | input ${fmt(item.medianMaxDb, 1)} dB | room gate ${fmt(item.medianNoiseGateDb, 1)} dB`;
+      return `${item.target}: heard ${item.heard} | clear ${item.clearPct}% | target lock ${item.targetPct}% | target similarity ${fmt(item.medianTargetSimilarity)} | best similarity ${fmt(item.medianSimilarity)} | median margin ${fmt(item.medianMargin, 3)} | input ${fmt(item.medianMaxDb, 1)} dB | room gate ${fmt(item.medianNoiseGateDb, 1)} dB`;
     }),
   ].join('\n');
 }
