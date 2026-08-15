@@ -2,13 +2,13 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
-const [firebaseText, appText, indexText, curriculumText, diagramText, dashboardText, targetsText, accountText, cssText, songViewText, practiceText, pitchText, listenerText, chromaText, routineText, tunerViewText, chordsViewText, chordCalibrationText] = await Promise.all([
+const [firebaseText, appText, indexText, curriculumText, diagramText, dashboardText, targetsText, accountText, cssText, songViewText, practiceText, pitchText, listenerText, chromaText, routineText, tunerViewText, chordsViewText, chordCalibrationText, lessonsViewText] = await Promise.all([
   read('firebase.json'), read('src/js/app.js'), read('index.html'),
   read('src/js/data/curriculum.js'), read('src/js/components/chordDiagram.js'),
   read('src/js/views/dashboard.js'), read('src/js/data/targets.js'),
   read('src/js/views/account.js'), read('src/css/styles.css'), read('src/js/views/song.js'), read('src/js/lib/practice.js'),
   read('src/js/lib/pitch.js'), read('src/js/lib/listener.js'), read('src/js/lib/chroma.js'), read('src/js/views/routine.js'),
-  read('src/js/views/tuner.js'), read('src/js/views/chords.js'), read('src/js/lib/chordCalibration.js'),
+  read('src/js/views/tuner.js'), read('src/js/views/chords.js'), read('src/js/lib/chordCalibration.js'), read('src/js/views/lessons.js'),
 ]);
 
 const firebase = JSON.parse(firebaseText);
