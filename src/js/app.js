@@ -110,7 +110,9 @@ route();
 
 const accountLink = document.getElementById('account-link');
 startCloudSession(async (user, services) => {
-  if (user) await connectCloudProgress(user, services);
+  // Anonymous Auth exists only so a guest can upgrade without losing this browser's
+  // progress. Keep the privacy promise: Firestore sync starts only for a real account.
+  if (user && !user.isAnonymous) await connectCloudProgress(user, services);
   else disconnectCloudProgress();
   if (accountLink) {
     accountLink.textContent = user && !user.isAnonymous ? (user.displayName?.split(' ')[0] || 'Account') : 'Save progress';

@@ -2,13 +2,13 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
-const [firebaseText, appText, indexText, curriculumText, diagramText, dashboardText, targetsText, accountText, cssText, songViewText, practiceText, pitchText, listenerText, chromaText, routineText, tunerViewText, chordsViewText, chordCalibrationText, lessonsViewText] = await Promise.all([
+const [firebaseText, appText, indexText, curriculumText, diagramText, dashboardText, targetsText, accountText, cssText, songViewText, practiceText, pitchText, listenerText, chromaText, routineText, tunerViewText, chordsViewText, chordCalibrationText, lessonsViewText, rulesText] = await Promise.all([
   read('firebase.json'), read('src/js/app.js'), read('index.html'),
   read('src/js/data/curriculum.js'), read('src/js/components/chordDiagram.js'),
   read('src/js/views/dashboard.js'), read('src/js/data/targets.js'),
   read('src/js/views/account.js'), read('src/css/styles.css'), read('src/js/views/song.js'), read('src/js/lib/practice.js'),
   read('src/js/lib/pitch.js'), read('src/js/lib/listener.js'), read('src/js/lib/chroma.js'), read('src/js/views/routine.js'),
-  read('src/js/views/tuner.js'), read('src/js/views/chords.js'), read('src/js/lib/chordCalibration.js'), read('src/js/views/lessons.js'),
+  read('src/js/views/tuner.js'), read('src/js/views/chords.js'), read('src/js/lib/chordCalibration.js'), read('src/js/views/lessons.js'), read('firestore.rules'),
 ]);
 
 const firebase = JSON.parse(firebaseText);
@@ -30,6 +30,12 @@ assert.match(appText, /showRouteError/, 'route failures must show a recovery scr
 assert.match(appText, /Your saved progress is still safe/, 'the recovery screen must reassure the learner without exposing error details');
 assert.match(appText, /rendering\.catch\(\(error\) => showRouteError/,
   'asynchronous account or service views must use the same route recovery path');
+assert.match(appText, /user && !user\.isAnonymous\) await connectCloudProgress/,
+  'guest progress must remain browser-only until the learner creates or enters an account');
+assert.doesNotMatch(rulesText, /match \/users\/\{userId\} \{\s*allow/,
+  'Firestore must not expose an unrestricted parent user document');
+assert.match(rulesText, /stateId == 'progress'/,
+  'Firestore writes must stay confined to the one private progress document');
 assert.match(indexText, /href="#\/privacy"/, 'privacy page must be linked from every screen');
 assert.match(curriculumText, /youtube\.com|video:/, 'curriculum should contain video demonstrations');
 assert.match(curriculumText, /l2-1[\s\S]*f18EV2dr008[\s\S]*clean-c-d/,
