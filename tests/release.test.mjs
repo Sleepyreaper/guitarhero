@@ -79,6 +79,7 @@ assert.match(chromaText, /subtractChromaFloor/, 'chord listening must subtract t
 assert.match(chordsViewText, /Four-chord Coach check/, 'the Coach must expose a real-guitar calibration workflow');
 assert.match(chordsViewText, /checkCopy\.disabled = tested !== chordCheck\.length/,
   'the Coach report must require comparable samples from all four pilot chords');
+assert.match(chordsViewText, /data-retest-chord/, 'a tester must be able to replace one stale chord sample');
 assert.match(chordCalibrationText, /derived measurements only; no audio/,
   'the Coach calibration report must explicitly exclude recorded audio');
 assert.match(targetsText, /How Great Is Our God[\s\S]*tutorial:/, 'pilot worship target should include a curated tutorial');

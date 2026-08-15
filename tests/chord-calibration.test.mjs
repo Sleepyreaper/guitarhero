@@ -22,6 +22,7 @@ assert.equal(em.samples.length, 40, 'silence must not count as chord evidence');
 
 const report = formatChordCheck([em], 'Elgato Wave:3', 96000);
 assert.match(report, /derived measurements only; no audio/);
+assert.match(report, /Policy: guided-v2/);
 assert.match(report, /Em: heard Em \| clear 95% \| target lock 90%/);
 assert.match(report, /sample rate: 96000 Hz/i);
 

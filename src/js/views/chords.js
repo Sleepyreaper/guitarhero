@@ -111,6 +111,7 @@ export default {
           <span>heard ${row.heard}</span>
           <span>clear ${row.clearPct}%</span>
           <span>lock ${row.targetPct}%</span>
+          <button class="btn btn-ghost chord-retest" type="button" data-retest-chord="${row.target}">Retest</button>
         </div>`).join('');
       const tested = summaries.filter((row) => row.sampled).length;
       checkCopy.disabled = tested !== chordCheck.length;
@@ -252,6 +253,18 @@ export default {
       chordCheck = createChordCheck();
       lastCheckSample = 0;
       paintChordCheck();
+    });
+
+    checkGrid.addEventListener('click', (event) => {
+      const button = event.target.closest('[data-retest-chord]');
+      if (!button) return;
+      const target = button.dataset.retestChord;
+      const row = chordCheck.find((item) => item.target === target);
+      if (row) row.samples = [];
+      lastCheckSample = 0;
+      setSelected(CHORD_BY_NAME[target]);
+      paintChordCheck();
+      checkStatus.textContent = `Retesting ${target}. Strum it 3–4 times and let each strum ring.`;
     });
 
     checkCopy.addEventListener('click', async () => {
