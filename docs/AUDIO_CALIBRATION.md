@@ -46,3 +46,18 @@ similarity floor. C was absorbed by the richer Fmaj7 template even though guided
 knows the intended shape. The follow-up policy uses 0.78 similarity plus complete target-note
 coverage for the selected chord, while preserving open-ended best-match reporting. A second
 four-chord report is required before this calibration is marked complete.
+
+## 2026-08-15 — guided-policy follow-up
+
+| Target | Heard | Target lock | Target similarity | Best similarity | Input | Room gate |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| Em | Em | 55% | 0.83 | 0.84 | -45.2 dB | -68.1 dB |
+| G | G | 73% | 0.86 | 0.87 | -44.5 dB | -68.1 dB |
+| C | C | 73% | 0.86 | 0.86 | -42.6 dB | -68.1 dB |
+| D | Em (uncertain) | 7% | 0.21 | 0.69 | -52.7 dB | -68.1 dB |
+
+The guided policy fixed the measured false negatives for Em, G, and C, including the C/Fmaj7
+confusion. D does not justify another threshold reduction: the baseline check heard D at 0.81,
+while this follow-up was 9.7 dB quieter and contained too little D–F#–A energy to resemble D.
+Its 0.002 winner margin correctly kept the result uncertain. Recheck D with the top four strings
+picked individually and a stronger top-string signal before treating chord calibration as complete.
