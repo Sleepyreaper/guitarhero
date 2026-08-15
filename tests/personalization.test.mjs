@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { learnedShapes, rankPlayableSongs } from '../src/js/views/dashboard.js';
+import { learnedShapes, rankPlayableSongs, recommendedLesson } from '../src/js/views/dashboard.js';
 
 const songs = [
   { title: 'Kids only', genres: ['kids'], level: 1 },
@@ -19,5 +19,11 @@ for (const unlearnedShape of ['Em7', 'G7', 'Cadd9', 'D7']) {
   assert.equal(learned.has(unlearnedShape), false,
     `${unlearnedShape} must not unlock just because a related major/minor shape was learned`);
 }
+
+const sampleLessons = [{ id: 'l0-1' }, { id: 'l0-2' }, { id: 'l1-0' }];
+assert.equal(recommendedLesson({ experience: 'some' }, 0, sampleLessons).id, 'l1-0',
+  'a returning beginner should start with the clean-note skill check');
+assert.equal(recommendedLesson({ experience: 'new' }, 0, sampleLessons).id, 'l0-1',
+  'a never-played beginner should start with guitar setup');
 
 console.log('personalization tests passed: preferred genre first and only explicitly learned shapes unlock songs');

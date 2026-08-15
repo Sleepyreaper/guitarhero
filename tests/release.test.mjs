@@ -63,6 +63,10 @@ assert.doesNotMatch(curriculumText, /Play Along/,
 assert.match(curriculumText, /Accompaniment vs\. lead: choose your job[\s\S]*B–D–G/,
   'curriculum must explicitly teach the different jobs of backing and lead guitar');
 assert.match(dashboardText, /Your first setlist/, 'music preference must produce a visible personalized setlist');
+assert.match(dashboardText, /recommendedLesson\(profile, done\)/,
+  'a returning beginner must start at an honest skill check instead of receiving the never-played CTA');
+assert.match(dashboardText, /Quick start:[\s\S]*Days 1–2 stay here/,
+  'the returning-beginner shortcut must preserve setup and tuning as optional review');
 assert.match(dashboardText, /rankPlayableSongs/, 'unlocked songs must prioritize the learner\'s chosen style');
 assert.match(dashboardText, /canPlay\.slice\(0, 6\)/, 'the phone dashboard must keep unlocked songs focused');
 assert.doesNotMatch(dashboardText, /EQUIV/, 'related chords must not silently unlock physically different shapes');

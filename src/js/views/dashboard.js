@@ -36,6 +36,14 @@ export function rankPlayableSongs(songs, genre) {
   });
 }
 
+export function recommendedLesson(profile, completedCount, lessons = ALL_LESSONS) {
+  const next = lessons.find((lesson) => !isDone(lesson.id)) || lessons.at(-1);
+  if (profile?.experience === 'some' && completedCount === 0) {
+    return lessons.find((lesson) => lesson.id === 'l1-0') || next;
+  }
+  return next;
+}
+
 const fmt = (sec) => `${Math.floor(sec / 60)}:${String(Math.floor(sec % 60)).padStart(2, '0')}`;
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
@@ -93,7 +101,8 @@ function renderOnboarding(root, owner) {
 
 function weekHtml(profile) {
   const firstOpen = WEEK.findIndex((day) => !isDone(day.doneId));
-  const current = firstOpen < 0 ? WEEK.length - 1 : firstOpen;
+  const quickStart = profile.experience === 'some' && firstOpen === 0;
+  const current = quickStart ? 2 : firstOpen < 0 ? WEEK.length - 1 : firstOpen;
   return `
     <section class="panel first-week">
       <div class="week-head"><div><p class="eyebrow">Your seven-day start</p><h2>${GENRE_LABELS[profile.genre] || GENRE_LABELS.mixed}${profile.song ? ` · aiming for “${esc(profile.song)}”` : ''}</h2></div><button class="btn btn-ghost" id="edit-profile" type="button">Change goals</button></div>
@@ -101,6 +110,7 @@ function weekHtml(profile) {
         const done = isDone(day.doneId);
         return `<a class="week-day ${done ? 'done' : ''} ${index === current ? 'current' : ''}" href="${day.href}"><span>Day ${index + 1}</span><strong>${done ? '✓ ' : ''}${day.title}</strong><small>${day.blurb}</small></a>`;
       }).join('')}</div>
+      ${quickStart ? '<div class="callout"><strong>Quick start:</strong> Begin at Day 3 and prove one clean fretted note. Days 1–2 stay here whenever you want a setup or tuning review.</div>' : ''}
       <p class="faint">Move faster if you are ready: skill lessons include a “Prove it” check so quick learners can skip ahead honestly.</p>
     </section>`;
 }
@@ -150,6 +160,7 @@ export default {
     const done = doneCount();
     const pct = Math.round((done / total) * 100);
     const next = ALL_LESSONS.find((l) => !isDone(l.id)) || ALL_LESSONS[total - 1];
+    const recommended = recommendedLesson(profile, done);
 
     const learnedBase = [...new Set(ALL_LESSONS.filter((l) => l.chords && isDone(l.id)).flatMap((l) => l.chords))];
     const learned = learnedShapes(learnedBase);
@@ -185,7 +196,7 @@ export default {
         <p class="lead">A from-zero coach for 6-string acoustic — the fast, song-first way. Small, honest,
         daily reps beat cramming.</p>
         <div class="btn-row" style="justify-content:center">
-          <a class="btn btn-primary" href="#/learn/${next.id}">${done ? 'Continue learning' : 'Start lesson 1'} →</a>
+          <a class="btn btn-primary" href="#/learn/${recommended.id}">${done ? 'Continue learning' : profile.experience === 'some' ? 'Start quick skill check' : 'Start lesson 1'} →</a>
           <a class="btn" href="#/tuner">🎯 Tune up first</a>
         </div>
       </section>
