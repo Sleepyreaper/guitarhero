@@ -84,6 +84,8 @@ assert.match(songViewText, /isGuidedMatch\(target, evaluation, GUIDED_SIM_OK\)/,
   'song rehearsal must use the same calibrated target-aware policy as the Chord Coach');
 assert.match(songViewText, /const confident = isConfidentMatch\(best, OPEN_SIM_OK\)/,
   'song rehearsal must keep open-ended chord labels conservative');
+assert.match(lessonsViewText, /querySelectorAll\('\.load-video'\)/,
+  'every demonstration in a multi-video lesson must receive a working load handler');
 assert.match(chordCalibrationText, /derived measurements only; no audio/,
   'the Coach calibration report must explicitly exclude recorded audio');
 assert.match(targetsText, /How Great Is Our God[\s\S]*tutorial:/, 'pilot worship target should include a curated tutorial');

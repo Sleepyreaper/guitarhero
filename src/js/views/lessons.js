@@ -134,13 +134,15 @@ function detail(root, lessonId) {
     </section>
   `;
 
-  root.querySelector('.load-video')?.addEventListener('click', (event) => {
-    const section = event.currentTarget.closest('.lesson-video');
-    const slot = section.querySelector('.video-slot');
-    const id = section.dataset.videoId;
-    const title = section.querySelector('h3')?.textContent || 'Guitar demonstration';
-    slot.innerHTML = `<div class="video-frame"><iframe src="https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1" title="${title}" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>`;
-    event.currentTarget.remove();
+  root.querySelectorAll('.load-video').forEach((button) => {
+    button.addEventListener('click', (event) => {
+      const section = event.currentTarget.closest('.lesson-video');
+      const slot = section.querySelector('.video-slot');
+      const id = section.dataset.videoId;
+      const title = section.querySelector('h3')?.textContent || 'Guitar demonstration';
+      slot.innerHTML = `<div class="video-frame"><iframe src="https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1" title="${title}" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>`;
+      event.currentTarget.remove();
+    });
   });
 
   root.querySelector('.proof-toggle')?.addEventListener('click', (event) => {
