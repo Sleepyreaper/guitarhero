@@ -173,7 +173,7 @@ ol.steps li { margin: .3rem 0; }
 /* ---------- guided first week + lesson video ---------- */
 .onboarding-panel { max-width: 760px; margin: 1.2rem auto; }
 .onboarding-form { display: grid; gap: 1rem; }
-.onboarding-form fieldset { border: 1px solid var(--line); border-radius: var(--radius-sm); padding: .8rem 1rem; }
+.onboarding-form fieldset { min-width: 0; border: 1px solid var(--line); border-radius: var(--radius-sm); padding: .8rem 1rem; }
 .onboarding-form legend { color: var(--gold); font-weight: 800; padding: 0 .35rem; }
 .choice-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: .55rem; }
 .choice-grid label { display: flex; align-items: center; gap: .5rem; padding: .55rem; border-radius: 8px; background: var(--panel-2); cursor: pointer; }
@@ -354,6 +354,7 @@ ol.steps li { margin: .3rem 0; }
   .tuner-note { font-size: 3.6rem; }
   .bpm-display { font-size: 3rem; }
   .week-grid { grid-template-columns: repeat(7, 145px); }
+  .choice-grid { grid-template-columns: 1fr; }
   .mic-check-row { grid-template-columns: 1fr 1fr; }
   .chord-retest { min-height: 44px; }
 }

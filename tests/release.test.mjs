@@ -113,6 +113,10 @@ assert.match(accountText, /You are still signed in and your progress is safe on 
   'a failed final sync must preserve progress and explain the recovery path');
 assert.match(cssText, /@media \(max-width: 560px\)[\s\S]*\.app-nav \{[^}]*overflow-x: auto/,
   'phone navigation must remain reachable without consuming the screen in wrapped rows');
+assert.match(cssText, /\.onboarding-form fieldset \{[^}]*min-width: 0/,
+  'browser fieldset minimum sizing must not widen the onboarding panel past the phone viewport');
+assert.match(cssText, /@media \(max-width: 560px\)[\s\S]*\.choice-grid \{[^}]*grid-template-columns: 1fr/,
+  'phone onboarding choices must stack instead of clipping a two-column grid');
 assert.match(cssText, /\.app-nav a \{[^}]*min-height: 44px/,
   'phone navigation targets must remain finger-friendly');
 assert.match(cssText, /\.coach-pick button \{[^}]*min-height: 44px/,
