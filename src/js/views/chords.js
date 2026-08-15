@@ -176,7 +176,7 @@ export default {
       const openConfident = isConfidentMatch(best);
       const targetMatch = best.ranked.find((item) => item.name === selected.name);
       const ev = evaluateChord(judge.profile(), expectedPCs, { presentThresh: GUIDED_PRESENT });
-      const confident = isGuidedMatch(targetMatch, ev, SIM_OK);
+      const confident = isGuidedMatch(targetMatch, ev, SIM_OK, best.name);
       const checkRow = chordCheck.find((row) => row.target === selected.name);
       if (checkRow && performance.now() - lastCheckSample >= 80) {
         addChordCheckReading(checkRow, best, frame, openConfident, confident, targetMatch?.sim);

@@ -90,7 +90,7 @@ assert.match(chordsViewText, /Four-chord Coach check/, 'the Coach must expose a 
 assert.match(chordsViewText, /checkCopy\.disabled = tested === 0/,
   'the Coach must allow one-chord reports so a failed chord can be retested alone');
 assert.match(chordsViewText, /data-retest-chord/, 'a tester must be able to replace one stale chord sample');
-assert.match(songViewText, /isGuidedMatch\(target, evaluation, GUIDED_SIM_OK\)/,
+assert.match(songViewText, /isGuidedMatch\(target, evaluation, GUIDED_SIM_OK, best\.name\)/,
   'song rehearsal must use the same calibrated target-aware policy as the Chord Coach');
 assert.match(songViewText, /evaluateChord\(judge\.profile\(\), expected/,
   'song target-note coverage must use the same smoothed ringing chord as similarity');

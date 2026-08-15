@@ -74,3 +74,17 @@ than 22 dB of room-gate clearance. The 0.74 real-guitar median sits just below t
 related templates. Guided-v3 lowers only target-aware similarity to 0.72 and expected-note
 presence to 0.22; complete D-F#-A coverage remains mandatory. Open-ended identification stays
 strict.
+
+## 2026-08-15 — guided-v3 D verification
+
+- Heard D, target and best similarity 0.67, winner margin 0.018
+- Target lock 17%, open-ended clear 5%
+- Input -46.9 dB, room gate -69.1 dB, sample rate 96000 Hz
+
+D remained the winning shape with more than 22 dB of room-gate clearance, so neither microphone
+level nor confusion with another chord explains the low lock rate. The stable 17% lock indicates
+that one of D–F#–A falls below the per-frame presence threshold while the acoustic chord rings.
+Guided-v4 therefore permits two-of-three target-note coverage only when the selected target also
+wins the open-ended ranking and has at least 0.62 similarity. The complete-coverage 0.72 path is
+unchanged. This tightly scoped fallback cannot approve a partial target when Em, Fmaj7, or another
+shape wins, and now requires one final real-guitar D verification.

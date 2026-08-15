@@ -17,5 +17,11 @@ assert.equal(isGuidedMatch({ name: 'C', sim: 0.79 }, { coverage: 2 / 3 }), false
   'a guided chord must still contain all of its target pitch classes');
 assert.equal(isGuidedMatch({ name: 'C', sim: 0.67 }, { coverage: 1 }), false,
   'shared notes from a different clean triad must not pass');
+assert.equal(isGuidedMatch({ name: 'D', sim: 0.67 }, { coverage: 2 / 3 }, 0.72, 'D'), true,
+  'the measured winning acoustic D should survive one temporarily weak chord tone');
+assert.equal(isGuidedMatch({ name: 'D', sim: 0.67 }, { coverage: 2 / 3 }, 0.72, 'Em'), false,
+  'partial coverage must not pass when another chord wins the open-ended ranking');
+assert.equal(isGuidedMatch({ name: 'D', sim: 0.55 }, { coverage: 1 }, 0.72, 'D'), false,
+  'a weak resemblance must fail even when its name happens to rank first');
 
 console.log('confidence tests passed: open-ended and guided chord policies');

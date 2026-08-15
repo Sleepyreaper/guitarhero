@@ -55,7 +55,7 @@ export function formatChordCheck(rows, micLabel = 'unknown microphone', sampleRa
   const fmt = (value, digits = 2) => value == null ? 'n/a' : value.toFixed(digits);
   return [
     'Campfire four-chord mic check (derived measurements only; no audio)',
-    'Policy: guided-v3 (0.72 similarity + complete target-note coverage at 0.22)',
+    'Policy: guided-v4 (complete target coverage, or winning target + 2/3 coverage)',
     `Coverage: ${sampled}/${rows.length} chords sampled`,
     `Mic: ${micLabel || 'unknown microphone'}`,
     `Sample rate: ${rate}`,
