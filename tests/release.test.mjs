@@ -117,6 +117,10 @@ assert.match(cssText, /\.onboarding-form fieldset \{[^}]*min-width: 0/,
   'browser fieldset minimum sizing must not widen the onboarding panel past the phone viewport');
 assert.match(cssText, /@media \(max-width: 560px\)[\s\S]*\.choice-grid \{[^}]*grid-template-columns: 1fr/,
   'phone onboarding choices must stack instead of clipping a two-column grid');
+assert.match(cssText, /@media \(max-width: 560px\)[\s\S]*html, body \{[^}]*overflow-x: hidden/,
+  'phone pages must contain min-content overflow inside the viewport');
+assert.match(cssText, /@media \(max-width: 560px\)[\s\S]*\.capo-finder \{[^}]*grid-template-columns: 1fr/,
+  'the phone capo finder must stack without widening song pages');
 assert.match(cssText, /\.app-nav a \{[^}]*min-height: 44px/,
   'phone navigation targets must remain finger-friendly');
 assert.match(cssText, /\.coach-pick button \{[^}]*min-height: 44px/,
