@@ -92,6 +92,10 @@ assert.match(chordsViewText, /checkCopy\.disabled = tested === 0/,
 assert.match(chordsViewText, /data-retest-chord/, 'a tester must be able to replace one stale chord sample');
 assert.match(songViewText, /isGuidedMatch\(target, evaluation, GUIDED_SIM_OK\)/,
   'song rehearsal must use the same calibrated target-aware policy as the Chord Coach');
+assert.match(songViewText, /evaluateChord\(judge\.profile\(\), expected/,
+  'song target-note coverage must use the same smoothed ringing chord as similarity');
+assert.match(chordsViewText, /evaluateChord\(judge\.profile\(\), expectedPCs/,
+  'Coach target-note coverage must not flicker with a single microphone frame');
 assert.match(songViewText, /const confident = isConfidentMatch\(best, OPEN_SIM_OK\)/,
   'song rehearsal must keep open-ended chord labels conservative');
 assert.match(lessonsViewText, /querySelectorAll\('\.load-video'\)/,

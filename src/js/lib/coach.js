@@ -47,6 +47,10 @@ export class ChordJudge {
     return { name: top.name, sim: top.sim, margin: top.sim - second.sim, ranked };
   }
 
+  profile() {
+    return [...this.ema];
+  }
+
   reset() {
     this.ema = new Array(12).fill(0);
   }

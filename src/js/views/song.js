@@ -309,7 +309,7 @@ function playAlong(root, song, self) {
     const expected = chord
       ? chordPitchClasses(transposeFrequencies(chordFrequencies(chord), capo))
       : [];
-    const evaluation = evaluateChord(chroma, expected, { presentThresh: GUIDED_PRESENT });
+    const evaluation = evaluateChord(judge.profile(), expected, { presentThresh: GUIDED_PRESENT });
     const guided = isGuidedMatch(target, evaluation, GUIDED_SIM_OK);
     hearEl.textContent = active && best.name
       ? `${confident ? `I hear: ${best.name}` : 'Chord heard · exact shape uncertain'} · ${Math.round(best.sim * 100)}%`

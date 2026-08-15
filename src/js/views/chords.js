@@ -175,7 +175,7 @@ export default {
       const pct = Math.round(best.sim * 100);
       const openConfident = isConfidentMatch(best);
       const targetMatch = best.ranked.find((item) => item.name === selected.name);
-      const ev = evaluateChord(chroma, expectedPCs, { presentThresh: GUIDED_PRESENT });
+      const ev = evaluateChord(judge.profile(), expectedPCs, { presentThresh: GUIDED_PRESENT });
       const confident = isGuidedMatch(targetMatch, ev, SIM_OK);
       const checkRow = chordCheck.find((row) => row.target === selected.name);
       if (checkRow && performance.now() - lastCheckSample >= 80) {
