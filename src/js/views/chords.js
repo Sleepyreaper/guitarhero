@@ -114,10 +114,12 @@ export default {
           <button class="btn btn-ghost chord-retest" type="button" data-retest-chord="${row.target}">Retest</button>
         </div>`).join('');
       const tested = summaries.filter((row) => row.sampled).length;
-      checkCopy.disabled = tested !== chordCheck.length;
+      checkCopy.disabled = tested === 0;
       checkStatus.textContent = tested === chordCheck.length
         ? 'All four sampled. Copy the report so recognition, confidence, input, and room gate can be compared.'
-        : `${tested}/${chordCheck.length} chords sampled. Select the next chord above and strum it 3–4 times.`;
+        : tested > 0
+          ? `${tested}/${chordCheck.length} chords sampled. Copy this partial report now, or select another chord and strum it 3–4 times.`
+          : `0/${chordCheck.length} chords sampled. Select a chord above and strum it 3–4 times.`;
     };
     paintChordCheck();
 

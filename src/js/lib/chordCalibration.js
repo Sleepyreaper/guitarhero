@@ -51,10 +51,12 @@ export function summarizeChordCheck(row) {
 
 export function formatChordCheck(rows, micLabel = 'unknown microphone', sampleRate) {
   const rate = sampleRate ? `${Math.round(sampleRate)} Hz` : 'unknown';
+  const sampled = rows.filter((row) => summarizeChordCheck(row).sampled).length;
   const fmt = (value, digits = 2) => value == null ? 'n/a' : value.toFixed(digits);
   return [
     'Campfire four-chord mic check (derived measurements only; no audio)',
     'Policy: guided-v2 (0.78 similarity + complete target-note coverage)',
+    `Coverage: ${sampled}/${rows.length} chords sampled`,
     `Mic: ${micLabel || 'unknown microphone'}`,
     `Sample rate: ${rate}`,
     ...rows.map((row) => {

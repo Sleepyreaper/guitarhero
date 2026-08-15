@@ -77,8 +77,8 @@ assert.match(tunerViewText, /checkCopy\.disabled = tested !== 6/,
 assert.match(listenerText, /calibrateChromaNoise/, 'chord listening must build a room-specific noise profile');
 assert.match(chromaText, /subtractChromaFloor/, 'chord listening must subtract the measured room spectrum');
 assert.match(chordsViewText, /Four-chord Coach check/, 'the Coach must expose a real-guitar calibration workflow');
-assert.match(chordsViewText, /checkCopy\.disabled = tested !== chordCheck\.length/,
-  'the Coach report must require comparable samples from all four pilot chords');
+assert.match(chordsViewText, /checkCopy\.disabled = tested === 0/,
+  'the Coach must allow one-chord reports so a failed chord can be retested alone');
 assert.match(chordsViewText, /data-retest-chord/, 'a tester must be able to replace one stale chord sample');
 assert.match(chordCalibrationText, /derived measurements only; no audio/,
   'the Coach calibration report must explicitly exclude recorded audio');
