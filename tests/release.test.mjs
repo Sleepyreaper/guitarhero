@@ -2,13 +2,13 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
-const [firebaseText, appText, indexText, curriculumText, diagramText, dashboardText, targetsText, accountText, cssText, songViewText, practiceText, pitchText, listenerText, chromaText, routineText, tunerViewText] = await Promise.all([
+const [firebaseText, appText, indexText, curriculumText, diagramText, dashboardText, targetsText, accountText, cssText, songViewText, practiceText, pitchText, listenerText, chromaText, routineText, tunerViewText, chordsViewText, chordCalibrationText] = await Promise.all([
   read('firebase.json'), read('src/js/app.js'), read('index.html'),
   read('src/js/data/curriculum.js'), read('src/js/components/chordDiagram.js'),
   read('src/js/views/dashboard.js'), read('src/js/data/targets.js'),
   read('src/js/views/account.js'), read('src/css/styles.css'), read('src/js/views/song.js'), read('src/js/lib/practice.js'),
   read('src/js/lib/pitch.js'), read('src/js/lib/listener.js'), read('src/js/lib/chroma.js'), read('src/js/views/routine.js'),
-  read('src/js/views/tuner.js'),
+  read('src/js/views/tuner.js'), read('src/js/views/chords.js'), read('src/js/lib/chordCalibration.js'),
 ]);
 
 const firebase = JSON.parse(firebaseText);
@@ -76,6 +76,11 @@ assert.match(tunerViewText, /checkCopy\.disabled = tested !== 6/,
   'the calibration report must require comparable samples from all six strings');
 assert.match(listenerText, /calibrateChromaNoise/, 'chord listening must build a room-specific noise profile');
 assert.match(chromaText, /subtractChromaFloor/, 'chord listening must subtract the measured room spectrum');
+assert.match(chordsViewText, /Four-chord Coach check/, 'the Coach must expose a real-guitar calibration workflow');
+assert.match(chordsViewText, /checkCopy\.disabled = tested !== chordCheck\.length/,
+  'the Coach report must require comparable samples from all four pilot chords');
+assert.match(chordCalibrationText, /derived measurements only; no audio/,
+  'the Coach calibration report must explicitly exclude recorded audio');
 assert.match(targetsText, /How Great Is Our God[\s\S]*tutorial:/, 'pilot worship target should include a curated tutorial');
 assert.match(targetsText, /You Look Like You Love Me[\s\S]*bridge:/,
   'requested modern-country targets must include an actionable beginner bridge');

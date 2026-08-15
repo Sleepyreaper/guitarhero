@@ -6,6 +6,7 @@ import { chordPitchClasses, evaluateChord, PC_NAMES, pcNames } from '../lib/chro
 import { ChordJudge } from '../lib/coach.js';
 import { isConfidentMatch } from '../lib/confidence.js';
 import { listAudioInputs, activeDeviceId } from '../lib/devices.js';
+import { addChordCheckReading, createChordCheck, formatChordCheck, summarizeChordCheck } from '../lib/chordCalibration.js';
 
 const GROUPS = [
   { key: 'first', title: 'Start here — your first two', sub: 'The two easiest shapes. Learn these and you can already change chords.' },
@@ -56,6 +57,17 @@ export default {
         <div id="coach-err" class="faint" style="text-align:center;color:var(--red)"></div>
       </section>
 
+      <section class="panel mic-check">
+        <h2>Four-chord Coach check</h2>
+        <p class="faint">Start the Coach, select each chord below, and strum it 3–4 times. Campfire saves only derived recognition measurements for this report—never audio.</p>
+        <div id="chord-check-grid" class="mic-check-grid"></div>
+        <div class="btn-row">
+          <button id="chord-check-reset" class="btn" type="button">Reset check</button>
+          <button id="chord-check-copy" class="btn" type="button" disabled>Copy diagnostic report</button>
+        </div>
+        <p id="chord-check-status" class="faint" aria-live="polite">Start listening, then test Em, G, C, and D.</p>
+      </section>
+
       ${GROUPS.map((g) => `
         <section style="margin-top:1.4rem">
           <h2>${g.title}</h2>
@@ -77,13 +89,36 @@ export default {
     const pickBtns = [...root.querySelectorAll('#coach-pick button')];
     const micRow = root.querySelector('#coach-mic');
     const micSelect = root.querySelector('#coach-mic-select');
+    const checkGrid = root.querySelector('#chord-check-grid');
+    const checkReset = root.querySelector('#chord-check-reset');
+    const checkCopy = root.querySelector('#chord-check-copy');
+    const checkStatus = root.querySelector('#chord-check-status');
 
     const judge = new ChordJudge();
     let selected = CHORD_BY_NAME['C'] || CHORDS[0];
     let expectedPCs = [];
     let expectedSet = new Set();
     let okStreak = 0;
+    let chordCheck = createChordCheck();
+    let lastCheckSample = 0;
     const SIM_OK = 0.88; // cosine similarity that counts as "you're playing this chord"
+
+    const paintChordCheck = () => {
+      const summaries = chordCheck.map(summarizeChordCheck);
+      checkGrid.innerHTML = summaries.map((row) => `
+        <div class="mic-check-row ${row.sampled ? 'sampled' : ''}">
+          <strong>${row.target}</strong>
+          <span>heard ${row.heard}</span>
+          <span>clear ${row.clearPct}%</span>
+          <span>lock ${row.targetPct}%</span>
+        </div>`).join('');
+      const tested = summaries.filter((row) => row.sampled).length;
+      checkCopy.disabled = tested !== chordCheck.length;
+      checkStatus.textContent = tested === chordCheck.length
+        ? 'All four sampled. Copy the report so recognition, confidence, input, and room gate can be compared.'
+        : `${tested}/${chordCheck.length} chords sampled. Select the next chord above and strum it 3–4 times.`;
+    };
+    paintChordCheck();
 
     const setSelected = (chord) => {
       selected = chord;
@@ -135,6 +170,12 @@ export default {
       const best = judge.best();
       const pct = Math.round(best.sim * 100);
       const confident = isConfidentMatch(best, SIM_OK);
+      const checkRow = chordCheck.find((row) => row.target === selected.name);
+      if (checkRow && performance.now() - lastCheckSample >= 80) {
+        addChordCheckReading(checkRow, best, frame, confident);
+        lastCheckSample = performance.now();
+        if (checkRow.samples.length % 6 === 0) paintChordCheck();
+      }
       hearEl.textContent = best.name
         ? `${confident ? `I hear: ${best.name}` : 'I hear the chord, but the exact shape is uncertain'} · ${pct}%`
         : '';
@@ -202,6 +243,23 @@ export default {
         await populateMics();
       } catch {
         errEl.textContent = 'Microphone blocked. Allow mic access and use an https:// (or localhost) address.';
+      }
+    });
+
+    checkReset.addEventListener('click', () => {
+      chordCheck = createChordCheck();
+      lastCheckSample = 0;
+      paintChordCheck();
+    });
+
+    checkCopy.addEventListener('click', async () => {
+      const micLabel = micSelect.selectedOptions[0]?.textContent || this.listener.stream?.getAudioTracks()[0]?.label;
+      const report = formatChordCheck(chordCheck, micLabel, this.listener.audioCtx?.sampleRate);
+      try {
+        await navigator.clipboard.writeText(report);
+        checkStatus.textContent = 'Diagnostic report copied. It contains measurements only; no audio or account details.';
+      } catch {
+        checkStatus.textContent = 'Copy was blocked by the browser. Try again from the secure Campfire address.';
       }
     });
 
