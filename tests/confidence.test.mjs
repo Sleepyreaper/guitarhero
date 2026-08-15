@@ -11,6 +11,8 @@ assert.equal(isConfidentMatch({ name: null, sim: 1, margin: 1 }), false, 'missin
 assert.equal(isConfidentMatch({ name: 'Em', sim: 0.81, margin: 0.04 }, 0.8), true, 'tool-specific similarity threshold should work');
 assert.equal(isGuidedMatch({ name: 'G', sim: 0.80 }, { coverage: 1 }), true,
   'a measured guided G should pass without needing to beat richer templates');
+assert.equal(isGuidedMatch({ name: 'D', sim: 0.74 }, { coverage: 1 }), true,
+  'the measured acoustic D should pass when all three chord tones are present');
 assert.equal(isGuidedMatch({ name: 'C', sim: 0.79 }, { coverage: 2 / 3 }), false,
   'a guided chord must still contain all of its target pitch classes');
 assert.equal(isGuidedMatch({ name: 'C', sim: 0.67 }, { coverage: 1 }), false,

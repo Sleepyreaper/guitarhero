@@ -61,3 +61,16 @@ confusion. D does not justify another threshold reduction: the baseline check he
 while this follow-up was 9.7 dB quieter and contained too little D–F#–A energy to resemble D.
 Its 0.002 winner margin correctly kept the result uncertain. Recheck D with the top four strings
 picked individually and a stronger top-string signal before treating chord calibration as complete.
+
+## 2026-08-15 — isolated D retest
+
+- Heard D, target similarity 0.74, best similarity 0.75
+- Target lock 17%, open-ended clear 13%
+- Input -44.3 dB, room gate -66.5 dB, sample rate 96000 Hz
+
+The isolated retest rules out the earlier weak capture: D is now the winning template with more
+than 22 dB of room-gate clearance. The 0.74 real-guitar median sits just below the provisional
+0.78 guided floor, while the near-zero winner margin remains expected because open D overlaps
+related templates. Guided-v3 lowers only target-aware similarity to 0.72 and expected-note
+presence to 0.22; complete D-F#-A coverage remains mandatory. Open-ended identification stays
+strict.

@@ -15,6 +15,7 @@ const GROUPS = [
 ];
 
 const PRESENT = 0.28; // pitch-class energy (0..1) at/above which we call a note "heard"
+const GUIDED_PRESENT = 0.22; // a fretted chord tone can be quieter than the visualizer threshold
 
 export default {
   render(root) {
@@ -101,7 +102,7 @@ export default {
     let okStreak = 0;
     let chordCheck = createChordCheck();
     let lastCheckSample = 0;
-    const SIM_OK = 0.78; // calibrated guided-match floor from the 2026-08-15 Elgato guitar check
+    const SIM_OK = 0.72; // calibrated guided-match floor from real Elgato acoustic-guitar checks
 
     const paintChordCheck = () => {
       const summaries = chordCheck.map(summarizeChordCheck);
@@ -174,7 +175,7 @@ export default {
       const pct = Math.round(best.sim * 100);
       const openConfident = isConfidentMatch(best);
       const targetMatch = best.ranked.find((item) => item.name === selected.name);
-      const ev = evaluateChord(chroma, expectedPCs, { presentThresh: PRESENT });
+      const ev = evaluateChord(chroma, expectedPCs, { presentThresh: GUIDED_PRESENT });
       const confident = isGuidedMatch(targetMatch, ev, SIM_OK);
       const checkRow = chordCheck.find((row) => row.target === selected.name);
       if (checkRow && performance.now() - lastCheckSample >= 80) {
