@@ -118,6 +118,9 @@ export const CURRICULUM = [
       { id: 'l2-1', title: 'Add C and D', min: 12, chords: ['C', 'D'],
         objective: 'Learn the last two chords of the beginner core.',
         video: { id: 'f18EV2dr008', title: 'How to Play the C Chord', teacher: 'JustinGuitar', watchFor: 'C is the harder shape here: copy the finger angle, check every string, and notice how the low E is avoided.' },
+        extraVideos: [
+          { id: 'QkrIZBLZEXw', title: 'How to Play the D Chord on Guitar', teacher: 'JustinGuitar', watchFor: 'Notice the small triangle, the curled third finger, and why only the top four strings are played.' },
+        ],
         proof: { id: 'clean-c-d', title: 'My C and D both ring cleanly', check: 'Pick through each chord one string at a time. Every intended string rings, muted strings stay out, then form each shape twice from the air.' },
         steps: [
           'C: finger 3 / 2 / 1 on the A, D, and B strings. Don’t strum the low E.',

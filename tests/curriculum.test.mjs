@@ -21,4 +21,10 @@ for (const id of coreVideoLessons) {
     `${id} video must tell the learner what to watch for`);
 }
 
+const chordPairLesson = ALL_LESSONS.find((item) => item.id === 'l2-1');
+const demonstratedCoreChords = [chordPairLesson.video, ...(chordPairLesson.extraVideos || [])]
+  .map((video) => video.title);
+assert.ok(demonstratedCoreChords.some((title) => /C Chord/i.test(title)), 'the C + D lesson must demonstrate C');
+assert.ok(demonstratedCoreChords.some((title) => /D Chord/i.test(title)), 'the C + D lesson must demonstrate D');
+
 console.log('curriculum tests passed: song prerequisites and curated core-skill videos');

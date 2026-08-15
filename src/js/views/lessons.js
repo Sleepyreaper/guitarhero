@@ -89,7 +89,7 @@ function detail(root, lessonId) {
     <h1>${lesson.title}</h1>
     <p class="lead">${lesson.objective}</p>
 
-    ${videoBlock(lesson.video)}
+    ${[lesson.video, ...(lesson.extraVideos || [])].filter(Boolean).map(videoBlock).join('')}
 
     ${lesson.chords ? `
       ${leftHanded ? '<p class="pill gold">Left-handed diagrams are mirrored</p>' : ''}
@@ -138,7 +138,8 @@ function detail(root, lessonId) {
     const section = event.currentTarget.closest('.lesson-video');
     const slot = section.querySelector('.video-slot');
     const id = section.dataset.videoId;
-    slot.innerHTML = `<div class="video-frame"><iframe src="https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1" title="${lesson.video.title}" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>`;
+    const title = section.querySelector('h3')?.textContent || 'Guitar demonstration';
+    slot.innerHTML = `<div class="video-frame"><iframe src="https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1" title="${title}" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>`;
     event.currentTarget.remove();
   });
 
