@@ -7,7 +7,8 @@ import { strum, strumAt } from '../lib/audio.js';
 import { getAudioContext } from '../lib/audio.js';
 import { ChordListener } from '../lib/listener.js';
 import { ChordJudge } from '../lib/coach.js';
-import { isConfidentMatch } from '../lib/confidence.js';
+import { chordPitchClasses, evaluateChord } from '../lib/chroma.js';
+import { isConfidentMatch, isGuidedMatch } from '../lib/confidence.js';
 import { listAudioInputs, activeDeviceId } from '../lib/devices.js';
 import { transposeFrequencies, transposeKey } from '../lib/capo.js';
 
@@ -213,7 +214,9 @@ function playAlong(root, song, self) {
   let idx = 0;
   let okStreak = 0;
   let armed = true;
-  const SIM_OK = 0.86;
+  const OPEN_SIM_OK = 0.86;
+  const GUIDED_SIM_OK = 0.72;
+  const GUIDED_PRESENT = 0.22;
   const capo = self._capoBySong?.[song.id] ?? song.capo ?? 0;
   const judge = new ChordJudge(0.35, capo);
 
@@ -299,12 +302,20 @@ function playAlong(root, song, self) {
     if (!active) armed = true;
 
     const best = judge.best();
-    const confident = isConfidentMatch(best, SIM_OK);
+    const confident = isConfidentMatch(best, OPEN_SIM_OK);
+    const targetName = seq[idx];
+    const target = best.ranked.find((item) => item.name === targetName);
+    const chord = CHORD_BY_NAME[targetName];
+    const expected = chord
+      ? chordPitchClasses(transposeFrequencies(chordFrequencies(chord), capo))
+      : [];
+    const evaluation = evaluateChord(chroma, expected, { presentThresh: GUIDED_PRESENT });
+    const guided = isGuidedMatch(target, evaluation, GUIDED_SIM_OK);
     hearEl.textContent = active && best.name
       ? `${confident ? `I hear: ${best.name}` : 'Chord heard · exact shape uncertain'} · ${Math.round(best.sim * 100)}%`
       : '';
 
-    const onTarget = armed && active && best.name === seq[idx] && confident;
+    const onTarget = armed && active && guided;
     okStreak = onTarget ? okStreak + 1 : Math.max(0, okStreak - 1);
     confFill.style.width = `${Math.min(100, okStreak * 25)}%`;
     confFill.classList.toggle('live', okStreak > 0);

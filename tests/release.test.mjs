@@ -80,6 +80,10 @@ assert.match(chordsViewText, /Four-chord Coach check/, 'the Coach must expose a 
 assert.match(chordsViewText, /checkCopy\.disabled = tested === 0/,
   'the Coach must allow one-chord reports so a failed chord can be retested alone');
 assert.match(chordsViewText, /data-retest-chord/, 'a tester must be able to replace one stale chord sample');
+assert.match(songViewText, /isGuidedMatch\(target, evaluation, GUIDED_SIM_OK\)/,
+  'song rehearsal must use the same calibrated target-aware policy as the Chord Coach');
+assert.match(songViewText, /const confident = isConfidentMatch\(best, OPEN_SIM_OK\)/,
+  'song rehearsal must keep open-ended chord labels conservative');
 assert.match(chordCalibrationText, /derived measurements only; no audio/,
   'the Coach calibration report must explicitly exclude recorded audio');
 assert.match(targetsText, /How Great Is Our God[\s\S]*tutorial:/, 'pilot worship target should include a curated tutorial');
