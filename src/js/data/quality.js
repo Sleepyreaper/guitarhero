@@ -14,8 +14,8 @@ export const SONG_REVIEWS = Object.freeze({
     note: 'Owner passed the complete two-loop ABAC phrasing review; supervised student session is next.',
   },
   'amazing-grace': {
-    listening: 'pending', student: 'pending',
-    note: 'Audit syllable-to-note phrasing and every G7/D7 change before pilot use.',
+    listening: 'pass', listenedAt: '2026-08-15', listener: 'Project owner', student: 'pending',
+    note: 'Owner passed the complete lyric, cadence, and loop review; supervised student session is next.',
   },
 });
 

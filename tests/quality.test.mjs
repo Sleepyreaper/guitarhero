@@ -9,7 +9,7 @@ assert.equal(Object.keys(SCORES).length, 3, 'score-complete count must be review
 assert.equal(TARGET_SONGS.length, 27, 'modern target changes must be intentional and update the quality baseline');
 assert.equal(Object.keys(SONG_REVIEWS).length, Object.keys(SCORES).length,
   'every score-complete song needs an explicit human listening record');
-assert.equal(SONGS.filter((song) => songQuality(song).pilotReady).length, 1,
+assert.equal(SONGS.filter((song) => songQuality(song).pilotReady).length, 2,
   'pilot-ready baseline changes must be deliberate and follow a recorded listening pass');
 assert.equal(SONGS.filter((song) => songQuality(song).studentApproved).length, 0,
   'student-approved baseline changes must follow an observed learner session');
