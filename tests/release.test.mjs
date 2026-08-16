@@ -159,7 +159,7 @@ assert.match(songViewText, /traditional songs do not have one mandatory guitar s
   'song pages must distinguish a Campfire accompaniment from an official song strum');
 assert.match(songViewText, /cited source supports the form and harmony/,
   'song pages must explain exactly what their source verifies');
-assert.match(songViewText, /Sing this now/, 'verified timed arrangements must expose synchronized lyric cues');
+assert.match(songViewText, /Lyric \/ chord-change cue/, 'verified timed arrangements must expose synchronized lyric cues');
 assert.match(songViewText, /arrangement\.verification\.url/, 'verified timing claims must expose their evidence');
 assert.match(songViewText, /Checked:<\/strong> \$\{arrangement\.verification\.checked\}/, 'verified timing claims must show their review date');
 assert.match(songViewText, /Rehearse chord order/, 'mic chord rehearsal must not be mislabeled as a timed play-along');
