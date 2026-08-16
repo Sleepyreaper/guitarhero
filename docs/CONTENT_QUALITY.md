@@ -79,7 +79,7 @@ Do not call the catalog launch-ready until it has at least:
 1. He’s Got the Whole World in His Hands — finish the active four-line phrasing review.
 2. Amazing Grace — church/americana anchor; audit every syllable and dominant-chord change.
 3. Shady Grove — source-locked Hindman/WSU E-minor score complete; automated and independent playback QA pending.
-4. Kumbaya — source-locked Musica Viva 3/4 score complete; deployed timing and independent playback QA pending.
+4. Kumbaya — source-locked Musica Viva 3/4 score and deployed timing trace complete; independent playback QA pending.
 5. Will the Circle Be Unbroken — communal country/church chorus and first true boom-chuck test.
 6. What a Friend We Have in Jesus — slower vocal accompaniment and phrase-space test.
 
