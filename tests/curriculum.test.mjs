@@ -65,11 +65,18 @@ assert.deepEqual(stagedIds, ALL_LESSONS.map((lesson) => lesson.id),
   'the flexible stage plan must contain every lesson exactly once and preserve teaching order');
 assert.equal(new Set(stagedIds).size, ALL_LESSONS.length,
   'a lesson must not silently appear in two different learning stages');
-assert.equal(LEARNING_STAGES.length, 9, 'the shipped plan must cover the complete nine-stage path');
+assert.equal(LEARNING_STAGES.length, 12, 'the path must continue through three mastery-gated intermediate stages');
 for (const stage of LEARNING_STAGES) {
   assert.ok(stage.practice.length > 30, `${stage.id} needs an actionable daily practice recipe`);
   assert.ok(stage.checkpoint.length > 40, `${stage.id} needs a meaningful mastery checkpoint`);
   for (const id of stage.lessonIds) assert.equal(STAGE_BY_LESSON[id], stage, `${id} stage lookup drifted`);
+}
+
+const intermediate = LEARNING_STAGES.filter((stage) => stage.id.startsWith('i'));
+assert.deepEqual(intermediate.map((stage) => stage.id), ['i1', 'i2', 'i3']);
+for (const stage of intermediate) {
+  const tests = stage.lessonIds.map((id) => ALL_LESSONS.find((lesson) => lesson.id === id)?.proof).filter(Boolean);
+  assert.ok(tests.length, `${stage.id} must contain a performance test, not completion-only lessons`);
 }
 
 console.log('curriculum tests passed: song prerequisites and curated core-skill videos');

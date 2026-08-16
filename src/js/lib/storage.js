@@ -36,7 +36,7 @@ function save(state) {
 function defaults() {
   return {
     done: {}, lastLesson: null, practiceSeconds: {}, bestChanges: {}, routine: {},
-    profile: null, skillProofs: {}, feedback: {},
+    profile: null, skillProofs: {}, feedback: {}, favorites: {},
   };
 }
 
@@ -68,6 +68,7 @@ export function mergeStates(localState, remoteState) {
     practiceSeconds: mergeMaps(local.practiceSeconds, remote.practiceSeconds, (a, b) => Math.max(a || 0, b || 0)),
     bestChanges: mergeMaps(local.bestChanges, remote.bestChanges, (a, b) => Math.max(a || 0, b || 0)),
     skillProofs: mergeMaps(local.skillProofs, remote.skillProofs, (a, b) => Math.max(a || 0, b || 0)),
+    favorites: mergeMaps(local.favorites, remote.favorites, (a, b) => Math.max(a || 0, b || 0)),
     feedback: mergeMaps(local.feedback, remote.feedback, newestRecord),
     profile: newestRecord(local.profile, remote.profile),
     routine,
@@ -192,6 +193,18 @@ export function setSkillProof(skillId, proven = true) {
   else delete s.skillProofs[skillId];
   save(s);
   return proven;
+}
+
+export function isFavorite(songKey) {
+  return !!getState().favorites[songKey];
+}
+
+export function toggleFavorite(songKey) {
+  const s = getState();
+  if (s.favorites[songKey]) delete s.favorites[songKey];
+  else s.favorites[songKey] = Date.now();
+  save(s);
+  return !!s.favorites[songKey];
 }
 
 export function getFeedback(lessonId) {

@@ -42,6 +42,17 @@ function proofBlock(proof) {
     </section>`;
 }
 
+function stageGate(stage) {
+  const index = LEARNING_STAGES.indexOf(stage);
+  if (index <= 0) return { unlocked: true, missing: [] };
+  const previous = LEARNING_STAGES[index - 1];
+  const lessons = previous.lessonIds.map((id) => LESSON_BY_ID[id]);
+  const missingLessons = lessons.filter((lesson) => !isDone(lesson.id)).map((lesson) => lesson.title);
+  const missingProofs = lessons.filter((lesson) => lesson.proof && !isSkillProven(lesson.proof.id))
+    .map((lesson) => lesson.proof.title);
+  return { unlocked: !missingLessons.length && !missingProofs.length, previous, missing: [...missingLessons, ...missingProofs] };
+}
+
 function overview(root) {
   const stageCards = LEARNING_STAGES.map((stage) => {
     const lessons = stage.lessonIds.map((id) => LESSON_BY_ID[id]);
@@ -50,22 +61,25 @@ function overview(root) {
     const passed = proofs.filter((lesson) => isSkillProven(lesson.proof.id)).length;
     const next = lessons.find((lesson) => !isDone(lesson.id)) || lessons.at(-1);
     const pct = Math.round((completed / lessons.length) * 100);
+    const gate = stageGate(stage);
     return `
-      <article class="panel stage-card ${completed === lessons.length ? 'done' : ''}">
+      <article class="panel stage-card ${completed === lessons.length ? 'done' : ''} ${gate.unlocked ? '' : 'locked'}">
         <div class="stage-head"><div><p class="eyebrow">${stage.label}</p><h3>${stage.title}</h3></div>
           <span class="pill ${completed === lessons.length ? 'green' : ''}">${completed}/${lessons.length}</span></div>
         <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
         <p><strong>Practice:</strong> ${stage.practice}</p>
         <p class="muted"><strong>Ready when:</strong> ${stage.checkpoint}</p>
-        <div class="stage-foot"><span class="faint">${proofs.length ? `${passed}/${proofs.length} skill checks passed` : 'Song performance is the checkpoint'}</span>
-          <a class="btn" href="#/learn/${next.id}">${completed ? 'Review' : 'Continue'} →</a></div>
+        <div class="stage-foot"><span class="faint">${gate.unlocked
+          ? (proofs.length ? `${passed}/${proofs.length} performance tests passed` : 'Song performance is the checkpoint')
+          : `🔒 Pass ${gate.previous.title} first`}</span>
+          ${gate.unlocked ? `<a class="btn" href="#/learn/${next.id}">${completed ? 'Review' : 'Continue'} →</a>` : ''}</div>
       </article>`;
   }).join('');
   root.innerHTML = `
     <p class="eyebrow">Your path from zero</p>
     <h1>Learn guitar</h1>
-    <p class="lead">Nine flexible stages from first touch to accompanying a singer. “Week” is a pacing guide,
-    never a deadline: repeat a stage until its ready-when checkpoint feels dependable.</p>
+    <p class="lead">Twelve mastery stages from first touch through a complete intermediate campfire set.
+    “Week” is a pacing guide, never a deadline: pass the performance tests to unlock the next stage.</p>
     <div class="callout mastery-note">Progress has two layers: <strong>Completed</strong> means you worked through a lesson;
       <strong>skill passed</strong> means you demonstrated its checkpoint. Slow, honest progress wins.</div>
     <div class="stage-grid">${stageCards}</div>
@@ -81,12 +95,15 @@ function overview(root) {
             <span class="pill ${allDone ? 'green' : ''}">${u.lessons.filter((l) => isDone(l.id)).length}/${u.lessons.length}</span>
           </div>
           <p class="muted" style="margin:.2rem 0 .6rem">${u.blurb}</p>
-          ${u.lessons.map((l) => `
-            <a class="lesson-item" href="#/learn/${l.id}">
+          ${u.lessons.map((l) => {
+            const gate = stageGate(STAGE_BY_LESSON[l.id]);
+            return `
+            <a class="lesson-item ${gate.unlocked ? '' : 'locked'}" ${gate.unlocked ? `href="#/learn/${l.id}"` : 'aria-disabled="true"'}>
               <span class="lesson-check ${isDone(l.id) ? 'done' : ''}">${isDone(l.id) ? '✓' : ''}</span>
               <span class="lesson-title">${l.title}</span>
-              <span class="lesson-meta pill">${l.min} min</span>
-            </a>`).join('')}
+              <span class="lesson-meta pill">${gate.unlocked ? `${l.min} min` : '🔒'}</span>
+            </a>`;
+          }).join('')}
         </div>
       </section>`;
     }).join('')}
@@ -96,6 +113,15 @@ function overview(root) {
 function detail(root, lessonId) {
   const lesson = LESSON_BY_ID[lessonId];
   if (!lesson) return overview(root);
+  const gate = stageGate(STAGE_BY_LESSON[lessonId]);
+  if (!gate.unlocked) {
+    root.innerHTML = `<a class="back-link" href="#/learn">← Learning path</a>
+      <section class="panel locked-lesson"><p class="eyebrow">Locked for now</p><h1>${lesson.title}</h1>
+      <p>Pass <strong>${gate.previous.title}</strong> before starting this stage.</p>
+      <p class="muted">Still needed: ${gate.missing.join(' · ')}</p>
+      <a class="btn btn-primary" href="#/learn">Return to your current stage →</a></section>`;
+    return;
+  }
   setLastLesson(lessonId);
 
   const idx = ALL_LESSONS.findIndex((l) => l.id === lessonId);

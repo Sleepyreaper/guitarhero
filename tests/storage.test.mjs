@@ -11,6 +11,7 @@ const local = {
   practiceSeconds: { monday: 90 },
   bestChanges: { 'Em-G': 8 },
   skillProofs: { 'clean-em': 10 },
+  favorites: { 'song:amazing-grace': 12 },
   feedback: { localLesson: { rating: 'clear' }, sharedLesson: { rating: 'stuck', updatedAt: 10 } },
   profile: { genre: 'church', hand: 'left', updatedAt: 10 },
   routine: { monday: { warmup: true } },
@@ -20,6 +21,7 @@ const remote = {
   practiceSeconds: { monday: 60, sunday: 120 },
   bestChanges: { 'Em-G': 5, 'G-C': 4 },
   skillProofs: { 'clean-g': 15 },
+  favorites: { 'target:Fast Car:Tracy Chapman': 22 },
   feedback: { remoteLesson: { rating: 'stuck' }, sharedLesson: { rating: 'clear', updatedAt: 20 } },
   profile: { genre: 'country', hand: 'right', updatedAt: 20 },
   routine: { monday: { tune: true } },
@@ -30,6 +32,10 @@ assert.deepEqual(merged.done, { remoteLesson: 30, sharedLesson: 50, localLesson:
 assert.deepEqual(merged.practiceSeconds, { monday: 90, sunday: 120 });
 assert.deepEqual(merged.bestChanges, { 'Em-G': 8, 'G-C': 4 });
 assert.deepEqual(merged.skillProofs, { 'clean-g': 15, 'clean-em': 10 });
+assert.deepEqual(merged.favorites, {
+  'target:Fast Car:Tracy Chapman': 22,
+  'song:amazing-grace': 12,
+}, 'songbook favorites must follow the learner across devices');
 assert.deepEqual(merged.routine.monday, { tune: true, warmup: true });
 assert.deepEqual(merged.profile, remote.profile, 'the newest learning preferences should win across devices');
 assert.equal(merged.feedback.localLesson.rating, 'clear');

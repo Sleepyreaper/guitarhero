@@ -201,6 +201,9 @@ ol.steps li { margin: .3rem 0; }
 .stage-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem; }
 .stage-card { display: flex; flex-direction: column; gap: .55rem; box-shadow: none; }
 .stage-card.done { border-color: var(--green-dk); }
+.stage-card.locked, .lesson-item.locked { opacity: .62; }
+.lesson-item.locked { cursor: not-allowed; }
+.locked-lesson { max-width: 680px; margin: 1rem auto; border-color: var(--gold); }
 .stage-card p, .stage-card h3 { margin: 0; }
 .stage-head, .stage-foot { display: flex; justify-content: space-between; align-items: center; gap: .75rem; }
 .stage-head .eyebrow { margin-bottom: .15rem; }
@@ -219,6 +222,10 @@ ol.steps li { margin: .3rem 0; }
 .song-list { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
 .song-card { cursor: pointer; display: flex; flex-direction: column; gap: .4rem; }
 .song-card:hover { border-color: var(--rust); transform: translateY(-2px); }
+.song-card { position: relative; }
+.song-card > a { color: inherit; display: block; padding-right: 2.2rem; }
+.favorite-btn { position: absolute; z-index: 2; top: .7rem; right: .7rem; width: 42px; height: 42px; border-radius: 50%; cursor: pointer; border: 1px solid var(--line); background: var(--panel-2); color: var(--faint); font-size: 1.35rem; }
+.favorite-btn.liked, .favorite-detail.liked { color: #ff8873; border-color: var(--rust); }
 .chart { font-family: var(--mono); font-size: .95rem; }
 .chart .section { color: var(--rust-2); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-size: .8rem; display: block; margin-top: 1rem; margin-bottom: .2rem; }
 .chart .section:first-child { margin-top: 0; }
@@ -337,6 +344,15 @@ ol.steps li { margin: .3rem 0; }
 .sing-cue-wrap { margin: .9rem auto; padding: .75rem 1rem; max-width: 520px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel-2); }
 .sing-cue-wrap .eyebrow { margin: 0 0 .25rem; }
 .sing-cue { min-height: 1.4em; color: var(--text); font-size: clamp(1.25rem, 4vw, 2rem); font-weight: 800; line-height: 1.2; }
+.guided-rhythm { margin: 1rem auto; max-width: 620px; padding: .8rem; border-radius: 12px; background: var(--panel-2); border: 1px solid var(--line); }
+.rhythm-guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(46px, 1fr)); gap: .35rem; }
+.rhythm-guide-slot { min-height: 62px; display: grid; place-items: center; align-content: center; border-radius: 9px; border: 1px solid var(--line); color: var(--faint); transition: .08s linear; }
+.rhythm-guide-slot b { font-size: 1.35rem; line-height: 1; }
+.rhythm-guide-slot small { font-family: var(--mono); margin-top: .2rem; }
+.rhythm-guide-slot.hit { color: var(--gold); }
+.rhythm-guide-slot.air { border-style: dashed; opacity: .68; }
+.rhythm-guide-slot.current { color: #fff; opacity: 1; background: var(--rust); border-color: var(--rust); transform: translateY(-3px); box-shadow: 0 0 16px rgba(210,102,47,.45); }
+.strum-now { min-height: 1.3em; margin: .7rem 0 .2rem; color: var(--gold); font-weight: 800; }
 
 /* ---------- genre filter chips ---------- */
 .chip-row { display: flex; gap: .45rem; flex-wrap: wrap; margin: 0 0 1.2rem; }

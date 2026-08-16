@@ -11,9 +11,26 @@ import { chordPitchClasses, evaluateChord } from '../lib/chroma.js';
 import { isConfidentMatch, isGuidedMatch } from '../lib/confidence.js';
 import { listAudioInputs, activeDeviceId } from '../lib/devices.js';
 import { transposeFrequencies, transposeKey } from '../lib/capo.js';
+import { isFavorite, toggleFavorite } from '../lib/storage.js';
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const cap = (s) => s[0].toUpperCase() + s.slice(1);
+
+function rhythmGrid(meter, groove) {
+  const subdivisions = groove.events.some((event) => event.beat % 1) ? 2 : 1;
+  const labels = meter === 6
+    ? ['ONE', '&', 'a', 'TWO', '&', 'a']
+    : Array.from({ length: meter * subdivisions }, (_, i) => i % subdivisions
+      ? '&'
+      : String(Math.floor(i / subdivisions) + 1));
+  return labels.map((label, index) => {
+    const beat = index / subdivisions;
+    const event = groove.events.find((candidate) => candidate.beat === beat);
+    return { beat, label, event };
+  });
+}
+
+const strokeArrow = (event) => event?.kind === 'up' ? '↑' : event ? '↓' : '·';
 
 // Turn a token line into aligned chord-over-lyric HTML (monospace padding).
 function renderLine(tokens) {
@@ -46,25 +63,31 @@ const byLearningOrder = (a, b) => a.level - b.level || a.title.localeCompare(b.t
 
 function renderCards(genre) {
   const songs = [...SONGS]
-    .filter((s) => genre === 'all' || s.genres.includes(genre))
+    .filter((s) => genre === 'favorites' ? isFavorite(`song:${s.id}`) : genre === 'all' || s.genres.includes(genre))
     .sort(byLearningOrder);
   if (!songs.length) return `<p class="muted">No ${genre} songs in the play-along set yet.</p>`;
   return `<div class="grid song-list">
     ${songs.map((s) => `
-      <a class="panel song-card" href="#/songs/${s.id}">
+      <article class="panel song-card">
+        <button class="favorite-btn ${isFavorite(`song:${s.id}`) ? 'liked' : ''}" data-favorite="song:${s.id}" aria-label="${isFavorite(`song:${s.id}`) ? 'Remove from' : 'Add to'} favorites">${isFavorite(`song:${s.id}`) ? '♥' : '♡'}</button>
+        <a href="#/songs/${s.id}">
         <div class="tag-row"><span class="pill gold">${s.style}</span><span class="pill">${s.chords.length} chords</span></div>
         <h3 style="margin:.3rem 0 0">${s.title}</h3>
         <div class="faint" style="font-size:.85rem">${s.chords.join(' · ')} · ${s.time}</div>
-      </a>`).join('')}
+        </a>
+      </article>`).join('')}
   </div>`;
 }
 
 function renderTargets(genre) {
-  const items = TARGET_SONGS.filter((t) => genre === 'all' || t.genres.includes(genre));
+  const items = TARGET_SONGS.filter((t) => genre === 'favorites'
+    ? isFavorite(`target:${t.title}:${t.artist}`)
+    : genre === 'all' || t.genres.includes(genre));
   if (!items.length) return `<p class="muted">No ${genre} target songs yet.</p>`;
   return `<div class="grid song-list">
     ${items.map((t) => `
       <div class="panel song-card target-card">
+        <button class="favorite-btn ${isFavorite(`target:${t.title}:${t.artist}`) ? 'liked' : ''}" data-favorite="target:${t.title}:${t.artist}" aria-label="${isFavorite(`target:${t.title}:${t.artist}`) ? 'Remove from' : 'Add to'} favorites">${isFavorite(`target:${t.title}:${t.artist}`) ? '♥' : '♡'}</button>
         <div class="tag-row">${t.genres.map((g) => `<span class="pill gold">${cap(g)}</span>`).join('')}<span class="pill">${t.capo}</span></div>
         <h3 style="margin:.3rem 0 0">${t.title}</h3>
         <div class="faint" style="font-size:.82rem">${t.artist}</div>
@@ -84,6 +107,7 @@ function renderTargets(genre) {
 }
 
 function list(root, self) {
+  cleanup(self);
   const genre = self._genre || 'all';
   const countFor = (g) => SONGS.filter((s) => s.genres.includes(g)).length + TARGET_SONGS.filter((t) => t.genres.includes(g)).length;
   root.innerHTML = `
@@ -94,6 +118,7 @@ function list(root, self) {
 
     <div class="chip-row" id="genre-filter">
       <button class="chip-btn ${genre === 'all' ? 'sel' : ''}" data-genre="all">All (${SONGS.length + TARGET_SONGS.length})</button>
+      <button class="chip-btn ${genre === 'favorites' ? 'sel' : ''}" data-genre="favorites">♥ My songbook</button>
       ${GENRES.map((g) => `<button class="chip-btn ${genre === g ? 'sel' : ''}" data-genre="${g}">${cap(g)} (${countFor(g)})</button>`).join('')}
     </div>
 
@@ -107,12 +132,21 @@ function list(root, self) {
     <div id="target-cards">${renderTargets(genre)}</div>
   `;
 
-  root.querySelector('#genre-filter').addEventListener('click', (e) => {
+  self._listClick = (e) => {
+    const favorite = e.target.closest('[data-favorite]');
+    if (favorite) {
+      e.preventDefault();
+      toggleFavorite(favorite.dataset.favorite);
+      list(root, self);
+      return;
+    }
     const btn = e.target.closest('.chip-btn');
     if (!btn) return;
     self._genre = btn.dataset.genre;
     list(root, self);
-  });
+  };
+  root.addEventListener('click', self._listClick);
+  self._root = root;
 }
 
 function detail(root, id, self) {
@@ -134,6 +168,7 @@ function detail(root, id, self) {
       <span class="pill">${song.difficulty}</span>
     </div>
     <h1 style="margin-top:.4rem">${song.title}</h1>
+    <button class="btn favorite-detail ${isFavorite(`song:${song.id}`) ? 'liked' : ''}" id="song-favorite">${isFavorite(`song:${song.id}`) ? '♥ In my songbook' : '♡ Add to my songbook'}</button>
     <p class="faint" style="margin-top:0">Written in ${song.key} shapes · ${song.time}</p>
 
     <div class="callout" style="margin:.6rem 0 1.1rem">${song.note}</div>
@@ -191,6 +226,7 @@ function detail(root, id, self) {
   `;
 
   self._onClick = (e) => {
+    if (e.target.closest('#song-favorite')) { toggleFavorite(`song:${song.id}`); detail(root, song.id, self); return; }
     if (e.target.closest('#pa-start')) { playAlong(root, song, self); return; }
     if (e.target.closest('#sa-start')) { singAlong(root, song, self); return; }
     const btn = e.target.closest('.btn-play');
@@ -359,6 +395,7 @@ function singAlong(root, song, self) {
   const bars = arrangement.bars;
   const beatsPerBar = arrangement.meter;
   const groove = GROOVES[arrangement.groove];
+  const grid = rhythmGrid(beatsPerBar, groove);
   const lyricCues = arrangement.cues || [];
   let bpm = arrangement.bpm;
   let playing = false;
@@ -382,9 +419,15 @@ function singAlong(root, song, self) {
         <div id="sa-diagram"></div>
       </div>
       ${lyricCues.length ? `<div class="sing-cue-wrap">
-        <p class="eyebrow">Sing this now</p>
+        <p class="eyebrow">Lyric / chord-change cue</p>
         <div id="sa-cue" class="sing-cue">Get ready...</div>
       </div>` : ''}
+      <div class="guided-rhythm" aria-label="Live strumming grid">
+        <p class="eyebrow">Your hand right now</p>
+        <div id="sa-rhythm-grid" class="rhythm-guide-grid">${grid.map((slot) => `<span class="rhythm-guide-slot ${slot.event ? 'hit' : 'air'}" data-beat="${slot.beat}"><b>${strokeArrow(slot.event)}</b><small>${slot.label}</small></span>`).join('')}</div>
+        <p id="sa-action" class="strum-now">Count in first—then follow the orange square.</p>
+        <p class="faint">The hand follows the count; the lyric floats across it. Change chord on the displayed lyric cue—do not add one strum for every word.</p>
+      </div>
       <div class="bpm-display" style="font-size:2rem;margin-top:.6rem"><span id="sa-bpm">${bpm}</span> <small>BPM</small></div>
       <input id="sa-slider" type="range" min="50" max="130" value="${bpm}" style="max-width:280px" />
       <div class="btn-row" style="justify-content:center;margin-top:.6rem">
@@ -402,6 +445,15 @@ function singAlong(root, song, self) {
   const slider = root.querySelector('#sa-slider');
   const toggle = root.querySelector('#sa-toggle');
   const cueEl = root.querySelector('#sa-cue');
+  const rhythmSlots = [...root.querySelectorAll('.rhythm-guide-slot')];
+  const actionEl = root.querySelector('#sa-action');
+
+  const drawStroke = (beat, event, cue) => {
+    rhythmSlots.forEach((slot) => slot.classList.toggle('current', Number(slot.dataset.beat) === beat));
+    actionEl.textContent = event !== 'air'
+      ? `${event.kind === 'up' ? 'UP' : event.kind === 'bass' ? 'BASS' : event.kind === 'brush' ? 'BRUSH' : 'DOWN'} now · ${cue || 'hold the lyric phrase'}`
+      : `Air strum · keep moving · ${cue || 'hold the lyric phrase'}`;
+  };
 
   const drawUI = (activeIdx, activeChord, cue = null) => {
     progressEl.innerHTML = bars
@@ -458,6 +510,16 @@ function singAlong(root, song, self) {
           const chordName = chordAtBeat(bar, event.beat);
           scheduleStroke(event, chordName, nextBarTime + event.beat * seconds);
         });
+        grid.forEach((slot) => {
+          const event = barEvents.find((candidate) => candidate.beat === slot.beat);
+          const barCue = lyricCues[idx];
+          const cueParts = Array.isArray(barCue) ? barCue : [barCue];
+          const changeBeats = barChangeBeats(bar, beatsPerBar);
+          let cueSlot = 0;
+          changeBeats.forEach((changeBeat, candidate) => { if (changeBeat <= slot.beat) cueSlot = candidate; });
+          uiQueue.push({ time: nextBarTime + slot.beat * seconds, stroke: event || 'air', beat: slot.beat,
+            cue: cueParts[Math.min(cueSlot, cueParts.length - 1)] || null });
+        });
         const changeBeats = barChangeBeats(bar, beatsPerBar);
         barChords(bar).forEach((chordName, slot) => {
           const barCue = lyricCues[idx];
@@ -467,6 +529,7 @@ function singAlong(root, song, self) {
         });
         barIndex++;
       }
+      uiQueue.sort((a, b) => a.time - b.time);
       nextBarTime += beatsPerBar * seconds;
     }
     while (uiQueue.length && uiQueue[0].time <= ac.currentTime) {
@@ -475,7 +538,8 @@ function singAlong(root, song, self) {
         nameEl.textContent = 'Count in…';
         diagramEl.innerHTML = '';
         if (cueEl) cueEl.textContent = 'Get ready...';
-      } else drawUI(item.idx, item.chordName, item.cue);
+      } else if (item.stroke) drawStroke(item.beat, item.stroke, item.cue);
+      else drawUI(item.idx, item.chordName, item.cue);
     }
   };
 
@@ -510,6 +574,7 @@ function cleanup(self) {
   if (self._accompanist) { self._accompanist(); self._accompanist = null; }
   if (self._onClick && self._root) { self._root.removeEventListener('click', self._onClick); self._onClick = null; }
   if (self._onChange && self._root) { self._root.removeEventListener('change', self._onChange); self._onChange = null; }
+  if (self._listClick && self._root) { self._root.removeEventListener('click', self._listClick); self._listClick = null; }
 }
 
 export default {

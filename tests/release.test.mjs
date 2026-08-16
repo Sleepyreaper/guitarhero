@@ -100,6 +100,16 @@ assert.match(songViewText, /groove\.count/,
   'every song page must show the exact spoken count used by its generated groove');
 assert.match(songViewText, /dotted-quarter BPM/,
   'compound-meter tempo must identify the dotted-quarter pulse instead of showing an ambiguous BPM');
+assert.match(songViewText, /rhythmGrid\(beatsPerBar, groove\)/,
+  'sing-along must render the exact sounding and air-stroke grid used by playback');
+assert.match(songViewText, /The hand follows the count; the lyric floats across it/,
+  'word guidance must not falsely teach one strum per lyric word');
+assert.match(songViewText, /toggleFavorite/,
+  'play-along and target songs must support a persistent personal songbook');
+assert.match(lessonsViewText, /function stageGate\(stage\)/,
+  'the learning path must calculate mastery gates before exposing later stages');
+assert.match(lessonsViewText, /Pass.*first/,
+  'a direct URL to locked content must explain which prior stage must be passed');
 assert.match(chordsViewText, /evaluateChord\(judge\.profile\(\), expectedPCs/,
   'Coach target-note coverage must not flicker with a single microphone frame');
 assert.match(songViewText, /const confident = isConfidentMatch\(best, OPEN_SIM_OK\)/,

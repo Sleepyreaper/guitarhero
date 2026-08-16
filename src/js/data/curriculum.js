@@ -159,6 +159,7 @@ export const CURRICULUM = [
         ] },
       { id: 'l2-4', title: 'SONG: He’s Got the Whole World', min: 10, songId: 'whole-world',
         objective: 'Back a joyful church song with only G and D7.',
+        proof: { id: 'lyric-change-verse', title: 'I can follow lyric-timed changes', check: 'Play one complete verse with the backing, then repeat it without stopping while changing on the displayed lyric cues.' },
         steps: [
           'The first line stays on G, the second moves to D7, and the third returns to G.',
           'On the last line, D7 resolves home to G. Keep four down-strums per bar.',
@@ -207,6 +208,7 @@ export const CURRICULUM = [
         ] },
       { id: 'l3-4', title: 'SONG: Oh! Susanna', min: 10, songId: 'oh-susanna',
         objective: 'A quick 2/4 country pulse through a complete verse excerpt and chorus.',
+        proof: { id: 'three-meters', title: 'I can demonstrate three different meters', check: 'Play four bars each of straight 4/4, bass-brush 2/4, and bass-brush-brush 3/4 without turning them into the same strum.' },
         steps: [
           'Count 1-2: play a bass note on 1 and a short chord brush on 2.',
           'Notice that the verse uses G and D7; C arrives to lift the start of the chorus.',
@@ -242,6 +244,7 @@ export const CURRICULUM = [
         ] },
       { id: 'l4-3', title: 'SONG: Home on the Range', min: 12, songId: 'home-on-the-range', chords: ['A7'],
         objective: 'Play a complete country waltz and turn A major into A7 with one finger lift.',
+        proof: { id: 'country-waltz', title: 'I can hold a complete country waltz', check: 'Play one verse with a strong beat 1, quiet beats 2–3, and uninterrupted A7→D7 and D7→G changes.' },
         steps: [
           'Make A7 from A major by lifting the finger on the G string: x02020.',
           'Practice A7→D7 slowly; that country pull carries “antelope play.”',
@@ -272,6 +275,7 @@ export const CURRICULUM = [
         ] },
       { id: 'l5-3', title: 'SONG: Simple Gifts (try a capo)', min: 10, songId: 'simple-gifts',
         objective: 'Play a bright folk tune and experiment with a capo.',
+        proof: { id: 'capo-two-keys', title: 'I can move a song into two keys', check: 'Play the same verse open and with capo 2, name both sounding keys, and retune after moving the capo.' },
         steps: [
           'Play it open first. Then put a capo on fret 2 and play the same shapes.',
           'Notice it’s the same song, a bit higher — great for singing along.',
@@ -300,6 +304,7 @@ export const CURRICULUM = [
         ] },
       { id: 'l6-3', title: 'SONG: Amazing Grace, fingerpicked', min: 12, songId: 'amazing-grace',
         objective: 'Bring fingerpicking to a song you already know.',
+        proof: { id: 'fingerpick-verse', title: 'I can fingerpick a complete verse', check: 'Keep bass on beat 1 and two quieter upper notes on beats 2–3 through one complete Amazing Grace verse.' },
         steps: [
           'Use one three-note cycle per BAR: bass on beat 1, a high string on beat 2, and a middle string on beat 3.',
           'Count aloud “1, 2, 3.” Protect beat 1 and make beats 2–3 quieter; change chords before the next beat 1.',
@@ -362,6 +367,95 @@ export const CURRICULUM = [
         ] },
     ],
   },
+  {
+    id: 'u8',
+    title: 'Intermediate I · Groove control',
+    blurb: 'Stop sounding like an exercise: shape accents, rests, dynamics, and recovery around a singer.',
+    lessons: [
+      { id: 'l8-1', title: 'Accents, air strums, and rests', min: 12, tool: '#/strum',
+        objective: 'Keep the hand moving while choosing which strokes should actually sound.',
+        proof: { id: 'accent-grid', title: 'I can keep the grid through rests', check: 'At 70 BPM, play eight bars of down-up motion with quiet air strokes, accent beats 2 and 4, and never pause the hand.' },
+        steps: [
+          'Count 1-and-2-and-3-and-4-and while the hand moves down on numbers and up on every “and.”',
+          'An air strum is a timed motion that misses the strings. It is not a pause.',
+          'Accent by slightly increasing speed through the strings—not by squeezing the pick or swinging from the elbow.',
+          'Record yourself for 20 seconds. The pulse should remain obvious even when several motions are silent.',
+        ] },
+      { id: 'l8-2', title: 'Dynamics that follow a song', min: 10,
+        objective: 'Create a verse, lift, and ending without changing tempo.',
+        steps: [
+          'Verse: smaller motion and fewer strings. Chorus: wider brushes, never a faster pulse.',
+          'Build over four bars, then drop immediately to leave room for the next lyric.',
+          'End by landing on the home chord on beat 1 and letting it ring.',
+        ] },
+      { id: 'l8-3', title: 'PERFORMANCE: Whole World, two ways', min: 14, songId: 'whole-world',
+        objective: 'Turn a known beginner song into controlled accompaniment.',
+        proof: { id: 'dynamic-song', title: 'I can shape a complete performance', check: 'Play one quiet verse, one stronger repeat, recover from one intentional missed chord without stopping, and finish together.' },
+        steps: [
+          'First use simple quarter-note downs and protect every lyric change.',
+          'Repeat with down, down-up, down, down-up and a light accent on 2 and 4.',
+          'Make the second pass larger, then land on the final G and let it ring.',
+        ] },
+    ],
+  },
+  {
+    id: 'u9',
+    title: 'Intermediate II · Country engine',
+    blurb: 'Alternating bass, walk-ups, and fills that make three chords sound like a band.',
+    lessons: [
+      { id: 'l9-1', title: 'Alternating bass without looking', min: 12, tool: '#/metronome',
+        objective: 'Hit the correct bass strings while the chord hand prepares its next move.',
+        steps: [
+          'On G alternate low E and D; on C alternate A and D; on D alternate D and A.',
+          'Play bass on 1 and 3, short brushes on 2 and 4. Start at 60 BPM.',
+          'Practice the picking hand alone on muted strings, then add one chord at a time.',
+        ] },
+      { id: 'l9-2', title: 'Walk into the next chord', min: 12,
+        objective: 'Use short bass motion only where it leads somewhere.',
+        steps: [
+          'For G→C, walk low E open–2–3, then land on the C bass note on the next beat 1.',
+          'For D7→G, use the open D-string pulse, then approach the low G deliberately.',
+          'A walk-up replaces the final beats of a bar; it does not add extra time.',
+        ] },
+      { id: 'l9-3', title: 'PERFORMANCE: Red River Valley', min: 16, songId: 'red-river-valley',
+        objective: 'Support long country phrases with alternating bass and one tasteful fill.',
+        proof: { id: 'country-engine', title: 'My country rhythm carries the song', check: 'Play a complete verse with alternating bass, add no more than one fill between vocal lines, and return to beat 1 in time.' },
+        steps: [
+          'Play the whole form once with plain boom-chuck before adding anything.',
+          'Add alternating bass only where each chord feels secure.',
+          'Choose one breath after a lyric line for a short fill. Silence everywhere else is part of the arrangement.',
+        ] },
+    ],
+  },
+  {
+    id: 'u10',
+    title: 'Intermediate III · Build a complete arrangement',
+    blurb: 'Count in, intro, vocal backing, fills, dynamics, recovery, and a deliberate ending.',
+    lessons: [
+      { id: 'l10-1', title: 'Arrange, don’t decorate', min: 10,
+        objective: 'Plan a part that has a beginning, middle, and ending.',
+        steps: [
+          'Write five decisions: key/capo, count-in, intro, verse groove, ending.',
+          'Choose one signature idea—alternating bass, fingerpicking, or a melody intro. Do not stack all three.',
+          'Mark every place the singer breathes. Those are possible fill spaces, not mandatory fill spaces.',
+        ] },
+      { id: 'l10-2', title: 'Rehearse failure on purpose', min: 10,
+        objective: 'Recover musically instead of restarting.',
+        steps: [
+          'Intentionally miss one chord, keep the hand moving, and join at the next bar.',
+          'If lost, play the home chord quietly until you recognize the next phrase.',
+          'Practice giving a clear count-in and eye contact for the final chord.',
+        ] },
+      { id: 'l10-3', title: 'FINAL: Your three-song campfire set', min: 25, songId: 'will-the-circle',
+        objective: 'Perform three contrasting songs as an acoustic accompanist.',
+        proof: { id: 'three-song-set', title: 'I passed the Campfire intermediate set', check: 'Perform one 4/4 song, one waltz or 6/8 song, and one country boom-chuck song. Count each in, keep going after mistakes, and end deliberately.' },
+        steps: [
+          'Favorite three songs in the Songbook: one familiar, one challenging, and one your singer loves.',
+          'Write the key/capo, groove, first chord, and ending for each.',
+          'Perform all three without stopping between mistakes. Review the recording for tempo, changes, dynamics, and space.',
+        ] },
+    ],
+  },
 ];
 
 export const ALL_LESSONS = CURRICULUM.flatMap((u) => u.lessons.map((l) => ({ ...l, unitId: u.id })));
@@ -406,6 +500,18 @@ export const LEARNING_STAGES = [
     lessonIds: ['l7-1', 'l7-2', 'l7-3', 'l7-lead', 'l7-4', 'l7-5'],
     practice: 'Protect time · test vocal key · leave space · one fill · count-in and ending',
     checkpoint: 'Count in, support one complete vocal, recover from a miss, and end together.' },
+  { id: 'i1', label: 'Intermediate 1', title: 'Control the groove',
+    lessonIds: ['l8-1', 'l8-2', 'l8-3'],
+    practice: 'Continuous motion · accents and air strokes · quiet/loud repeats · intentional recovery',
+    checkpoint: 'Keep the subdivision through rests, shape two dynamic levels, recover without stopping, and finish together.' },
+  { id: 'i2', label: 'Intermediate 2', title: 'Build the country engine',
+    lessonIds: ['l9-1', 'l9-2', 'l9-3'],
+    practice: 'Muted-string bass targeting · alternating bass · one walk-up · one lyric-space fill',
+    checkpoint: 'Carry a full country verse with alternating bass and return from one tasteful fill exactly on beat 1.' },
+  { id: 'i3', label: 'Intermediate 3', title: 'Perform a three-song set',
+    lessonIds: ['l10-1', 'l10-2', 'l10-3'],
+    practice: 'Plan keys and intros · rehearse recovery · perform three contrasting favorites without restarting',
+    checkpoint: 'Count in, accompany, recover, shape dynamics, use space, and deliberately end three contrasting songs.' },
 ];
 
 export const STAGE_BY_LESSON = Object.fromEntries(
