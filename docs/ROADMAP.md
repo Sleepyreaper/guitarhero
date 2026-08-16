@@ -6,7 +6,7 @@
 - [x] **Chord library** (big-8 open chords + worship/folk extras) with SVG diagrams + "hear it" strum
 - [x] **Metronome** — lookahead scheduler, tap tempo, beats-per-bar, visual beats
 - [x] **Curriculum** — 8 units, 34 lessons, song-first, progress, proof checks, and streak tracking
-- [x] **Songs** — 23 source-checked public-domain play-along charts with verified forms and
+- [x] **Songs** — 21 score-certified public-domain play-along charts with verified forms and
       lyric-synchronized chord cues, genre-tagged
       (country/folk/americana/church), sorted easiest→hardest, with per-song strum patterns +
       a genre filter

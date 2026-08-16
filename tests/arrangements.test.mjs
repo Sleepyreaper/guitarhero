@@ -143,11 +143,16 @@ assert.match(ARRANGEMENTS.clementine.reduction, /B7\/D-sharp → Em → A7 turna
 assert.deepEqual(SONGS.find((song) => song.id === 'clementine').body[1].lines[2].map(({ c }) => c), ['D7'],
   'the chart must not reintroduce the old unsourced G change on forever');
 assert.equal(ARRANGEMENTS.clementine.timing, 'verified');
-assert.deepEqual(ARRANGEMENTS['hush-little-baby'].bars,
-  ['G', 'D7', 'D7', 'G', 'G', 'D7', 'D7', 'G']);
 assert.equal(ARRANGEMENTS['hush-little-baby'].meter, 2);
 assert.equal(ARRANGEMENTS['hush-little-baby'].groove, 'lullabyTwo');
 assert.equal(ARRANGEMENTS['hush-little-baby'].timing, 'verified');
+assert.equal(ARRANGEMENTS['hush-little-baby'].cues.length, 16);
+assert.deepEqual(ARRANGEMENTS['hush-little-baby'].bars, [
+  'G', 'G', 'D7', 'D7', 'D7', 'D7', 'G', 'G',
+  'G', 'G', 'D7', 'D7', 'D7', 'D7', 'G', 'G',
+], 'Hush Little Baby must preserve all sixteen measures of the selected score');
+assert.match(SONGS.find((song) => song.id === 'hush-little-baby').body[0].lines[1][0].t, /Mama/,
+  'Hush Little Baby must use one consistent lyric variant');
 assert.equal(SONGS.find((song) => song.id === 'kumbaya').time, '3/4 (waltz)');
 assert.deepEqual(SONGS.find((song) => song.id === 'kumbaya').chords, ['G', 'C', 'D', 'D7']);
 assert.deepEqual(ARRANGEMENTS.kumbaya.bars.map((bar) => barChords(bar)), [
@@ -173,13 +178,9 @@ assert.deepEqual(ARRANGEMENTS['twinkle-twinkle'].bars, [
 assert.match(ARRANGEMENTS['twinkle-twinkle'].reduction, /G-major and G7 colors into one beginner shape/,
   'Twinkle must disclose its source-harmony simplification');
 assert.equal(ARRANGEMENTS['twinkle-twinkle'].timing, 'verified');
-assert.deepEqual(ARRANGEMENTS['if-youre-happy'].bars, ['G', 'D', 'D', 'G', 'C', 'G', 'D', 'G'],
-  'If You Are Happy must use its complete eight-bar three-chord form');
-assert.equal(ARRANGEMENTS['if-youre-happy'].groove, 'actionClap');
 assert.deepEqual(GROOVES.actionClap.barEvents.map((events) => events ? events.map((event) => event.beat) : null),
   [null, [0, 1], null, [0, 1], null, null, null, [0, 1]],
   'action bars 2, 4, and 8 must leave beats 3 and 4 silent for claps');
-assert.equal(ARRANGEMENTS['if-youre-happy'].timing, 'verified');
 assert.equal(SONGS.find((song) => song.id === 'old-macdonald').time, '2/2 (cut time)');
 assert.deepEqual(SONGS.find((song) => song.id === 'old-macdonald').chords, ['G', 'C', 'D7']);
 assert.equal(ARRANGEMENTS['old-macdonald'].meter, 2);
@@ -263,13 +264,18 @@ assert.deepEqual(ARRANGEMENTS['simple-gifts'].pickup, { beat: 3, text: "'Tis the
 assert.deepEqual(barChangeBeats(ARRANGEMENTS['simple-gifts'].bars[11], 4), [0, 2]);
 assert.deepEqual(barChangeBeats(ARRANGEMENTS['simple-gifts'].bars[15], 4), [0, 2]);
 assert.deepEqual(ARRANGEMENTS['streets-of-laredo'].bars, [
-  'G', 'G', 'G', 'D7', 'G', 'G', 'G', 'D7',
-  'G', 'G', 'G', 'D7', 'G', 'G', 'D7', 'G',
-], 'Streets of Laredo must use its complete sixteen-bar cowboy-waltz verse');
-assert.deepEqual(SONGS.find((song) => song.id === 'streets-of-laredo').chords, ['G', 'D7']);
+  'G', 'C', 'G', 'D7', 'Em', 'D', 'G', 'D7',
+  'G', 'C', 'G', 'D', 'Em', 'Am', 'D7', 'G',
+  'G', 'G', 'C', 'C', 'G', 'Em', 'Am', 'D7',
+  'G', 'G7', 'C', 'C', 'G', 'G', 'D7', 'G',
+], 'Streets of Laredo must preserve the complete CC0 verse and chorus');
+assert.deepEqual(SONGS.find((song) => song.id === 'streets-of-laredo').chords,
+  ['G', 'C', 'D7', 'Em', 'D', 'Am', 'G7']);
 assert.equal(ARRANGEMENTS['streets-of-laredo'].meter, 3);
 assert.equal(ARRANGEMENTS['streets-of-laredo'].timing, 'verified');
-assert.equal(ARRANGEMENTS['streets-of-laredo'].cues.length, 16);
+assert.equal(ARRANGEMENTS['streets-of-laredo'].cues.length, 32);
+assert.deepEqual(ARRANGEMENTS['streets-of-laredo'].pickup, { beat: 2, text: 'As… (one-beat pickup)' });
+assert.equal(SONGS.find((song) => song.id === 'streets-of-laredo').body.length, 2);
 assert.deepEqual(ARRANGEMENTS['will-the-circle'].bars, [
   'G', 'G', 'C', 'G', 'C', 'G', 'G', 'G',
 ], 'Will the Circle must use the complete eight-bar Habershon/Gabriel refrain reduction');
@@ -305,33 +311,31 @@ assert.equal(ARRANGEMENTS['amazing-grace'].timing, 'verified');
 assert.equal(ARRANGEMENTS['amazing-grace'].cues.length, 16);
 assert.deepEqual(ARRANGEMENTS['home-on-the-range'].bars, [
   'G', 'G', 'C', 'C', 'G', 'A7', 'D7', 'D7',
+  'G', 'G', 'C', 'C', 'G', 'D7', 'G', 'D7',
+  'G', 'D7', 'G', 'G', 'G', 'A7', 'D7', 'D7',
   'G', 'G', 'C', 'C', 'G', 'D7', 'G', 'G',
-], 'Home on the Range must contain its complete sixteen-bar first verse');
+], 'Home on the Range must contain its complete CC0 verse and chorus');
 assert.deepEqual(SONGS.find((song) => song.id === 'home-on-the-range').chords, ['G', 'C', 'A7', 'D7']);
 assert.equal(ARRANGEMENTS['home-on-the-range'].timing, 'verified');
-assert.equal(ARRANGEMENTS['home-on-the-range'].cues.length, 16);
-assert.deepEqual(ARRANGEMENTS['house-of-the-rising-sun'].bars, [
-  'Am', 'C', 'D', 'Fmaj7', 'Am', 'C', 'E', 'E',
-  'Am', 'C', 'D', 'Fmaj7', 'Am', 'E', 'Am', 'E',
-], 'House of the Rising Sun must retain its complete sixteen-bar verse');
-assert.equal(ARRANGEMENTS['house-of-the-rising-sun'].timing, 'verified');
-assert.equal(ARRANGEMENTS['house-of-the-rising-sun'].cues.length, 16);
-assert.deepEqual(SONGS.find((song) => song.id === 'house-of-the-rising-sun').body[0].lines[3].map(({ c }) => c),
-  ['Am', 'E', 'Am'], 'the final lyric line must begin on Am and resolve through E to Am');
+assert.equal(ARRANGEMENTS['home-on-the-range'].cues.length, 32);
+assert.deepEqual(ARRANGEMENTS['home-on-the-range'].pickup, { beat: 2, text: 'Oh… (one-beat pickup)' });
+assert.equal(SONGS.find((song) => song.id === 'home-on-the-range').body.length, 2);
 assert.deepEqual(GROOVES.sixEight.events.map(({ string, fromTop }) => string ?? -fromTop), [0, 1, 2, -1, -2, -3],
   'the 6/8 arpeggio must travel bass-to-treble and back');
-assert.deepEqual(ARRANGEMENTS['scarborough-fair'].bars, [
-  'Am', 'Am', 'Em', 'Am', 'Am', 'Am', 'Am', 'D', 'Am', 'Am', 'Am', 'Em', 'Am', 'G', 'G',
-  'Am', 'G', 'Em', 'Am', 'Am', 'Am', 'Am',
-], 'Scarborough Fair must use its complete twenty-two-bar beginner verse');
-assert.deepEqual(SONGS.find((song) => song.id === 'scarborough-fair').chords, ['Am', 'Em', 'D', 'G']);
+assert.deepEqual(ARRANGEMENTS['scarborough-fair'].bars.map((bar) => barChords(bar)), [
+  ['Am'], ['Am'], ['G'], ['Am'], ['C'], ['Am'], ['C', 'D'], ['Am'],
+  ['Am'], ['Am'], ['C'], ['C', 'Am'], ['G'], ['Am'], ['G', 'Am'],
+  ['G', 'Am', 'G'], ['Am'], ['Am'],
+], 'Scarborough Fair must preserve the complete eighteen-bar CC0 verse and modal changes');
+assert.deepEqual(SONGS.find((song) => song.id === 'scarborough-fair').chords, ['Am', 'G', 'C', 'D']);
 assert.equal(ARRANGEMENTS['scarborough-fair'].timing, 'verified');
-assert.equal(ARRANGEMENTS['scarborough-fair'].cues.length, 22);
+assert.equal(ARRANGEMENTS['scarborough-fair'].cues.length, 18);
+assert.deepEqual(barChangeBeats(ARRANGEMENTS['scarborough-fair'].bars[6], 3), [0, 1]);
+assert.deepEqual(barChangeBeats(ARRANGEMENTS['scarborough-fair'].bars[15], 3), [0, 1, 2]);
 assert.deepEqual(GROOVES.fingerWaltz.events.map(({ kind, fromTop }) => kind === 'bass' ? 'bass' : fromTop),
   ['bass', 1, 2], 'the finger-waltz pattern must adapt its high notes to every chord shape');
-assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 23,
+assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 21,
   'only independently checked arrangements may claim lyric-synchronized timing');
-assert.equal(ARRANGEMENTS['house-of-the-rising-sun'].groove, 'sixEight');
 assert.ok(Object.values(ARRANGEMENTS).some((item) => item.bars.some((bar) => barChords(bar).length > 1)),
   'arrangements must retain at least one explicit mid-bar chord change');
 assert.ok(Object.values(GROOVES).every((groove) => groove.count),

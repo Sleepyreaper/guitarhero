@@ -77,7 +77,7 @@ run). Because it builds from source, after a `git pull` you rebuild with
   SVG diagram and a "hear it" strum so you know what a clean chord should sound like.
 - **🥁 Metronome** — sample-accurate Web Audio scheduler with tap tempo and visual beats.
 - **📚 Learn** — an 8-unit, 34-lesson song-first curriculum (see `docs/PEDAGOGY.md`) with progress, skill checks, and streaks.
-- **🎵 Songs** — 23 source-checked, lyric-synchronized public-domain play-alongs plus copyright-safe modern-song targets.
+- **🎵 Songs** — 21 score-certified, lyric-synchronized public-domain play-alongs plus copyright-safe modern-song targets.
 
 ## Project layout
 

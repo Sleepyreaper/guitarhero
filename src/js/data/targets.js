@@ -20,6 +20,9 @@ export const TARGET_SONGS = [
   { title: 'Girl Crush', artist: 'Little Big Town', genres: ['country'],
     chords: ['G', 'C', 'D', 'Em'], capo: 'Capo — to taste',
     why: 'A slow-burn country vocal that lets a singer soar.' },
+  { title: 'House of the Rising Sun', artist: 'The Animals', genres: ['folk', 'americana'],
+    chords: ['Am', 'C', 'D', 'Fmaj7', 'E'], capo: 'No capo',
+    why: 'The traditional ballad became an iconic recorded arrangement; learn that specific version from a licensed chart rather than mixing it into Campfire’s public-domain songbook.' },
 
   // ----- Sing with the kids -----
   { title: 'You Are My Sunshine', artist: 'Jimmie Davis (traditional country)', genres: ['kids', 'country'],

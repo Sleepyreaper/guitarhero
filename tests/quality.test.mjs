@@ -4,9 +4,9 @@ import { TARGET_SONGS } from '../src/js/data/targets.js';
 import { SCORES } from '../src/js/data/scores.js';
 import { SONG_REVIEWS, guidedTarget, songQuality } from '../src/js/data/quality.js';
 
-assert.equal(SONGS.length, 23, 'catalog changes must be intentional and update the quality baseline');
-assert.equal(Object.keys(SCORES).length, 17, 'score-complete count must be reviewed when it changes');
-assert.equal(TARGET_SONGS.length, 27, 'modern target changes must be intentional and update the quality baseline');
+assert.equal(SONGS.length, 21, 'catalog changes must be intentional and update the quality baseline');
+assert.equal(Object.keys(SCORES).length, 21, 'score-complete count must be reviewed when it changes');
+assert.equal(TARGET_SONGS.length, 28, 'modern target changes must be intentional and update the quality baseline');
 assert.equal(Object.keys(SONG_REVIEWS).length, Object.keys(SCORES).length,
   'every score-complete song needs explicit playback, expert, and student review records');
 assert.equal(SONGS.filter((song) => songQuality(song).pilotReady).length, 3,

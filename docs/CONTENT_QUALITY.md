@@ -104,5 +104,18 @@ Do not call the catalog launch-ready until it has at least:
 15. Swing Low, Sweet Chariot — complete CC0 anthology chorus, verse, literal D.C. al Fine chorus return, disclosed G/C/D7/Em reduction, and deployed 24-bar timing trace complete; independent playback QA pending.
 16. Simple Gifts — complete CC0 anthology Brackett stanza, one-beat pickup, all sixteen bars of G/C/D harmony, and deployed 16-bar timing trace complete; independent playback QA pending.
 
+## Fourth certification batch
+
+17. Hush, Little Baby — complete selected sixteen-bar Singing Bell score, consistent “Mama” lyric variant, and source-locked G/D7 transposition; deployed timing trace pending.
+18. Streets of Laredo — complete CC0 anthology verse and chorus, one-beat pickup, and disclosed seven-open-shape transposition of the traditional harmony; deployed timing trace pending.
+19. Home on the Range — complete CC0 anthology verse and chorus, literal tied phrases, one-beat pickup, and disclosed four-open-shape reduction; deployed timing trace pending.
+20. Scarborough Fair — complete eighteen-bar CC0 anthology verse, literal rest and tied ending, and disclosed four-open-shape modal reduction; deployed timing trace pending.
+
+The embedded catalog now contains 21 songs, and every one has a literal score. “If You’re Happy
+and You Know It” was removed because the available publication history did not meet Campfire’s
+public-domain evidence bar. “House of the Rising Sun” remains available as an outbound goal for
+the Animals recording, but its famous 6/8 arpeggio arrangement is no longer presented as generic
+public-domain teaching content.
+
 Row, Row, Row Your Boat remains valuable for 6/8 and rounds, but it is not a lead teen-engagement
 song. It should be certified as a teaching tool, not used as the beta’s headline repertoire.

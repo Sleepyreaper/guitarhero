@@ -8,6 +8,7 @@ const certified = [
   'oh-susanna', 'red-river-valley', 'swing-low', 'simple-gifts',
   'whole-world', 'amazing-grace', 'shady-grove', 'kumbaya',
   'will-the-circle', 'what-a-friend',
+  'hush-little-baby', 'streets-of-laredo', 'home-on-the-range', 'scarborough-fair',
 ];
 assert.deepEqual(Object.keys(SCORES), certified, 'the first score-driven release must stay intentionally auditable');
 
@@ -274,6 +275,47 @@ assert.deepEqual(SCORES['what-a-friend'].melody.filter((event) => event.lyric).m
   'All', 'be-', 'cause', 'we', 'do', 'not', 'car-', 'ry',
   'Ev-', '’ry', 'thing', 'to', 'God', 'in', 'prayer—',
 ], 'What a Friend must keep every first-verse syllable on the literal CONVERSE melody');
+assert.equal(SCORES['hush-little-baby'].totalBeats, 32);
+assert.equal(SCORES['hush-little-baby'].melody[0].beat, 0);
+assert.equal(SCORES['hush-little-baby'].melody.at(-1).beat + SCORES['hush-little-baby'].melody.at(-1).duration, 32,
+  'Hush Little Baby must preserve all sixteen 2/4 source measures');
+assert.deepEqual(SCORES['hush-little-baby'].melody.filter((event) => event.lyric).map((event) => event.lyric), [
+  'Hush,', 'lit-', 'tle', 'ba-', '-by,', "don't", 'say', 'a', 'word,',
+  'Ma-', "-ma's", 'gon-', '-na', 'buy', 'you', 'a', 'mock-', '-ing', 'bird.', 'And',
+  'if', 'that', 'mock-', '-ing', 'bird', "don't", 'sing,',
+  'Ma-', "-ma's", 'gon-', '-na', 'buy', 'you', 'a', 'dia-', '-mond', 'ring.',
+], 'Hush Little Baby must keep the selected Mama/don’t-sing lyric variant on the literal melody');
+
+assert.equal(SCORES['streets-of-laredo'].source.dataUrl,
+  'https://dataverse.lib.virginia.edu/api/access/datafile/3866');
+assert.equal(SCORES['streets-of-laredo'].totalBeats, 96);
+assert.equal(SCORES['streets-of-laredo'].melody[0].beat, -1);
+assert.equal(SCORES['streets-of-laredo'].melody.at(-1).beat + SCORES['streets-of-laredo'].melody.at(-1).duration, 95,
+  'Streets of Laredo must leave the final beat for the next loop pickup');
+assert.equal(SCORES['streets-of-laredo'].melody.filter((event) => event.lyric).map((event) => event.lyric).join(' '),
+  'As I walked out in the streets of Lar- e- do, As I walked out in Lar- e- do one day, I spied a young cow- boy all wrapped in white lin- en, All wrapped in white lin- en and cold as the clay. Then beat the drum slow- -ly, play the fife low- -ly, Play the dead march as you car- -ry me a- -long; Take me to the green val- -ley, lay the sod o’er me, I’m a young cow- boy, and I know I’ve done wrong.');
+
+assert.equal(SCORES['home-on-the-range'].source.dataUrl,
+  'https://dataverse.lib.virginia.edu/api/access/datafile/3773');
+assert.equal(SCORES['home-on-the-range'].totalBeats, 96);
+assert.equal(SCORES['home-on-the-range'].melody[0].beat, -1);
+assert.equal(SCORES['home-on-the-range'].melody.at(-1).beat + SCORES['home-on-the-range'].melody.at(-1).duration, 95,
+  'Home on the Range must leave the final beat for the next loop pickup');
+assert.equal(SCORES['home-on-the-range'].melody.filter((event) => event.lyric).map((event) => event.lyric).join(' '),
+  'Oh, give me a home where the buf- -fa- -lo roam, And the deer and the an- -te- -lope play, Where sel- -dom is heard a dis- -cour- -ag- -ing word, And the skies are not clou- -dy all day. Home, home on the range, Where the deer and the an- -te- -lope play, And sel- -dom is heard a dis- -cour- -ag- -ing word, And the skies are not clou- -dy all day.');
+
+assert.equal(SCORES['scarborough-fair'].source.dataUrl,
+  'https://dataverse.lib.virginia.edu/api/access/datafile/4275');
+assert.equal(SCORES['scarborough-fair'].totalBeats, 54);
+assert.equal(SCORES['scarborough-fair'].melody[0].beat, 0);
+assert.equal(SCORES['scarborough-fair'].melody.at(-1).beat + SCORES['scarborough-fair'].melody.at(-1).duration, 54,
+  'Scarborough Fair must preserve its tied two-bar ending and complete eighteen-bar form');
+assert.deepEqual(SCORES['scarborough-fair'].melody.filter((event) => event.lyric).map((event) => event.lyric), [
+  'Are', 'you', 'going', 'to', 'Scar-', '-bor-', '-ough', 'Fair?',
+  'Par-', '-sley,', 'sage,', 'rose-', '-mar-', '-y,', 'and', 'thyme.',
+  'Re-', '-mem-', '-ber', 'me', 'to', 'one', 'who', 'lives', 'there,',
+  'she', 'once', 'was', 'a', 'true', 'love', 'of', 'mine.',
+], 'Scarborough Fair must preserve every syllable of the selected CC0 verse');
 assert.equal(Math.round(midiFrequency(69)), 440);
 
 console.log('score tests passed: certified melodies, pickups, lyrics, and harmony share one bounded clock');

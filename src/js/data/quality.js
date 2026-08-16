@@ -95,6 +95,22 @@ export const SONG_REVIEWS = Object.freeze({
     playback: 'in-progress', expert: 'pending', student: 'pending',
     note: 'The source-locked CONVERSE first verse, disclosed open-chord reduction, and deployed timing trace pass. Independent playback recognition, expert guitar review, and student usability remain.',
   },
+  'hush-little-baby': {
+    trace: 'pending', playback: 'pending', expert: 'pending', student: 'pending',
+    note: 'The complete selected sixteen-bar score, consistent lyric variant, and transposed two-chord harmony are source-locked. Deployed timing trace is next; independent playback recognition, expert guitar review, and student usability follow.',
+  },
+  'streets-of-laredo': {
+    trace: 'pending', playback: 'pending', expert: 'pending', student: 'pending',
+    note: 'The complete CC0 verse and chorus, one-beat pickup, melody, and disclosed open-shape harmony are source-locked. Deployed timing trace is next; independent playback recognition, expert guitar review, and student usability follow.',
+  },
+  'home-on-the-range': {
+    trace: 'pending', playback: 'pending', expert: 'pending', student: 'pending',
+    note: 'The complete CC0 verse and chorus, tied phrases, pickup, and disclosed four-shape reduction are source-locked. Deployed timing trace is next; independent playback recognition, expert guitar review, and student usability follow.',
+  },
+  'scarborough-fair': {
+    trace: 'pending', playback: 'pending', expert: 'pending', student: 'pending',
+    note: 'The complete CC0 eighteen-bar modal verse, melody, rests, ties, and disclosed open-shape reduction are source-locked. Deployed timing trace is next; independent playback recognition, expert guitar review, and student usability follow.',
+  },
 });
 
 export function songQuality(songOrId) {
