@@ -29,8 +29,9 @@
 - [x] Auto-calibrated practice noise gate for quiet guitars and different rooms/microphones
 - [x] **Real-guitar tuner calibration** — validated all six strings with an Elgato Wave:3 at
       96 kHz; target lock was 89–100% and median clarity was 0.87–0.99 (`AUDIO_CALIBRATION.md`)
-- [ ] **Real-guitar chord-listener calibration** — capture Coach results for Em, G, C, and D,
-      then adjust SIM_OK / cleanChroma only if the measured results justify it
+- [x] **Real-guitar chord-listener calibration** — validated Em, G, C, and D with an Elgato
+      Wave:3 at 96 kHz; guided-v4 reached 92% D target lock while retaining strict open-ended
+      identification (`AUDIO_CALIBRATION.md`)
 - [x] Automatic room-noise gates for the tuner plus measured pitch-class noise subtraction for
       chord analysis; reruns whenever the learner switches microphones
 - [x] Capo key finder on song charts (keep easy shapes, show the sounding key, and transpose

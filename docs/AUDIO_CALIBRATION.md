@@ -88,3 +88,14 @@ Guided-v4 therefore permits two-of-three target-note coverage only when the sele
 wins the open-ended ranking and has at least 0.62 similarity. The complete-coverage 0.72 path is
 unchanged. This tightly scoped fallback cannot approve a partial target when Em, Fmaj7, or another
 shape wins, and now requires one final real-guitar D verification.
+
+## 2026-08-15 — guided-v4 final D verification
+
+- Heard D, target and best similarity 0.88, winner margin 0.118
+- Target lock 92%, open-ended clear 57%
+- Input -44.6 dB, room gate -72.0 dB, sample rate 96000 Hz
+
+This is a clean production pass. D remained the unambiguous winner, target lock increased from
+17% to 92%, and the signal cleared the room gate by 27.4 dB. Together with the earlier Em, G, and
+C results, this completes real-guitar calibration of the four beginner chords. Guided recognition
+is suitable for the pilot; open-ended identification intentionally remains more conservative.
