@@ -175,7 +175,7 @@ assert.match(songViewText, /vocalCues\.filter\(\(item\) => item\.bar === idx\)/,
 assert.match(songViewText, /arrangement\.verification\.url/, 'verified timing claims must expose their evidence');
 assert.match(songViewText, /Checked:<\/strong> \$\{arrangement\.verification\.checked\}/, 'verified timing claims must show their review date');
 assert.match(songViewText, /Rehearse chord order/, 'mic chord rehearsal must not be mislabeled as a timed play-along');
-assert.match(songViewText, /Practice with simplified backing/, 'unchecked arrangements must be labeled as practice reductions');
+assert.match(songViewText, /Practice accompaniment/, 'unchecked arrangements must be labeled as accompaniment practice');
 assert.match(songViewText, /does not claim exact lyric timing/, 'practice reductions must state their timing limitation');
 assert.doesNotMatch(songViewText, /let bpm = 84/, 'songs must not all default to the same tempo');
 assert.match(songViewText, /Capo key finder/, 'song charts must help a learner match a singer without changing shapes');
