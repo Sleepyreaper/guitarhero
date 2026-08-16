@@ -8,8 +8,8 @@ open chords, which is exactly why beginners can succeed in them fast.
 ## The core principles (and why)
 
 1. **Learn songs from day one.** Song-based practice teaches real chord progressions, builds
-   rhythm and muscle memory through repetition, and — most importantly — keeps motivation high.
-   Motivation is the #1 predictor of whether a beginner keeps practicing.
+   rhythm and motor coordination through repetition, and gives practice an immediately musical
+   purpose. Exercises still appear when they solve a specific problem inside a song.
 2. **Minimal theory up front.** From zero, chord shapes and basic technique matter more than
    theory. Theory is layered in later (the 1–4–5 / Nashville number idea) only when it directly
    unlocks more songs.
@@ -17,14 +17,18 @@ open chords, which is exactly why beginners can succeed in them fast.
    share of country, folk, and church songs. Master a handful of shapes → unlock hundreds of songs.
 4. **Stack skills in order.** Understand the instrument → first chords → a strum → combine into a
    song. Each unit in the app ends on a playable song.
-5. **Short, frequent practice.** 15–20 minutes six days a week beats one long weekly session.
-   New motor learning responds best to daily repetition.
+5. **Short, frequent practice.** Begin with manageable 10–20 minute sessions and frequent breaks,
+   then increase duration as the hands adapt. Consistency matters more than an occasional marathon.
 6. **Rhythm is a first-class skill.** A metronome from day one; **D–DU–UDU** is a useful common
    starter pattern, then every play-along teaches the meter and groove that actually fit that song.
 7. **Tune first, always.** An out-of-tune guitar makes correct playing sound wrong and kills
    confidence — hence the built-in tuner and its place in Unit 0.
-8. **Capo + numbers for worship/jams.** A capo lets beginners keep easy open shapes while matching
-   any singer's key; the Nashville number system (think 1–5–6–4, not letters) makes songs portable.
+8. **Capo + numbers for worship/jams.** A capo raises easy open shapes to match a singer; moving it
+   down lowers the result, and a different shape family is needed below the open key. The Nashville
+   number system (including minor quality, such as 6m) makes progressions portable.
+9. **Technique claims stay honest.** Pitch detection can confirm tuning and stable pitch, but ears
+   still judge buzz, unwanted contact, dynamics, and musical tone. The Coach is feedback, not an
+   automatic pass/fail authority.
 
 ## Expected timeline
 
@@ -33,7 +37,9 @@ open chords, which is exactly why beginners can succeed in them fast.
 - **Month 2:** a common down-up strum plus song-specific grooves, several full songs, minor chords.
 - **Month 3+:** capo/number system, first fingerpicking — americana territory.
 
-Most beginners can strum through simple songs within 4–8 weeks of consistent daily practice.
+These are pacing guides, not promises. A learner may play a one-chord song on day one; clean chord
+changes and full-song time develop at different rates depending on practice, instrument setup, and
+physical comfort.
 
 ## Curriculum map (see `src/js/data/curriculum.js`)
 
@@ -42,7 +48,7 @@ Most beginners can strum through simple songs within 4–8 weeks of consistent d
 | 0 | Setup, tuning, reading chord boxes | — |
 | 1 | First two chords (Em, G), first changes & strum | 1-min change goal |
 | 2 | Add C & D, the 1–4–5 family | *Down in the Valley*, *Whole World* |
-| 3 | Strumming that grooves (D–DU–UDU) | *Amazing Grace*, *Oh! Susanna* |
+| 3 | Rhythm families: folk down-up, country boom-chuck, waltz | *Amazing Grace*, *Oh! Susanna* |
 | 4 | Minor colors (Am, E, A) | *Home on the Range* |
 | 5 | Capo & Nashville numbers | *Simple Gifts* (with capo) |
 | 6 | Fingerstyle first steps | *Amazing Grace* fingerpicked |
@@ -57,16 +63,21 @@ of the target genres and to progress cleanly in difficulty (2 chords → 3 chord
 Popular *copyrighted* songs (e.g. modern country/worship hits) can still be referenced by name as
 "practice targets," but their lyrics/charts should not be embedded — link out or let users import.
 
-## Sources
+## Teaching references
 
-- [GuitarTricks — Free Online Guitar Lessons](https://www.guitartricks.com/)
-- [Tomas Michaud — Easy Guitar Songs Method](https://tomasmichaud.com/easy-guitar-songs-method/)
-- [Pickup Music — Beginner Guitar: Theory + Practical Lessons](https://www.pickupmusic.com/blog/beginner-guitar)
-- [Fender Play — Easy 3-Chord Songs](https://www.fender.com/articles/songs/10-easy-songs-to-learn-with-3-chords-or-less)
-- [PlayGuitar — G C D Chords (+20 Songs)](https://playguitar.com/gcd-chords-songs/)
-- [JustinGuitar — Beginners Practice Routine](https://www.justinguitar.com/guitar-lessons/beginners-practice-routine-pc-501)
-- [TeachMe.To — 4-Week Beginner Starter Plan](https://teachme.to/blog/beginner-guitar-lessons-what-to-learn-first-4-week-starter-plan)
-- [Worship Tutorials — Chord Number System](https://worshiptutorials.com/product/chord-number-system/)
-- [PraiseCharts — 4-Chord Worship Songs (G-C-Em-D)](https://www.praisecharts.com/song-lists/4-chord-worship-songs-gcemd)
-- [Worship Online — Worship Guitar for Beginners](https://worshiponline.com/worship-guitar-for-beginners/)
-- [Gear4music — Easy Country Songs to Learn](https://www.gear4music.com/blog/easy-country-songs-to-learn-on-guitar/)
+The song arrangements have their own per-song verification sources and dates in
+`src/js/data/arrangements.js`. The references below support the learning sequence and technique
+guidance; they do not imply that one method or chord order is uniquely correct.
+
+- [Berklee Online — Guitar for Beginners](https://online.berklee.edu/courses/guitar-for-beginners)
+  (healthy playing habits; technique, musicianship, reading, and repertoire taught together)
+- [Berklee Online — Guitar Fundamentals](https://online.berklee.edu/courses/guitar-fundamentals)
+  (open chords; chord charts; 4/4, 3/4, and 6/8 strumming; common progressions)
+- [JustinGuitar — A & D Chords: Play Your First Song](https://www.justinguitar.com/modules/a-d-chords-play-your-first-song)
+  (early songs, one-minute changes, anchor fingers, bars, and correct-string strumming)
+- [Fender — Five Tips to Master Chord Changes](https://www.fender.com/articles/chords/5-tips-to-master-chord-changes)
+  (look ahead, minimize motion, keep time, pivot fingers, and place fingers together)
+- [Fender — Five Tips to Fight Finger Pain](https://www.fender.com/articles/techniques/5-tips-to-fight-finger-pain)
+  (short sessions, minimum pressure, lighter strings, and playable action)
+- [Berklee — Country Music Guitar Essentials](https://online.berklee.edu/takenote/country-music-guitar-essentials-chicken-pickin-string-bending-and-more/)
+  (alternating bass, rhythm chords, and fingerstyle roles in country accompaniment)

@@ -24,6 +24,14 @@ for (const song of SONGS) {
   for (const chord of arrangementChordSequence(song)) {
     assert.ok(song.chords.includes(chord), `${song.title} arrangement uses undeclared chord ${chord}`);
   }
+  const chartTokens = song.body.flatMap((section) => section.lines.flat());
+  assert.ok(chartTokens.some((token) => token.t?.trim()), `${song.title} needs a readable lyric chart`);
+  for (const token of chartTokens) {
+    if (!token.c) continue;
+    assert.ok(song.chords.includes(token.c), `${song.title} lyric chart uses undeclared chord ${token.c}`);
+    assert.ok(arrangementChordSequence(song).includes(token.c),
+      `${song.title} lyric chart chord ${token.c} must also occur in its timed arrangement`);
+  }
   if (arrangement.cues) {
     assert.equal(arrangement.timing, 'verified', `${song.title} lyric cues require verified timing`);
     assert.equal(arrangement.cues.length, arrangement.bars.length, `${song.title} lyric cues must match its bars`);

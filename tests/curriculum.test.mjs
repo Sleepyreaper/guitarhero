@@ -27,4 +27,30 @@ const demonstratedCoreChords = [chordPairLesson.video, ...(chordPairLesson.extra
 assert.ok(demonstratedCoreChords.some((title) => /C Chord/i.test(title)), 'the C + D lesson must demonstrate C');
 assert.ok(demonstratedCoreChords.some((title) => /D Chord/i.test(title)), 'the C + D lesson must demonstrate D');
 
+const lessonText = (id) => {
+  const lesson = ALL_LESSONS.find((item) => item.id === id);
+  return [lesson?.title, lesson?.objective, lesson?.goal, ...(lesson?.steps || [])].filter(Boolean).join(' ');
+};
+
+assert.match(lessonText('l1-0'), /cannot certify that a note is buzz-free/i,
+  'the pitch tuner must not be presented as a substitute for listening to tone quality');
+assert.match(lessonText('l1-fingers'), /sharp, burning, joint, wrist, or persistent pain/i,
+  'finger soreness guidance must distinguish adaptation from pain that means stop');
+assert.match(lessonText('l3-2'), /not the right groove for every song/i,
+  'the common folk strum must not be sold as a universal accompaniment');
+assert.match(lessonText('l3-country'), /bass on 1 and 3/i,
+  'country learners need an executable boom-chuck lesson before song-specific accompaniment');
+assert.match(lessonText('l5-2'), /6m/i,
+  'the number-system lesson must identify the diatonic six chord as minor');
+assert.match(lessonText('l6-2'), /True Travis picking adds syncopation later/i,
+  'a basic alternating-bass drill must not be mislabeled as complete Travis picking');
+assert.match(lessonText('l6-3'), /one three-note cycle per BAR/i,
+  'the 3/4 fingerstyle lesson must map one bass-high-middle cycle to a bar, not each beat');
+assert.match(lessonText('l4-tab'), /thin high e is the TOP line/i,
+  'the learning path must teach enough TAB literacy to follow its melody and fill guidance');
+assert.match(lessonText('l7-2'), /capo only raises/i,
+  'capo guidance must never tell a strained-high singer to move the capo upward');
+assert.match(lessonText('l7-4'), /waltz/i,
+  'count-ins must respect the song meter rather than always counting four');
+
 console.log('curriculum tests passed: song prerequisites and curated core-skill videos');
