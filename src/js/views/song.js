@@ -189,9 +189,11 @@ function detail(root, id, self) {
   cleanup(self);
   const arrangement = arrangementFor(song);
   const groove = arrangement && GROOVES[arrangement.groove];
-  const tempoText = arrangement?.meter === 6
-    ? `${arrangement.bpm} dotted-quarter BPM`
-    : `${arrangement?.bpm} BPM`;
+  const tempoText = arrangement?.tempoUnit
+    ? `${arrangement.bpm} ${arrangement.tempoUnit} BPM`
+    : arrangement?.meter === 6
+      ? `${arrangement.bpm} dotted-quarter BPM`
+      : `${arrangement?.bpm} BPM`;
   const verifiedTiming = arrangement?.timing === 'verified';
   const score = scoreFor(song);
   const musicallyCertified = score?.status === 'certified';

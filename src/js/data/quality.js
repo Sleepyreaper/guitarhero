@@ -23,6 +23,22 @@ export const SONG_REVIEWS = Object.freeze({
     expert: 'pending', student: 'pending',
     note: 'Owner recognized and followed the complete melody and 6/8 loop. Expert guitar review and a supervised student session remain.',
   },
+  'twinkle-twinkle': {
+    trace: 'pending', playback: 'pending', expert: 'pending', student: 'pending',
+    note: 'The complete CC0 2/4 score and disclosed three-shape reduction are source-locked. A deployed full-form timing trace is next; human playback, expert, and student gates remain separate.',
+  },
+  'old-macdonald': {
+    trace: 'pending', playback: 'pending', expert: 'pending', student: 'pending',
+    note: 'The complete CC0 cut-time duck verse, rests, and traditional harmony are source-locked. A deployed full-form timing trace is next; human playback, expert, and student gates remain separate.',
+  },
+  'she-ll-be-comin': {
+    trace: 'pending', playback: 'pending', expert: 'pending', student: 'pending',
+    note: 'The complete CC0 2/4 score, pickup, rests, and disclosed open-chord reduction are source-locked. A deployed full-form timing trace is next; human playback, expert, and student gates remain separate.',
+  },
+  'when-the-saints': {
+    trace: 'pending', playback: 'pending', expert: 'pending', student: 'pending',
+    note: 'The complete CC0 4/4 score, three-beat pickup, tied notes, and disclosed open-chord reduction are source-locked. A deployed full-form timing trace is next; human playback, expert, and student gates remain separate.',
+  },
   'whole-world': {
     trace: 'pass', tracedAt: '2026-08-16',
     playback: 'pass', playbackAt: '2026-08-15', playbackReviewer: 'Project owner',

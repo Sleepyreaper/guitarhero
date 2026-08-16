@@ -4,7 +4,8 @@ import { ARRANGEMENTS } from '../src/js/data/arrangements.js';
 
 const certified = [
   'down-in-the-valley', 'clementine',
-  'row-your-boat', 'whole-world', 'amazing-grace', 'shady-grove', 'kumbaya',
+  'row-your-boat', 'twinkle-twinkle', 'old-macdonald', 'she-ll-be-comin', 'when-the-saints',
+  'whole-world', 'amazing-grace', 'shady-grove', 'kumbaya',
   'will-the-circle', 'what-a-friend',
 ];
 assert.deepEqual(Object.keys(SCORES), certified, 'the first score-driven release must stay intentionally auditable');
@@ -86,6 +87,94 @@ assert.deepEqual(SCORES.clementine.melody.map(({ midi, duration }) => [midi, dur
 
 assert.equal(SCORES['row-your-boat'].unit, 'eighth');
 assert.equal(SCORES['row-your-boat'].totalBeats, 48);
+
+assert.equal(SCORES['twinkle-twinkle'].source.dataUrl,
+  'https://dataverse.lib.virginia.edu/api/access/datafile/3758');
+assert.equal(SCORES['twinkle-twinkle'].totalBeats, 48);
+assert.equal(SCORES['twinkle-twinkle'].melody.at(-1).beat + SCORES['twinkle-twinkle'].melody.at(-1).duration, 48,
+  'Twinkle must preserve all twenty-four source measures without an invented pickup or tail');
+assert.deepEqual(SCORES['twinkle-twinkle'].melody.map(({ midi, duration }) => [midi, duration]), [
+  [67, 1], [67, 1], [74, 1], [74, 1], [76, 1], [76, 1], [74, 2],
+  [72, 1], [72, 1], [71, 1], [71, 1], [69, 1], [69, 1], [67, 2],
+  [74, 1], [74, 1], [72, 1], [72, 1], [71, 1], [71, 1], [69, 2],
+  [74, 1], [74, 1], [72, 1], [72, 1], [71, 1], [71, 1], [69, 2],
+  [67, 1], [67, 1], [74, 1], [74, 1], [76, 1], [76, 1], [74, 2],
+  [72, 1], [72, 1], [71, 1], [71, 1], [69, 1], [69, 1], [67, 2],
+], 'Twinkle pitches and durations must match the CC0 MusicXML transposed C to G');
+assert.deepEqual(SCORES['twinkle-twinkle'].melody.map(({ lyric }) => lyric), [
+  'Twink-', 'le,', 'twink-', 'le,', 'lit-', 'tle', 'star,',
+  'How', 'I', 'won-', 'der', 'what', 'you', 'are!',
+  'Up', 'a-', 'bove', 'the', 'world', 'so', 'high,',
+  'Like', 'a', 'dia-', 'mond', 'in', 'the', 'sky.',
+  'Twink-', 'le,', 'twink-', 'le,', 'lit-', 'tle', 'star,',
+  'How', 'I', 'won-', 'der', 'what', 'you', 'are!',
+], 'Twinkle must keep the complete A-B-B-A lyric-bearing source form');
+
+assert.equal(SCORES['old-macdonald'].source.dataUrl,
+  'https://dataverse.lib.virginia.edu/api/access/datafile/4245');
+assert.equal(SCORES['old-macdonald'].unit, 'half');
+assert.equal(SCORES['old-macdonald'].totalBeats, 32);
+assert.equal(SCORES['old-macdonald'].melody.at(-1).beat + SCORES['old-macdonald'].melody.at(-1).duration, 32,
+  'Old MacDonald must fill all sixteen cut-time bars');
+assert.deepEqual(SCORES['old-macdonald'].melody.map(({ midi }) => midi), [
+  67, 67, 67, 62, 64, 64, 62, 71, 71, 69, 69, 67, 62,
+  67, 67, 67, 62, 64, 64, 62, 71, 71, 69, 69, 67, 62, 62,
+  67, 67, 67, 62, 62, 67, 67, 67, null,
+  67, 67, 67, 67, 67, 67,
+  67, 67, 67, 67, 67, 67,
+  67, 67, 67, 62, 64, 64, 62, 71, 71, 69, 69, 67,
+], 'Old MacDonald must retain every anthology melody pitch and written rest');
+assert.deepEqual(SCORES['old-macdonald'].melody.filter(({ lyric }) => lyric).map(({ lyric }) => lyric), [
+  'Ol’', 'Mac-', 'Don-', 'ald', 'had', 'a', 'farm,', 'E-', 'I-', 'E-', 'I-', 'O.', 'And',
+  'on', 'this', 'farm', 'he', 'had', 'a', 'duck,', 'E-', 'I-', 'E-', 'I-', 'O.', 'With', 'a',
+  'quack-', 'quack', 'here', 'and', 'a', 'quack-', 'quack', 'there,',
+  'Here', 'a', 'quack,', 'there', 'a', 'quack,', 'ev-', '’ry-', 'where', 'a', 'quack-', 'quack.',
+  'Ol’', 'Mac-', 'Don-', 'ald', 'had', 'a', 'farm,', 'E-', 'I-', 'E-', 'I-', 'O.',
+], 'Old MacDonald must keep the selected duck/quack verse rather than mixing source variants');
+
+assert.equal(SCORES['she-ll-be-comin'].source.dataUrl,
+  'https://dataverse.lib.virginia.edu/api/access/datafile/4223');
+assert.equal(SCORES['she-ll-be-comin'].melody[0].beat, -1,
+  'Coming Round the Mountain must sing She’ll be on beat 2 of the count-in');
+assert.equal(SCORES['she-ll-be-comin'].melody.at(-1).beat + SCORES['she-ll-be-comin'].melody.at(-1).duration, 31,
+  'Coming Round the Mountain must leave beat 2 of the final bar for the next loop pickup');
+assert.deepEqual(SCORES['she-ll-be-comin'].melody.map(({ midi, duration }) => [midi, duration]), [
+  [62, .5], [64, .5],
+  [67, .5], [67, .5], [67, .5], [67, .5], [64, .5], [62, .5], [59, .5], [62, .5], [67, 1], [null, 1],
+  [null, 1], [67, .5], [69, .5], [71, .5], [71, .5], [71, .5], [71, .5],
+  [74, .5], [71, .5], [69, .5], [67, .5], [69, 1], [null, 1], [null, 1], [74, .5], [72, .5],
+  [71, .5], [71, .5], [71, .5], [71, .5], [69, .5], [67, .5], [67, .5], [67, .5],
+  [64, .5], [64, .5], [64, .5], [64, .5], [69, .5], [67, .5], [66, .5], [64, .5],
+  [62, .5], [62, .5], [62, .5], [62, .5], [71, .5], [69, .5], [64, .5], [66, .5],
+  [67, 1], [null, 1], [null, 1],
+], 'Coming Round the Mountain pitches, pickup, phrase rests, and tail must match the CC0 MusicXML');
+assert.deepEqual(SCORES['she-ll-be-comin'].melody.filter(({ lyric }) => lyric).map(({ lyric }) => lyric), [
+  "She'll", 'be', 'com-', "in'", "'round", 'the', 'moun-', 'tain', 'when', 'she', 'comes.',
+  "She'll", 'be', 'com-', "in'", "'round", 'the', 'moun-', 'tain', 'when', 'she', 'comes.',
+  "She'll", 'be', 'com-', "in'", "'round", 'the', 'moun-', 'tain,', "she'll", 'be',
+  'com-', "in'", "'round", 'the', 'moun-', 'tain,', "she'll", 'be',
+  'com-', "in'", "'round", 'the', 'moun-', 'tain', 'when', 'she', 'comes.',
+], 'Coming Round the Mountain must preserve all four source phrases and repeated pickups');
+
+assert.equal(SCORES['when-the-saints'].source.dataUrl,
+  'https://dataverse.lib.virginia.edu/api/access/datafile/3839');
+assert.equal(SCORES['when-the-saints'].melody[0].beat, -3,
+  'When the Saints must preserve its three-quarter-note pickup');
+assert.equal(SCORES['when-the-saints'].melody.at(-1).beat + SCORES['when-the-saints'].melody.at(-1).duration, 61,
+  'When the Saints must leave the final three beats for the next loop pickup');
+assert.deepEqual(SCORES['when-the-saints'].melody.map(({ midi, duration }) => [midi, duration]), [
+  [67, 1], [71, 1], [72, 1], [74, 5], [67, 1], [71, 1], [72, 1],
+  [74, 5], [67, 1], [71, 1], [72, 1], [74, 2], [71, 2], [67, 2], [71, 2],
+  [69, 5], [71, 1], [71, 1], [69, 1], [67, 3], [67, 1], [71, 2], [74, 1], [74, 1],
+  [74, 1], [72, 5], [71, 1], [72, 1], [74, 2], [71, 2], [67, 2], [69, 2], [67, 4], [null, 1],
+], 'When the Saints pitches and merged tie durations must match the CC0 source transposed F to G');
+assert.deepEqual(SCORES['when-the-saints'].melody.filter(({ lyric }) => lyric).map(({ lyric }) => lyric), [
+  'Oh,', 'when', 'the', 'saints—', 'go', 'march-', 'ing', 'in,—',
+  'Oh,', 'when', 'the', 'saints', 'go', 'march-', 'ing', 'in,—',
+  'Oh,', 'Lord', 'I', 'want', 'to', 'be', 'in', 'that', 'num-', 'ber,—',
+  'When', 'the', 'saints', 'go', 'march-', 'ing', 'in.',
+], 'When the Saints must preserve the complete lyric-bearing anthology verse');
+
 assert.equal(SCORES['whole-world'].melody[0].beat, -1.5, 'Whole World must sing before beat 1');
 const wholeWorldLyrics = new Map(SCORES['whole-world'].melody
   .filter((event) => event.lyric).map((event) => [event.beat, event.lyric]));

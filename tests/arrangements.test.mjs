@@ -62,6 +62,7 @@ for (const song of SONGS) {
   });
   if (song.time.startsWith('3/4')) assert.equal(arrangement.meter, 3, `${song.title} meter mismatch`);
   if (song.time.startsWith('2/4')) assert.equal(arrangement.meter, 2, `${song.title} meter mismatch`);
+  if (song.time.startsWith('2/2')) assert.equal(arrangement.meter, 2, `${song.title} cut-time pulse mismatch`);
   if (song.time.startsWith('4/4')) assert.equal(arrangement.meter, 4, `${song.title} meter mismatch`);
   if (song.time.startsWith('6/8')) assert.equal(arrangement.meter, 6, `${song.title} meter mismatch`);
 }
@@ -160,10 +161,17 @@ assert.equal(ARRANGEMENTS.kumbaya.meter, 3);
 assert.equal(ARRANGEMENTS.kumbaya.groove, 'prayerWaltz');
 assert.deepEqual(ARRANGEMENTS.kumbaya.pickup, { beat: 2, text: 'Kum-ba… (pickup)' });
 assert.equal(ARRANGEMENTS.kumbaya.timing, 'verified');
+assert.equal(SONGS.find((song) => song.id === 'twinkle-twinkle').time, '2/4');
+assert.deepEqual(SONGS.find((song) => song.id === 'twinkle-twinkle').chords, ['G', 'C', 'D7']);
+assert.equal(ARRANGEMENTS['twinkle-twinkle'].meter, 2);
+assert.equal(ARRANGEMENTS['twinkle-twinkle'].groove, 'nurseryTwo');
 assert.deepEqual(ARRANGEMENTS['twinkle-twinkle'].bars, [
-  'G', ['C', 'G'], ['C', 'G'], ['D', 'G'], ['G', 'C'], ['G', 'D'],
-  ['G', 'C'], ['G', 'D'], 'G', ['C', 'G'], ['C', 'G'], ['D', 'G'],
-], 'Twinkle must use the complete 12-bar ABBA short form');
+  'G', 'G', 'C', 'G', 'D7', 'G', 'D7', 'G',
+  'G', 'D7', 'G', 'D7', 'G', 'D7', 'G', 'D7',
+  'G', 'G', 'C', 'G', 'D7', 'G', 'D7', 'G',
+], 'Twinkle must preserve all twenty-four 2/4 bars of the anthology verse');
+assert.match(ARRANGEMENTS['twinkle-twinkle'].reduction, /G-major and G7 colors into one beginner shape/,
+  'Twinkle must disclose its source-harmony simplification');
 assert.equal(ARRANGEMENTS['twinkle-twinkle'].timing, 'verified');
 assert.deepEqual(ARRANGEMENTS['if-youre-happy'].bars, ['G', 'D', 'D', 'G', 'C', 'G', 'D', 'G'],
   'If You Are Happy must use its complete eight-bar three-chord form');
@@ -172,25 +180,42 @@ assert.deepEqual(GROOVES.actionClap.barEvents.map((events) => events ? events.ma
   [null, [0, 1], null, [0, 1], null, null, null, [0, 1]],
   'action bars 2, 4, and 8 must leave beats 3 and 4 silent for claps');
 assert.equal(ARRANGEMENTS['if-youre-happy'].timing, 'verified');
-assert.deepEqual(ARRANGEMENTS['old-macdonald'].bars[0].changes,
-  [{ beat: 0, chord: 'G' }, { beat: 2, chord: 'C' }, { beat: 3, chord: 'G' }],
-  'Old MacDonald must change G-C-G on beats 1, 3, and 4 of its opening bar');
+assert.equal(SONGS.find((song) => song.id === 'old-macdonald').time, '2/2 (cut time)');
+assert.deepEqual(SONGS.find((song) => song.id === 'old-macdonald').chords, ['G', 'C', 'D7']);
+assert.equal(ARRANGEMENTS['old-macdonald'].meter, 2);
+assert.equal(ARRANGEMENTS['old-macdonald'].groove, 'cutTime');
+assert.equal(ARRANGEMENTS['old-macdonald'].tempoUnit, 'half-note');
 assert.deepEqual(ARRANGEMENTS['old-macdonald'].bars.map((bar) => barChords(bar)), [
-  ['G', 'C', 'G'], ['D', 'G'], ['G', 'C', 'G'], ['D', 'G'], ['G'], ['G'], ['G', 'C', 'G'], ['D', 'G'],
-]);
+  ['G'], ['C', 'G'], ['G', 'D7'], ['G'],
+  ['G'], ['C', 'G'], ['G', 'D7'], ['G'],
+  ['G', 'C', 'G'], ['C', 'G'], ['G', 'C'], ['G', 'C'],
+  ['G'], ['C', 'G'], ['G', 'D7'], ['G'],
+], 'Old MacDonald must preserve the anthology cut-time harmony bar by bar');
+assert.deepEqual(barChangeBeats(ARRANGEMENTS['old-macdonald'].bars[8], 2), [0, 1, 1.5]);
+assert.match(SONGS.find((song) => song.id === 'old-macdonald').body[0].lines[1][3].t, /duck/,
+  'Old MacDonald must use the selected source duck verse rather than mixing animals');
 assert.equal(ARRANGEMENTS['old-macdonald'].timing, 'verified');
 assert.deepEqual(ARRANGEMENTS['she-ll-be-comin'].bars.map((bar) => barChords(bar)), [
-  ['G'], ['G'], ['D7'], ['D7'], ['G'], ['C'], ['G', 'D7'], ['G'],
-], 'Coming Round the Mountain must follow its complete eight-bar G-D7-G-C cadence');
-assert.deepEqual(barChangeBeats(ARRANGEMENTS['she-ll-be-comin'].bars[6], 4), [0, 3],
-  'the final D7 must arrive on when she at beat 4');
+  ['G'], ['G'], ['G'], ['G'], ['G'], ['G'], ['D7'], ['D7'],
+  ['G'], ['G'], ['C'], ['C'], ['G'], ['G', 'D7'], ['G'], ['G'],
+], 'Coming Round the Mountain must preserve the complete sixteen-bar 2/4 source form');
+assert.equal(SONGS.find((song) => song.id === 'she-ll-be-comin').time, '2/4');
+assert.equal(ARRANGEMENTS['she-ll-be-comin'].meter, 2);
+assert.deepEqual(barChangeBeats(ARRANGEMENTS['she-ll-be-comin'].bars[13], 2), [0, 1],
+  'the final D7 must arrive on when she at beat 2 of the source measure');
+assert.deepEqual(ARRANGEMENTS['she-ll-be-comin'].pickup, { beat: 1, text: "She'll be… (pickup)" });
+assert.deepEqual(SONGS.find((song) => song.id === 'she-ll-be-comin').body[0].lines[1].map(({ c }) => c), ['G', 'D7'],
+  'the readable chart must stay on G until the second line’s final comes');
 assert.equal(ARRANGEMENTS['she-ll-be-comin'].timing, 'verified');
 assert.deepEqual(ARRANGEMENTS['when-the-saints'].bars, [
   'G', 'G', 'G', 'G', 'G', 'G', 'D7', 'D7',
   'G', 'G', 'C', 'C', 'G', 'D7', 'G', 'G',
 ], 'When the Saints must use the complete sixteen-bar beginner-jam form');
-assert.equal(ARRANGEMENTS['when-the-saints'].cues[10], 'number');
-assert.equal(ARRANGEMENTS['when-the-saints'].cues[13], 'marching');
+assert.deepEqual(ARRANGEMENTS['when-the-saints'].pickup, { beat: 1, text: 'Oh, when the… (pickup)' });
+assert.equal(ARRANGEMENTS['when-the-saints'].cues[10], 'num-ber—');
+assert.equal(ARRANGEMENTS['when-the-saints'].cues[13], 'march-ing');
+assert.match(ARRANGEMENTS['when-the-saints'].reduction, /minor-iv bar/,
+  'When the Saints must disclose the anthology colors omitted from its three-shape reduction');
 assert.equal(ARRANGEMENTS['when-the-saints'].timing, 'verified');
 assert.deepEqual(ARRANGEMENTS['oh-susanna'].bars, [
   'G', 'G', 'G', 'D7', 'G', 'G', 'D7', 'G',
