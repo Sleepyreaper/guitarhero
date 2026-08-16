@@ -21,6 +21,10 @@ export const SONG_REVIEWS = Object.freeze({
     expert: 'pending', student: 'pending',
     note: 'Owner recognized and followed the complete lyric, cadence, and loop. Expert guitar review and a supervised student session remain.',
   },
+  'shady-grove': {
+    playback: 'in-progress', expert: 'pending', student: 'pending',
+    note: 'The source-locked eight-bar score is complete. Automated trace and independent playback recognition are active; expert guitar review and student usability remain.',
+  },
 });
 
 export function songQuality(songOrId) {

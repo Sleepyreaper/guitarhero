@@ -57,6 +57,21 @@ export const SCORES = {
       [71, 2, 'I'], [69, 1, 'see—'], [67, 3], [67, 2],
     ]),
   },
+  'shady-grove': {
+    status: 'certified', unit: 'quarter', totalBeats: 16,
+    source: { label: 'Traditional lyric-bearing 2/4 ABC melody, transposed to Em', url: 'https://www.flutetree.org/songbook/minor/ShadyGrove.html', checked: '2026-08-16' },
+    lyricSource: { label: 'WSU Kodály lyric-bearing traditional Shady Grove score', url: 'https://www.wichita.edu/academics/fine_arts/music/kodaly/documents/Target_Song_Collection_2017.pdf', checked: '2026-08-16' },
+    melody: line(0, [
+      [64, .5, 'Sha-'], [64, .5, 'dy'], [64, 1, 'Grove'],
+      [66, .5, 'my'], [64, .25, 'lit-'], [64, .25, 'tle'], [62, 1, 'love'],
+      [64, .5, 'Sha-'], [64, .5, 'dy'], [66, .5, 'Grove'], [69, .5, 'I'],
+      [71, 2, 'know—'],
+      [62, .5, 'Sha-'], [62, .5, 'dy'], [71, 1, 'Grove'],
+      [69, .5, 'my'], [66, .25, 'lit-'], [64, .25, 'tle'], [62, 1, 'love'],
+      [64, .5, 'Bound'], [66, .25, 'for'], [66, .25, 'the'], [69, .5, 'Sha-'], [66, .5, 'dy'],
+      [64, 2, 'Grove—'],
+    ]),
+  },
 };
 
 export const scoreFor = (songOrId) => SCORES[typeof songOrId === 'string' ? songOrId : songOrId.id] || null;

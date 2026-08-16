@@ -73,13 +73,11 @@ assert.equal(shadyGrove.time, '2/4');
 assert.deepEqual(shadyGrove.chords, ['Em', 'D', 'G']);
 assert.equal(ARRANGEMENTS['shady-grove'].groove, 'countryTwo');
 assert.deepEqual(ARRANGEMENTS['shady-grove'].bars,
-  ['Em', 'Em', 'D', 'D', 'Em', 'Em', 'Em', 'Em', 'G', 'G', 'D', 'D', 'Em', 'Em', 'Em', 'Em'],
-  'Shady Grove must retain the complete Hindman E-minor chorus form');
+  ['Em', 'D', 'Em', 'Em', 'G', 'D', 'Em', 'Em'],
+  'Shady Grove must interpret the sixteen Hindman chord slots as eight two-beat measures');
 assert.deepEqual(ARRANGEMENTS['shady-grove'].cues, [
-  'Shady Grove', '—', 'my little', 'love—',
-  'Shady Grove', '—', 'I', 'know—',
-  'Shady Grove', '—', 'my little', 'love—',
-  'Bound for', 'Shady', 'Grove—', '—',
+  'Shady Grove', 'my little love', 'Shady Grove I', 'know—',
+  'Shady Grove', 'my little love', 'Bound for the Shady', 'Grove—',
 ]);
 assert.match(shadyGrove.body[0].lines[1][0].t, /I know/,
   'Shady Grove chorus must use the Hindman lyric variant instead of mixing versions');

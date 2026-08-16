@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { SCORES, midiFrequency } from '../src/js/data/scores.js';
 import { ARRANGEMENTS } from '../src/js/data/arrangements.js';
 
-const certified = ['row-your-boat', 'whole-world', 'amazing-grace'];
+const certified = ['row-your-boat', 'whole-world', 'amazing-grace', 'shady-grove'];
 assert.deepEqual(Object.keys(SCORES), certified, 'the first score-driven release must stay intentionally auditable');
 
 for (const id of certified) {
@@ -52,6 +52,15 @@ assert.deepEqual([23, 24, 26, 26.5, 27, 29, 30, 32].map(amazingGraceLyricAt),
 assert.deepEqual([33, 35, 36, 38, 39, 41].map(amazingGraceLyricAt),
   ['was', 'blind', 'but', 'now—', 'I', 'see—'],
   'Amazing Grace must align the final was blind but now I see cadence note by note');
+assert.equal(SCORES['shady-grove'].totalBeats, 16,
+  'Shady Grove must fit eight 2/4 measures rather than doubling the Hindman chord slots');
+assert.equal(SCORES['shady-grove'].melody.at(-1).beat + SCORES['shady-grove'].melody.at(-1).duration, 16);
+assert.deepEqual(SCORES['shady-grove'].melody.filter((event) => event.lyric).map((event) => event.lyric), [
+  'Sha-', 'dy', 'Grove', 'my', 'lit-', 'tle', 'love',
+  'Sha-', 'dy', 'Grove', 'I', 'know—',
+  'Sha-', 'dy', 'Grove', 'my', 'lit-', 'tle', 'love',
+  'Bound', 'for', 'the', 'Sha-', 'dy', 'Grove—',
+], 'Shady Grove must keep the WSU/Hindman chorus syllables on the literal traditional melody');
 assert.equal(Math.round(midiFrequency(69)), 440);
 
 console.log('score tests passed: certified melodies, pickups, lyrics, and harmony share one bounded clock');
