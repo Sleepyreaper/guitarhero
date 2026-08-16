@@ -70,6 +70,8 @@ export function buildRoutine(doneIds = [], genre = 'mixed') {
 export default {
   render(root) {
     const doneIds = ALL_LESSONS.filter((lesson) => isDone(lesson.id)).map((lesson) => lesson.id);
+    const nextLesson = ALL_LESSONS.find((lesson) => !doneIds.includes(lesson.id)) || ALL_LESSONS.at(-1);
+    const stage = STAGE_BY_LESSON[nextLesson.id];
     const steps = buildRoutine(doneIds, getProfile()?.genre || 'mixed');
     const total = steps.reduce((n, s) => n + s.min, 0);
 

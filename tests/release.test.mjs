@@ -73,6 +73,8 @@ assert.doesNotMatch(dashboardText, /EQUIV/, 'related chords must not silently un
 assert.match(routineText, /buildRoutine/, 'daily practice must be derived from the learner’s completed skills');
 assert.match(routineText, /No song is unlocked yet/, 'a zero-chord learner must get a valid musical fallback instead of a dead end');
 assert.doesNotMatch(routineText, /STEPS\.length/, 'adaptive routine rendering must not reference the removed fixed step list');
+assert.match(routineText, /const stage = STAGE_BY_LESSON\[nextLesson\.id\]/,
+  'the routine renderer must derive its stage before displaying stage-specific pacing');
 assert.match(dashboardText, /href: '#\/learn\/l1-4', doneId: 'l1-5'/,
   'day seven must teach strumming before remaining open until the first song is complete');
 assert.match(dashboardText, /Review the total honestly/,
