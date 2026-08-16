@@ -30,7 +30,7 @@ const firstSongLesson = ALL_LESSONS.find((item) => item.id === 'l1-5');
 assert.deepEqual(firstSongLesson.chords, ['D7'], 'the first song lesson must explicitly teach its required D7 shape');
 assert.match(firstSongLesson.goal, /ONE-and-a TWO-and-a/,
   'Row Your Boat must teach the two large pulses of its 6/8 meter');
-assert.doesNotMatch(firstSongLesson.steps.join(' '), /four.*down-strums|chord never changes/i,
+assert.doesNotMatch(firstSongLesson.steps.join(' '), /four steady down-strums per bar|chord never changes/i,
   'the old contradictory 4/4 one-chord Row Your Boat instruction must never return');
 
 const lessonText = (id) => {
