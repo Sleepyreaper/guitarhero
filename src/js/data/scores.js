@@ -72,6 +72,21 @@ export const SCORES = {
       [64, 2, 'Grove—'],
     ]),
   },
+  kumbaya: {
+    status: 'certified', unit: 'quarter', totalBeats: 24,
+    source: { label: 'Musica Viva lyric-bearing 3/4 ABC melody and harmony, transposed C to G', url: 'https://abcnotation.com/tunePage?a=trillian.mit.edu%2F~jc%2Fmusic%2Fabc%2Fmirror%2Fmusicaviva.com%2Ftunes%2Famerica%2Fkum-ba-yah%2Fkum-ba-yah-1%2F0000', checked: '2026-08-16' },
+    melody: line(-1, [
+      [67, .5, 'Kum-'], [71, .5, 'ba'],
+      [74, .75, 'yah'], [74, .25, 'my'], [74, 1, 'Lord'], [76, .5, 'Kum-'], [76, .5, 'ba'],
+      [74, 2, 'yah'], [67, .5, 'Kum-'], [71, .5, 'ba'],
+      [74, .75, 'yah'], [74, .25, 'my'], [74, 1, 'Lord'], [72, .5, 'Kum-'], [71, .5, 'ba'],
+      [69, 2, 'yah'], [67, .5, 'Kum-'], [71, .5, 'ba'],
+      [74, .75, 'yah'], [74, .25, 'my'], [74, 1, 'Lord'], [76, .5, 'Kum-'], [76, .5, 'ba'],
+      [74, 2, 'yah'], [72, 1, 'Oh'],
+      [71, .5, 'Lord'], [67, .5], [69, .5, 'Kum-'], [69, .5, 'ba'], [67, 1, 'yah'],
+      [67, 2],
+    ]),
+  },
 };
 
 export const scoreFor = (songOrId) => SCORES[typeof songOrId === 'string' ? songOrId : songOrId.id] || null;

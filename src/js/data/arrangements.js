@@ -120,6 +120,15 @@ export const GROOVES = {
       { beat: 2, kind: 'pick', fromTop: 2, gain: .10 },
     ],
   },
+  prayerWaltz: {
+    label: 'Gentle prayer waltz: warm chord on 1, light brushes on 2 and 3',
+    count: '1 2 3',
+    events: [
+      { beat: 0, kind: 'full', gain: .16 },
+      { beat: 1, kind: 'brush', gain: .06 },
+      { beat: 2, kind: 'brush', gain: .05 },
+    ],
+  },
 };
 
 const a = (bpm, meter, groove, section, bars, dynamics, lead, cues = null, timing = 'practice', verification = null, guide = null) => ({
@@ -221,16 +230,23 @@ export const ARRANGEMENTS = {
       'Here a moo, there a moo, everywhere a moo-moo',
       ['Old MacDonald', 'had a', 'farm'], ['E-I-E-I-', 'O'],
     ], 'verified', { label: 'Singing Bell G-major guitar score', url: 'https://www.singing-bell.com/wp-content/uploads/2021/12/Old-MacDonald-Had-a-Farm-Guitar-Chords-Sheet-Music_Singing-Bell.pdf', checked: '2026-08-10' }),
-  kumbaya: a(68, 4, 'sparse', 'Verse loop',
-    ['G', ['C', 'G'], 'G', ['C', 'D'], 'G', ['C', 'G'], ['C', 'G'], ['D', 'G']],
-    'One full chord can last a whole phrase. Follow the breath, not your urge to fill space.',
-    'Pick a quiet descending G-major answer after “kumbaya”; avoid playing over the held word “Lord.”',
+  kumbaya: a(60, 3, 'prayerWaltz', 'Complete source-locked eight-bar verse',
     [
-      'Kumbaya my', ['Lord, kumba', 'ya'],
-      'Kumbaya my', ['Lord, kumba', 'ya'],
-      'Kumbaya my', ['Lord, kumba', 'ya'],
-      ['Oh', 'Lord, kumba'], ['ya', '(let it ring)'],
-    ], 'verified', { label: 'RiffSpot traditional chord-and-lyric chart', url: 'https://riffspot.com/music/chords-and-lyrics/kumbaya/120/', checked: '2026-08-10' }),
+      at([0, 'G'], [2, 'C']), 'G',
+      at([0, 'G'], [2, 'C']), at([0, 'D'], [2, 'G']),
+      at([0, 'G'], [2, 'C']), at([0, 'G'], [2, 'C']),
+      at([0, 'G'], [1, 'D7'], [2, 'G']), 'G',
+    ],
+    'Count “ONE two three.” Let beat 1 carry the phrase and make beats 2 and 3 very light; the sung “Kum-ba” pickup arrives before the first downbeat.',
+    'Pick a quiet descending G-major answer only after the final “yah.” Do not add notes under the held “Lord.”',
+    [
+      ['(pickup: Kum-ba) yah my Lord', 'Kum-ba'], 'yah; (pickup: Kum-ba)',
+      ['yah my Lord', 'Kum-ba'], ['yah', '(pickup: Kum-ba)'],
+      ['yah my Lord', 'Kum-ba'], ['yah (hold)', 'Oh (pickup)'],
+      ['Lord', 'Kum-ba', 'yah'], 'let G ring',
+    ], 'verified', { label: 'Musica Viva lyric-bearing 3/4 ABC melody and harmony, transposed C to G', url: 'https://abcnotation.com/tunePage?a=trillian.mit.edu%2F~jc%2Fmusic%2Fabc%2Fmirror%2Fmusicaviva.com%2Ftunes%2Famerica%2Fkum-ba-yah%2Fkum-ba-yah-1%2F0000', checked: '2026-08-16' }, {
+      pickup: { beat: 2, text: 'Kum-ba… (pickup)' },
+    }),
   'whole-world': a(120, 4, 'straight', 'Verse loop with vocal pickups',
     ['G', 'G', 'D', 'D', 'G', 'G', 'D', 'G'],
     'Use four relaxed quarter-note downs. The voice begins “He’s got the” before beat 1; do not chase its syllables with extra strums.',

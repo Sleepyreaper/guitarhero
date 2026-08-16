@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { SCORES, midiFrequency } from '../src/js/data/scores.js';
 import { ARRANGEMENTS } from '../src/js/data/arrangements.js';
 
-const certified = ['row-your-boat', 'whole-world', 'amazing-grace', 'shady-grove'];
+const certified = ['row-your-boat', 'whole-world', 'amazing-grace', 'shady-grove', 'kumbaya'];
 assert.deepEqual(Object.keys(SCORES), certified, 'the first score-driven release must stay intentionally auditable');
 
 for (const id of certified) {
@@ -61,6 +61,16 @@ assert.deepEqual(SCORES['shady-grove'].melody.filter((event) => event.lyric).map
   'Sha-', 'dy', 'Grove', 'my', 'lit-', 'tle', 'love',
   'Bound', 'for', 'the', 'Sha-', 'dy', 'Grove—',
 ], 'Shady Grove must keep the WSU/Hindman chorus syllables on the literal traditional melody');
+assert.equal(SCORES.kumbaya.totalBeats, 24, 'Kumbaya must share its eight-bar 3/4 harmony clock');
+assert.equal(SCORES.kumbaya.melody[0].beat, -1, 'Kumbaya must preserve its two-eighth-note vocal pickup');
+assert.equal(SCORES.kumbaya.melody.at(-1).beat + SCORES.kumbaya.melody.at(-1).duration, 23,
+  'Kumbaya final bar must leave one beat for the anacrusis when the form loops');
+assert.deepEqual(SCORES.kumbaya.melody.filter((event) => event.lyric).map((event) => event.lyric), [
+  'Kum-', 'ba', 'yah', 'my', 'Lord', 'Kum-', 'ba', 'yah',
+  'Kum-', 'ba', 'yah', 'my', 'Lord', 'Kum-', 'ba', 'yah',
+  'Kum-', 'ba', 'yah', 'my', 'Lord', 'Kum-', 'ba', 'yah',
+  'Oh', 'Lord', 'Kum-', 'ba', 'yah',
+], 'Kumbaya must keep all four lyric phrases on the literal Musica Viva melody');
 assert.equal(Math.round(midiFrequency(69)), 440);
 
 console.log('score tests passed: certified melodies, pickups, lyrics, and harmony share one bounded clock');

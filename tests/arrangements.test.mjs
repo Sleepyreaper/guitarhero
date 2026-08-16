@@ -125,11 +125,18 @@ assert.deepEqual(ARRANGEMENTS['hush-little-baby'].bars,
 assert.equal(ARRANGEMENTS['hush-little-baby'].meter, 2);
 assert.equal(ARRANGEMENTS['hush-little-baby'].groove, 'lullabyTwo');
 assert.equal(ARRANGEMENTS['hush-little-baby'].timing, 'verified');
-assert.deepEqual(ARRANGEMENTS.kumbaya.bars, [
-  'G', ['C', 'G'], 'G', ['C', 'D'], 'G', ['C', 'G'], ['C', 'G'], ['D', 'G'],
-], 'Kumbaya must follow the lyric-aligned G-C-G / G-C-D form');
-assert.deepEqual(ARRANGEMENTS.kumbaya.cues[0], 'Kumbaya my');
-assert.deepEqual(ARRANGEMENTS.kumbaya.cues[1], ['Lord, kumba', 'ya']);
+assert.equal(SONGS.find((song) => song.id === 'kumbaya').time, '3/4 (waltz)');
+assert.deepEqual(SONGS.find((song) => song.id === 'kumbaya').chords, ['G', 'C', 'D', 'D7']);
+assert.deepEqual(ARRANGEMENTS.kumbaya.bars.map((bar) => barChords(bar)), [
+  ['G', 'C'], ['G'], ['G', 'C'], ['D', 'G'],
+  ['G', 'C'], ['G', 'C'], ['G', 'D7', 'G'], ['G'],
+], 'Kumbaya must follow the source-locked eight-bar 3/4 harmony');
+assert.deepEqual(ARRANGEMENTS.kumbaya.bars.map((bar) => barChangeBeats(bar, 3)), [
+  [0, 2], [0], [0, 2], [0, 2], [0, 2], [0, 2], [0, 1, 2], [0],
+], 'Kumbaya chord changes must land on the source beats');
+assert.equal(ARRANGEMENTS.kumbaya.meter, 3);
+assert.equal(ARRANGEMENTS.kumbaya.groove, 'prayerWaltz');
+assert.deepEqual(ARRANGEMENTS.kumbaya.pickup, { beat: 2, text: 'Kum-ba… (pickup)' });
 assert.equal(ARRANGEMENTS.kumbaya.timing, 'verified');
 assert.deepEqual(ARRANGEMENTS['twinkle-twinkle'].bars, [
   'G', ['C', 'G'], ['C', 'G'], ['D', 'G'], ['G', 'C'], ['G', 'D'],

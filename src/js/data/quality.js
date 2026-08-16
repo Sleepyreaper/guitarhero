@@ -30,6 +30,10 @@ export const SONG_REVIEWS = Object.freeze({
     playback: 'in-progress', expert: 'pending', student: 'pending',
     note: 'The source-locked eight-bar score and deployed timing trace pass. Independent playback recognition is active; expert guitar review and student usability remain.',
   },
+  kumbaya: {
+    trace: 'pending', playback: 'pending', expert: 'pending', student: 'pending',
+    note: 'The source-locked 3/4 score is complete. Deploy and trace the pickup, eight-bar form, final cadence, and loop before playback recognition.',
+  },
 });
 
 export function songQuality(songOrId) {
