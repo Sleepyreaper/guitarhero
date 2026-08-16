@@ -226,7 +226,7 @@ export const SONGS = [
     body: [
       { section: 'Verse', lines: [
         [{ c: 'G', t: "He's got the whole world in his hands" }],
-        [{ c: 'D', t: "He's got the whole world in his hands" }],
+        [{ c: 'D', t: "He's got the whole wide world in his hands" }],
         [{ c: 'G', t: "He's got the whole world in his hands" }],
         [{ c: 'D', t: "He's got the whole world in his " }, { c: 'G', t: 'hands' }],
       ] },

@@ -98,6 +98,8 @@ assert.equal(ARRANGEMENTS['whole-world'].groove, 'straight',
   'Whole World must begin with recognizable quarter-note accompaniment before adding syncopation');
 assert.equal(ARRANGEMENTS['whole-world'].bpm, 120);
 assert.deepEqual(SONGS.find((song) => song.id === 'whole-world').chords, ['G', 'D']);
+assert.match(SONGS.find((song) => song.id === 'whole-world').body[0].lines[1][0].t, /whole wide world/,
+  'Whole World line two must match the common whole-wide-world chorus variation');
 assert.deepEqual(ARRANGEMENTS['whole-world'].pickup, { beat: 2.5, text: "He's got the… (pickup)" },
   'Whole World must cue its vocal pickup before the first guitar downbeat');
 assert.equal(ARRANGEMENTS['whole-world'].vocalCues.filter((cue) => cue.text.includes('pickup')).length, 3,

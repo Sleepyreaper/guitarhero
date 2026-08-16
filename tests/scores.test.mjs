@@ -25,9 +25,19 @@ for (const id of certified) {
 assert.equal(SCORES['row-your-boat'].unit, 'eighth');
 assert.equal(SCORES['row-your-boat'].totalBeats, 48);
 assert.equal(SCORES['whole-world'].melody[0].beat, -1.5, 'Whole World must sing before beat 1');
-assert.ok(SCORES['whole-world'].melody.filter((event) => event.lyric === 'in His hands')
-  .every((event) => event.sustain > event.duration),
-  'Whole World must let “hands” ring toward the next pickup instead of clipping the phrase');
+const wholeWorldLyrics = new Map(SCORES['whole-world'].melody
+  .filter((event) => event.lyric).map((event) => [event.beat, event.lyric]));
+assert.deepEqual([0, 2, 2.5, 4.5, 5, 5.5].map((beat) => wholeWorldLyrics.get(beat)),
+  ['who—ole', 'wor—', '—old', 'in', 'His', 'hands'],
+  'Whole World line one must stretch whole/world, then sing in His hands note by note');
+assert.deepEqual([8, 10, 10.5, 12.5, 13, 13.5].map((beat) => wholeWorldLyrics.get(beat)),
+  ['whole', 'wide', 'wor—old', 'in', 'His', 'hands'],
+  'Whole World line two must use the common whole-wide-world variation');
+assert.deepEqual([24, 25, 26, 26.5, 28].map((beat) => wholeWorldLyrics.get(beat)),
+  ['whole', 'world', 'in', 'His', 'hands'],
+  'Whole World must use its straighter final cadence');
+assert.ok(SCORES['whole-world'].melody.at(-1).sustain > SCORES['whole-world'].melody.at(-1).duration,
+  'Whole World must let the final hands breathe before the loop pickup');
 assert.equal(SCORES['amazing-grace'].melody[0].beat, -1, 'Amazing Grace must retain its one-beat pickup');
 assert.equal(Math.round(midiFrequency(69)), 440);
 

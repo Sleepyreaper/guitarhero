@@ -196,7 +196,7 @@ function detail(root, id, self) {
         ? `<p class="faint"><strong>Form checked:</strong> the bar order and chord changes are aligned to the displayed lyric cues. <strong>Source:</strong> <a href="${arrangement.verification.url}" target="_blank" rel="noopener noreferrer">${arrangement.verification.label}</a>. <strong>Checked:</strong> ${arrangement.verification.checked}.</p>`
         : '<p class="faint"><strong>Practice reduction:</strong> this teaches the song\'s chord vocabulary and feel, but it is not yet a lyric-synchronized transcription.</p>'}
       <div class="callout"><strong>${musicallyCertified ? 'Musical reference:' : 'About the groove:'}</strong> ${musicallyCertified
-        ? `Hear mode plays the public-domain melody from <a href="${score.source.url}" target="_blank" rel="noopener noreferrer">${score.source.label}</a> on the same clock as chords, lyrics, and guitar strokes.`
+        ? `Hear mode plays the public-domain melody from <a href="${score.source.url}" target="_blank" rel="noopener noreferrer">${score.source.label}</a> on the same clock as chords, lyrics, and guitar strokes.${score.lyricSource ? ` Chorus wording: <a href="${score.lyricSource.url}" target="_blank" rel="noopener noreferrer">${score.lyricSource.label}</a>.` : ''}`
         : 'This page has checked harmony and form, but no note-by-note melody yet. Treat its generated guitar as accompaniment practice—not a reference recording of the song.'}</div>
     </section>` : ''}
 
@@ -518,7 +518,7 @@ function singAlong(root, song, self) {
         const countBeats = beatsPerBar === 6 ? [0, 3] : Array.from({ length: beatsPerBar }, (_, i) => i);
         countBeats.forEach((beat) => strumAt([880], nextBarTime + beat * seconds, beat === 0 ? .07 : .04, 0));
         uiQueue.push({ time: nextBarTime, count: true });
-        if (arrangement.pickup) uiQueue.push({
+        if (arrangement.pickup && !score) uiQueue.push({
           time: nextBarTime + arrangement.pickup.beat * seconds,
           vocal: arrangement.pickup.text,
         });
@@ -579,9 +579,9 @@ function singAlong(root, song, self) {
           const barCue = lyricCues[idx];
           const cueParts = Array.isArray(barCue) ? barCue : [barCue];
           const cue = cueParts[Math.min(slot, cueParts.length - 1)] || null;
-          uiQueue.push({ time: nextBarTime + changeBeats[slot] * seconds, idx, chordName, cue });
+          uiQueue.push({ time: nextBarTime + changeBeats[slot] * seconds, idx, chordName, cue: score ? null : cue });
         });
-        vocalCues.filter((item) => item.bar === idx).forEach((item) => {
+        vocalCues.filter((item) => !score && item.bar === idx).forEach((item) => {
           uiQueue.push({ time: nextBarTime + item.beat * seconds, vocal: item.text });
         });
         barIndex++;
