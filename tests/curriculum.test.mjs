@@ -29,7 +29,8 @@ assert.ok(demonstratedCoreChords.some((title) => /D Chord/i.test(title)), 'the C
 
 const lessonText = (id) => {
   const lesson = ALL_LESSONS.find((item) => item.id === id);
-  return [lesson?.title, lesson?.objective, lesson?.goal, ...(lesson?.steps || [])].filter(Boolean).join(' ');
+  return [lesson?.title, lesson?.objective, lesson?.goal, lesson?.proof?.title, lesson?.proof?.check,
+    ...(lesson?.steps || [])].filter(Boolean).join(' ');
 };
 
 assert.match(lessonText('l1-0'), /cannot certify that a note is buzz-free/i,
