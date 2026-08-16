@@ -146,15 +146,15 @@ function list(root, self) {
     </div>
 
     <h2 style="margin-top:.5rem">✅ Pilot-ready studio (${pilotCount})</h2>
-    <p class="muted" style="margin-top:0">Only songs whose complete playback has passed a human musician’s listening review appear here.</p>
+    <p class="muted" style="margin-top:0">Documented, score-complete songs whose deployed playback was recognizable to a listener familiar with the song. This is a pilot gate—not an implied expert-guitar endorsement.</p>
     <div id="pilot-song-cards">${renderCards(genre, 'pilot')}</div>
 
-    <h2 style="margin-top:2rem">🎧 Score-complete, listening QA (${reviewCount})</h2>
+    <h2 style="margin-top:2rem">🎧 Score-complete, playback QA (${reviewCount})</h2>
     <p class="muted" style="margin-top:0">Public-domain melody, lyrics, chords, and strums share one clock, but these are still being heard and corrected end to end.</p>
     <div id="song-cards">${renderCards(genre, 'review')}</div>
 
     <h2 style="margin-top:2rem">🪕 Accompaniment library (${accompanimentCount})</h2>
-    <p class="muted" style="margin-top:0">Source-checked chords and form for practicing under a singer. These are not reference performances until their note-by-note score and listening review are complete.</p>
+    <p class="muted" style="margin-top:0">Source-checked chords and form for practicing under a singer. These are not reference performances until their note-by-note score and playback review are complete.</p>
     <div id="accompaniment-cards">${renderCards(genre, 'accompaniment')}</div>
 
     <h2 style="margin-top:2rem">🎯 Guided modern-song bridges (${guidedCount})</h2>
@@ -233,7 +233,9 @@ function detail(root, id, self) {
       <div class="callout"><strong>${musicallyCertified ? 'Musical reference:' : 'About the groove:'}</strong> ${musicallyCertified
         ? `Hear mode plays the public-domain melody from <a href="${score.source.url}" target="_blank" rel="noopener noreferrer">${score.source.label}</a> on the same clock as chords, lyrics, and guitar strokes.${score.lyricSource ? ` Chorus wording: <a href="${score.lyricSource.url}" target="_blank" rel="noopener noreferrer">${score.lyricSource.label}</a>.` : ''}`
         : 'This page has checked harmony and form, but no note-by-note melody yet. Treat its generated guitar as accompaniment practice—not a reference recording of the song.'}</div>
-      <p class="faint"><strong>Quality gate:</strong> ${quality.label}. ${quality.scoreComplete ? 'The source-aligned score still needs the recorded human listening and student checks shown in Campfire’s release standard.' : 'A literal melody score and listening review are still required before this can become a reference performance.'}</p>
+      <p class="faint"><strong>Quality gate:</strong> ${quality.label}. ${quality.scoreComplete
+        ? `The documented score is structurally certified. Playback recognition: ${quality.playbackPassed ? 'passed' : 'pending'}; expert guitar review: ${quality.expertReviewed ? 'passed' : 'pending'}; student usability: ${quality.student === 'pass' ? 'passed' : 'pending'}.`
+        : 'A literal melody score and playback review are still required before this can become a reference performance.'}</p>
     </section>` : ''}
 
     <div class="btn-row" style="margin:1rem 0">

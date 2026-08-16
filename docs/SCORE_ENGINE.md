@@ -19,5 +19,5 @@ generated backing sounds like the song.
 
 Certification requires a dated source, chronological note/rest events, score-timed lyric cues,
 pickup preservation, and a melody duration that fits the arrangement's harmony clock. Automated
-tests enforce those structural facts; a human listening pass remains mandatory before expanding the
+tests enforce those structural facts; a familiar-listener playback pass remains mandatory before expanding the
 certified set.

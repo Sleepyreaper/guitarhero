@@ -11,18 +11,21 @@ through explicit gates, and the interface must state the highest gate it has act
    source agree. This earns **Accompaniment only**, never reference-performance language.
 3. **Score complete** — literal pitches, rests, durations, pickups, and lyric syllables share the
    arrangement clock. Structural tests pass and the source is displayed.
-4. **Listening QA passed** — an adult musician hears every mode from count-in through the loop at
-   slow and default tempo. The melody is recognizable without reading the title; pickups, melismas,
-   chord changes, endings, and loops feel musical. This earns **Pilot ready**.
-5. **Student pass** — a pilot learner can identify the song, understand when to change, finish it
+4. **Playback recognition passed** — a listener who already knows the song hears every mode from
+   count-in through the loop. The melody is recognizable without reading the title, and the cues,
+   ending, and loop can be followed. Guitar expertise is not implied. This earns **Pilot ready**.
+5. **Expert guitar review** — an experienced teacher/player checks whether the accompaniment,
+   technique advice, and lead role are authentic and mechanically sound. Track this separately;
+   never infer it from an owner or learner recognition pass.
+6. **Student pass** — a pilot learner can identify the song, understand when to change, finish it
    without the interface causing confusion, and wants to play it again. Feedback is recorded and
    any blocking issue is fixed. This earns **Student approved**.
 
-Automated tests protect facts and state transitions. They cannot grant the two human gates.
-A listening pass must name its reviewer and date. A student pass must include a dated,
+Automated tests protect facts and state transitions. They cannot grant human experience gates.
+A playback, expert, or student pass must name its reviewer and date. A student pass must include a dated,
 behavior-based session note; anonymous “looks good” approval is not sufficient.
 
-## Listening checklist
+## Playback-recognition checklist
 
 - Start from a hard refresh and test Hear song, Play with Campfire, and Perform.
 - Test the default tempo and a slower beginner tempo.
@@ -50,8 +53,8 @@ Record behavior, not politeness. “Looks good” is not a pass if the learner c
 
 Select for genre fit and a skill the curriculum needs. Save authoritative melody and harmony
 sources. Transcribe the complete form into literal score events. Build one simple authentic
-accompaniment and one restrained lead lesson. Add structural tests. Complete listening QA, then a
-student pass. Only then promote it in the trusted launch collection.
+accompaniment and one restrained lead lesson. Add structural tests. Complete playback QA, record
+expert-review status, then run a student pass. Only then promote it in the trusted launch collection.
 
 ### Modern copyrighted song
 

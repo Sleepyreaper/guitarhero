@@ -25,7 +25,7 @@
 - [x] **"Playing with a singer" unit** — time-first, capo-to-her-key, leaving space, count-ins
 - [x] **"Beat the buzz"** fundamentals lesson (fret placement, verified with the tuner)
 - [x] Song-specific accompaniment forms, tempos, meters, grooves, dynamics, and lead guidance
-- [x] Honest catalog tiers plus explicit musician-listening and student-approval quality gates
+- [x] Honest catalog tiers with separate source, playback-recognition, expert-guitar, and student gates
 - [x] Six-string tuner diagnostic report with signal, clarity, and target-lock measurements
 - [x] Auto-calibrated practice noise gate for quiet guitars and different rooms/microphones
 - [x] **Real-guitar tuner calibration** — validated all six strings with an Elgato Wave:3 at
@@ -47,7 +47,7 @@
       dependency, so weigh against the no-build constraint
 - [ ] User song import (paste ChordPro / plain chord-over-lyric text)
 - [ ] Even more public-domain songs; "songs you can play now" based on chords you've learned
-- [ ] Certify the five-song teen beta set in `docs/CONTENT_QUALITY.md` through listening QA
+- [ ] Certify the five-song teen beta set in `docs/CONTENT_QUALITY.md` through source and playback QA
 - [ ] Turn every modern-song idea into a curated tutorial bridge or remove it from the launch view
 - [x] Left-handed diagram mode
 - [ ] Alternate tunings in the tuner
