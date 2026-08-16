@@ -36,12 +36,14 @@ export const SONG_REVIEWS = Object.freeze({
     note: 'The source-locked 3/4 score and deployed timing trace pass. Independent playback recognition, expert guitar review, and student usability remain.',
   },
   'will-the-circle': {
-    trace: 'pending', playback: 'pending', expert: 'pending', student: 'pending',
-    note: 'The public-domain 1907 hymn refrain is source-locked. Deploy and trace its pickup, eight-bar form, rests, and loop before playback recognition.',
+    trace: 'pass', tracedAt: '2026-08-16',
+    playback: 'in-progress', expert: 'pending', student: 'pending',
+    note: 'The source-locked Habershon/Gabriel refrain and deployed timing trace pass. Independent playback recognition, expert guitar review, and student usability remain.',
   },
   'what-a-friend': {
-    trace: 'pending', playback: 'pending', expert: 'pending', student: 'pending',
-    note: 'The complete CONVERSE first verse and disclosed open-chord reduction are source-locked. Deploy and trace all sixteen bars before playback recognition.',
+    trace: 'pass', tracedAt: '2026-08-16',
+    playback: 'in-progress', expert: 'pending', student: 'pending',
+    note: 'The source-locked CONVERSE first verse, disclosed open-chord reduction, and deployed timing trace pass. Independent playback recognition, expert guitar review, and student usability remain.',
   },
 });
 
