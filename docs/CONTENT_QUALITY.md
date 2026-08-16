@@ -87,8 +87,8 @@ Do not call the catalog launch-ready until it has at least:
 4. Kumbaya — source-locked Musica Viva 3/4 score and deployed timing trace complete; independent playback QA pending.
 5. Will the Circle Be Unbroken — public-domain Habershon/Gabriel hymn edition score and deployed timing trace complete; independent playback QA pending. The later Carter-family rewrite is explicitly excluded.
 6. What a Friend We Have in Jesus — complete CONVERSE first-verse score, disclosed open-chord reduction, and deployed timing trace complete; independent playback QA pending.
-7. Down in the Valley — complete 24-bar CC0 anthology melody, lyrics, traditional G/D7 harmony, and disclosed opening-chord extension complete; deployed timing trace pending.
-8. Oh, My Darling Clementine — complete CC0 anthology verse and chorus, one-beat pickup, and disclosed G/D7 reduction complete; deployed timing trace pending.
+7. Down in the Valley — complete 24-bar CC0 anthology melody, lyrics, traditional G/D7 harmony, disclosed opening-chord extension, and deployed timing trace complete; independent playback QA pending.
+8. Oh, My Darling Clementine — complete CC0 anthology verse and chorus, one-beat pickup, disclosed G/D7 reduction, and deployed timing trace complete; independent playback QA pending.
 
 Row, Row, Row Your Boat remains valuable for 6/8 and rounds, but it is not a lead teen-engagement
 song. It should be certified as a teaching tool, not used as the beta’s headline repertoire.
