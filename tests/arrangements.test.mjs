@@ -321,8 +321,8 @@ assert.deepEqual(GROOVES.fingerWaltz.events.map(({ kind, fromTop }) => kind === 
 assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verified').length, 23,
   'only independently checked arrangements may claim lyric-synchronized timing');
 assert.equal(ARRANGEMENTS['house-of-the-rising-sun'].groove, 'sixEight');
-assert.ok(Object.values(ARRANGEMENTS).some((item) => item.bars.some(Array.isArray)),
-  'arrangements must support mid-bar chord changes');
+assert.ok(Object.values(ARRANGEMENTS).some((item) => item.bars.some((bar) => barChords(bar).length > 1)),
+  'arrangements must retain at least one explicit mid-bar chord change');
 assert.ok(Object.values(GROOVES).every((groove) => groove.count),
   'every generated accompaniment groove must expose the count a learner should say aloud');
 
