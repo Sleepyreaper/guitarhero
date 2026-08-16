@@ -50,3 +50,10 @@ export function strumAt(freqs, atTime, gain = 0.16, spread = 0.028) {
   const when = Math.max(0, atTime - ac.currentTime);
   freqs.forEach((f, i) => pluck(f, when + i * spread, 1.5, gain));
 }
+
+// A single scheduled guide-melody note. This is intentionally distinct from the
+// chord backing so a learner can hear the song identity, then remove the guitar part.
+export function melodyAt(freq, atTime, duration = .5, gain = .12) {
+  const ac = getAudioContext();
+  pluck(freq, Math.max(0, atTime - ac.currentTime), Math.max(.12, duration * .9), gain);
+}

@@ -3,7 +3,7 @@ import { GROOVES, arrangementFor, arrangementChordSequence, barChords, barChange
 import { TARGET_SONGS, chartSearchUrl } from '../data/targets.js';
 import { CHORD_BY_NAME, chordFrequencies } from '../data/chords.js';
 import { chordSVG } from '../components/chordDiagram.js';
-import { strum, strumAt } from '../lib/audio.js';
+import { melodyAt, strum, strumAt } from '../lib/audio.js';
 import { getAudioContext } from '../lib/audio.js';
 import { ChordListener } from '../lib/listener.js';
 import { ChordJudge } from '../lib/coach.js';
@@ -12,6 +12,7 @@ import { isConfidentMatch, isGuidedMatch } from '../lib/confidence.js';
 import { listAudioInputs, activeDeviceId } from '../lib/devices.js';
 import { transposeFrequencies, transposeKey } from '../lib/capo.js';
 import { isFavorite, toggleFavorite } from '../lib/storage.js';
+import { midiFrequency, scoreFor } from '../data/scores.js';
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const cap = (s) => s[0].toUpperCase() + s.slice(1);
@@ -159,6 +160,8 @@ function detail(root, id, self) {
     ? `${arrangement.bpm} dotted-quarter BPM`
     : `${arrangement?.bpm} BPM`;
   const verifiedTiming = arrangement?.timing === 'verified';
+  const score = scoreFor(song);
+  const musicallyCertified = score?.status === 'certified';
   const capo = self._capoBySong?.[song.id] ?? song.capo ?? 0;
 
   root.innerHTML = `
@@ -181,7 +184,7 @@ function detail(root, id, self) {
       <p class="faint">Move one fret at a time until the first line feels comfortable to sing. The diagrams and chord names stay the same; Campfire's listening and backing follow your capo choice.</p>
     </section>
     ${arrangement ? `<section class="panel arrangement-guide" style="margin-top:1rem">
-      <p class="eyebrow">${verifiedTiming ? 'Source-checked form · Campfire accompaniment' : 'Beginner accompaniment practice'}</p>
+      <p class="eyebrow">${musicallyCertified ? 'Scored melody + source-checked accompaniment' : verifiedTiming ? 'Harmony/form checked · melody audit pending' : 'Beginner accompaniment practice'}</p>
       <div class="grid arrangement-roles">
         <div><h3>Accompany the singer</h3><p><strong>${groove.label}</strong> at about ${tempoText}.</p>
           <p><strong>Count:</strong> ${groove.count}</p><p class="muted">${arrangement.dynamics}</p></div>
@@ -192,12 +195,14 @@ function detail(root, id, self) {
       ${verifiedTiming
         ? `<p class="faint"><strong>Form checked:</strong> the bar order and chord changes are aligned to the displayed lyric cues. <strong>Source:</strong> <a href="${arrangement.verification.url}" target="_blank" rel="noopener noreferrer">${arrangement.verification.label}</a>. <strong>Checked:</strong> ${arrangement.verification.checked}.</p>`
         : '<p class="faint"><strong>Practice reduction:</strong> this teaches the song\'s chord vocabulary and feel, but it is not yet a lyric-synchronized transcription.</p>'}
-      <div class="callout"><strong>About the groove:</strong> traditional songs do not have one mandatory guitar strum. Campfire supplies a meter-correct, playable beginner accompaniment; the cited source supports the form and harmony. The voice carries the melody.</div>
+      <div class="callout"><strong>${musicallyCertified ? 'Musical reference:' : 'About the groove:'}</strong> ${musicallyCertified
+        ? `Hear mode plays the public-domain melody from <a href="${score.source.url}" target="_blank" rel="noopener noreferrer">${score.source.label}</a> on the same clock as chords, lyrics, and guitar strokes.`
+        : 'This page has checked harmony and form, but no note-by-note melody yet. Treat its generated guitar as accompaniment practice—not a reference recording of the song.'}</div>
     </section>` : ''}
 
     <div class="btn-row" style="margin:1rem 0">
       <button class="btn btn-primary" id="pa-start">🎤 Rehearse chord order — I'll listen</button>
-      <button class="btn" id="sa-start">${verifiedTiming ? '🔊 Sing with timed backing' : '🔊 Practice with simplified backing'}</button>
+      <button class="btn" id="sa-start">${score ? '🎼 Open song studio' : '🔊 Practice accompaniment'}</button>
     </div>
 
     <section class="panel">
@@ -250,6 +255,7 @@ function detail(root, id, self) {
 function playAlong(root, song, self) {
   cleanup(self);
   const arrangement = arrangementFor(song);
+  const score = scoreFor(song);
   const seq = arrangementChordSequence(song).length ? arrangementChordSequence(song) : chordSequence(song);
   let idx = 0;
   let okStreak = 0;
@@ -400,6 +406,7 @@ function singAlong(root, song, self) {
   const vocalCues = arrangement.vocalCues || [];
   let bpm = arrangement.bpm;
   let playing = false;
+  let studioMode = score ? 'reference' : 'backing';
   let barIndex = 0;
   let nextBarTime = 0;
   let countIn = true;
@@ -409,8 +416,10 @@ function singAlong(root, song, self) {
   root.innerHTML = `
     <button class="back-link" id="sa-exit" style="background:none;border:none;cursor:pointer">← Back to song</button>
     <h1 style="margin:.2rem 0">${song.title}</h1>
-    <p class="faint" style="margin-top:0">${arrangement.timing === 'verified'
-      ? `Verified lyric-aligned backing: ${arrangement.section}. You get one count-in bar, then the written form loops.`
+    <p class="faint" style="margin-top:0">${score
+      ? `Score-driven studio: melody, lyric syllables, harmony, and guitar share one clock. You get one count-in bar, then the written form loops.`
+      : arrangement.timing === 'verified'
+      ? `Harmony/form practice: ${arrangement.section}. This song does not yet have a note-by-note reference melody.`
       : `Simplified accompaniment practice: ${arrangement.section}. It teaches chord changes and feel, but does not claim exact lyric timing.`}</p>
 
     <section class="panel" style="text-align:center">
@@ -429,6 +438,12 @@ function singAlong(root, song, self) {
         <p id="sa-action" class="strum-now">Count in first—then follow the orange square.</p>
         <p class="faint">The hand follows the count; the lyric floats across it. Change chord on the displayed lyric cue—do not add one strum for every word.</p>
       </div>
+      ${score ? `<div class="studio-modes" id="studio-modes">
+        <button class="chip-btn sel" data-mode="reference">Hear song</button>
+        <button class="chip-btn" data-mode="play">Play with Campfire</button>
+        <button class="chip-btn" data-mode="perform">Perform</button>
+      </div>
+      <p id="studio-mode-help" class="faint">Melody plus guitar accompaniment: first listen for what makes the song recognizable.</p>` : ''}
       <div class="bpm-display" style="font-size:2rem;margin-top:.6rem"><span id="sa-bpm">${bpm}</span> <small>BPM</small></div>
       <input id="sa-slider" type="range" min="50" max="130" value="${bpm}" style="max-width:280px" />
       <div class="btn-row" style="justify-content:center;margin-top:.6rem">
@@ -448,6 +463,7 @@ function singAlong(root, song, self) {
   const cueEl = root.querySelector('#sa-cue');
   const rhythmSlots = [...root.querySelectorAll('.rhythm-guide-slot')];
   const actionEl = root.querySelector('#sa-action');
+  const modeHelp = root.querySelector('#studio-mode-help');
 
   const drawStroke = (beat, event, cue) => {
     rhythmSlots.forEach((slot) => slot.classList.toggle('current', Number(slot.dataset.beat) === beat));
@@ -506,6 +522,15 @@ function singAlong(root, song, self) {
           time: nextBarTime + arrangement.pickup.beat * seconds,
           vocal: arrangement.pickup.text,
         });
+        if (score) {
+          const verseStart = nextBarTime + beatsPerBar * seconds;
+          score.melody.filter((event) => event.beat < 0).forEach((event) => {
+            if (event.midi != null && studioMode !== 'perform') melodyAt(
+              midiFrequency(event.midi), verseStart + event.beat * seconds, event.duration * seconds,
+            );
+            if (event.lyric) uiQueue.push({ time: verseStart + event.beat * seconds, vocal: event.lyric });
+          });
+        }
         countIn = false;
       } else {
         const idx = barIndex % bars.length;
@@ -513,8 +538,32 @@ function singAlong(root, song, self) {
         const barEvents = groove.barEvents?.[idx % groove.barEvents.length] || groove.events;
         barEvents.forEach((event) => {
           const chordName = chordAtBeat(bar, event.beat);
-          scheduleStroke(event, chordName, nextBarTime + event.beat * seconds);
+          if (studioMode === 'reference' || studioMode === 'backing') {
+            const gainScale = score && studioMode === 'reference' ? .45 : 1;
+            scheduleStroke({ ...event, gain: event.gain * gainScale }, chordName, nextBarTime + event.beat * seconds);
+          }
         });
+        if (score) {
+          const barStart = idx * beatsPerBar;
+          score.melody.filter((event) => event.beat >= barStart && event.beat < barStart + beatsPerBar)
+            .forEach((event) => {
+              const atTime = nextBarTime + (event.beat - barStart) * seconds;
+              if (event.midi != null && studioMode !== 'perform') {
+                melodyAt(midiFrequency(event.midi), atTime, event.duration * seconds);
+              }
+              if (event.lyric) uiQueue.push({ time: atTime, vocal: event.lyric });
+            });
+          if (idx === bars.length - 1) {
+            const nextVerse = nextBarTime + beatsPerBar * seconds;
+            score.melody.filter((event) => event.beat < 0).forEach((event) => {
+              const atTime = nextVerse + event.beat * seconds;
+              if (event.midi != null && studioMode !== 'perform') {
+                melodyAt(midiFrequency(event.midi), atTime, event.duration * seconds);
+              }
+              if (event.lyric) uiQueue.push({ time: atTime, vocal: event.lyric });
+            });
+          }
+        }
         grid.forEach((slot) => {
           const event = barEvents.find((candidate) => candidate.beat === slot.beat);
           const barCue = lyricCues[idx];
@@ -574,6 +623,19 @@ function singAlong(root, song, self) {
   root.querySelector('#sa-restart').addEventListener('click', () => { barIndex = 0; countIn = true; uiQueue.length = 0; drawUI(0); });
   root.querySelector('#sa-exit').addEventListener('click', () => { stop(); detail(root, song.id, self); });
   slider.addEventListener('input', () => { bpm = +slider.value; bpmEl.textContent = bpm; });
+  root.querySelector('#studio-modes')?.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-mode]');
+    if (!button) return;
+    stop();
+    studioMode = button.dataset.mode;
+    root.querySelectorAll('#studio-modes [data-mode]').forEach((item) => item.classList.toggle('sel', item === button));
+    modeHelp.textContent = studioMode === 'reference'
+      ? 'Melody plus guitar accompaniment: first listen for what makes the song recognizable.'
+      : studioMode === 'play'
+        ? 'Melody only: Campfire carries the tune while you supply every guitar stroke.'
+        : 'No melody or guitar after the count-in: use only the clock and visual cues.';
+    barIndex = 0; countIn = true; uiQueue.length = 0; drawUI(0);
+  });
 
   drawUI(0);
 }

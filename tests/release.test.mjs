@@ -106,6 +106,14 @@ assert.match(songViewText, /The hand follows the count; the lyric floats across 
   'word guidance must not falsely teach one strum per lyric word');
 assert.match(songViewText, /toggleFavorite/,
   'play-along and target songs must support a persistent personal songbook');
+assert.match(songViewText, /scoreFor\(song\)/,
+  'song pages must distinguish scored references from chord-only accompaniment practice');
+assert.match(songViewText, /data-mode="reference"[\s\S]*data-mode="play"[\s\S]*data-mode="perform"/,
+  'certified songs must separate hearing, playing with melody, and performing alone');
+assert.match(songViewText, /studioMode === 'reference' \? \.45 : 1/,
+  'reference accompaniment must stay below the guide melody instead of masking it');
+assert.match(songViewText, /score\.melody\.filter\(\(event\) => event\.beat < 0\)/,
+  'score pickups must sound during the count-in rather than entering late on beat 1');
 assert.match(lessonsViewText, /function stageGate\(stage\)/,
   'the learning path must calculate mastery gates before exposing later stages');
 assert.match(lessonsViewText, /Pass.*first/,

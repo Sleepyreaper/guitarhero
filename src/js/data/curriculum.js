@@ -145,7 +145,7 @@ export const CURRICULUM = [
         goal: 'Follow one lyric-timed chorus without stopping, then play it once without the backing.',
         steps: [
           'Em is home. D answers the ends of the first and third phrases; the final D resolves back to Em.',
-          'Choose Sing with timed backing and follow the lyric cue through one chorus.',
+          'Choose Practice accompaniment and follow the lyric cue through one chorus.',
           'Then pause the app and keep the same dry, steady old-time pulse yourself.',
         ] },
       { id: 'l2-3', title: 'SONG: Down in the Valley', min: 10, songId: 'down-in-the-valley', chords: ['D7'],
@@ -164,7 +164,7 @@ export const CURRICULUM = [
           'Count “1, 2, 3, 4.” Sing “He’s got the” late in the count-in, then land “whole” on the next beat 1.',
           'The first phrase stays on G, the second moves to D, and the third returns to G.',
           'On the last line, D resolves home to G. Keep four down-strums per bar instead of strumming every syllable.',
-          'Use Sing with timed backing once, then take over while someone else sings.',
+          'Open Song Studio, hear the melody with the guitar once, then choose Play with Campfire and supply the guitar yourself.',
         ] },
     ],
   },
@@ -362,7 +362,7 @@ export const CURRICULUM = [
         objective: 'Put it together — let the app play so your singer can sing, then take over the part yourself.',
         proof: { id: 'back-a-singer', title: 'I can take over from the backing track', check: 'Sing or hum one Kumbaya verse with the timed backing, restart, then play the same G–C–G phrases yourself without stopping the pulse.' },
         steps: [
-          'Open Kumbaya and choose “Sing with timed backing.” Set a tempo that feels relaxed.',
+          'Open Kumbaya and choose Practice accompaniment. Set a tempo that feels relaxed; this song remains harmony practice until its note-by-note melody is certified.',
           'Follow the “Sing this now” cue through one verse. Then pause the app and YOU play those same lyric-aligned changes.',
           'Congratulations — that’s accompanying. Everything else is just more songs.',
         ] },

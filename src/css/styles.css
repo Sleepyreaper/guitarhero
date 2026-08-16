@@ -353,6 +353,7 @@ ol.steps li { margin: .3rem 0; }
 .rhythm-guide-slot.air { border-style: dashed; opacity: .68; }
 .rhythm-guide-slot.current { color: #fff; opacity: 1; background: var(--rust); border-color: var(--rust); transform: translateY(-3px); box-shadow: 0 0 16px rgba(210,102,47,.45); }
 .strum-now { min-height: 1.3em; margin: .7rem 0 .2rem; color: var(--gold); font-weight: 800; }
+.studio-modes { display: flex; justify-content: center; gap: .45rem; flex-wrap: wrap; margin: 1rem 0 .45rem; }
 
 /* ---------- genre filter chips ---------- */
 .chip-row { display: flex; gap: .45rem; flex-wrap: wrap; margin: 0 0 1.2rem; }
