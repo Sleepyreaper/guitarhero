@@ -1,4 +1,4 @@
-import { ALL_LESSONS } from '../data/curriculum.js';
+import { ALL_LESSONS, STAGE_BY_LESSON } from '../data/curriculum.js';
 import { SONGS } from '../data/songs.js';
 import { getProfile, isDone, isRoutineStepDone, toggleRoutineStep } from '../lib/storage.js';
 
@@ -10,6 +10,7 @@ const BASE_STEPS = [
 export function buildRoutine(doneIds = [], genre = 'mixed') {
   const done = new Set(doneIds);
   const next = ALL_LESSONS.find((lesson) => !done.has(lesson.id)) || ALL_LESSONS.at(-1);
+  const stage = STAGE_BY_LESSON[next.id];
   const learned = new Set(ALL_LESSONS
     .filter((lesson) => done.has(lesson.id))
     .flatMap((lesson) => lesson.chords || []));
@@ -26,11 +27,30 @@ export function buildRoutine(doneIds = [], genre = 'mixed') {
         || a.level - b.level || a.title.localeCompare(b.title);
     });
 
-  const mechanics = done.has('l1-1') && done.has('l1-2')
-    ? { id: 'mechanics', ico: '🏋️', min: 3, title: 'Drill Em ↔ G', href: '#/train',
-      blurb: 'You know both shapes now. Count only clean changes and try to beat your own number.' }
-    : { id: 'mechanics', ico: '🤸', min: 3, title: 'Build finger control', href: '#/warmup',
-      blurb: 'Use the slow 1·2·3·4 drill. Stop if the hand hurts; relaxed accuracy is the goal.' };
+  const mechanicByStage = {
+    w1: { ico: '🤸', title: 'Build relaxed finger control', href: '#/warmup',
+      blurb: 'Use the slow 1·2·3·4 drill. Stop for pain; minimum pressure and accurate placement win.' },
+    w2: { ico: '🏋️', title: 'Drill Em ↔ G', href: '#/train',
+      blurb: 'Count only clean changes. Keep fingers close and move the shape without rushing.' },
+    w3: { ico: '🏋️', title: 'Drill today’s G–C–D pair', href: '#/train',
+      blurb: 'Select the two shapes giving you the most trouble and count clean changes only.' },
+    w4: { ico: '🧭', title: 'Rehearse one lyric-timed change', href: '#/songs',
+      blurb: 'Loop the hardest line before attempting the whole verse.' },
+    w5: { ico: '🥁', title: 'Separate the groove from the chords', href: '#/metronome',
+      blurb: 'Mute the strings and make today’s rhythm steady before adding chord changes.' },
+    w6: { ico: '🎼', title: 'Read and land one short fill', href: '#/learn/l4-tab',
+      blurb: 'Play B0–B3–e3 evenly, then return to G on beat 1.' },
+    w7: { ico: '🔢', title: 'Call the numbers aloud', href: '#/learn/l5-2',
+      blurb: 'Play G–C–D–G while saying 1–4–5–1; then try 1–5–6m–4.' },
+    w8: { ico: '🖐️', title: 'Steady the alternating thumb', href: '#/learn/l6-2',
+      blurb: 'Thumb alone first. Add one upper note only when the bass stays even.' },
+    w9: { ico: '🎤', title: 'Practice a clean count-in and ending', href: '#/learn/l7-4',
+      blurb: 'Count the correct meter, play four bars, and finish together on the home chord.' },
+  };
+  const chosenMechanic = learned.has('Em') && learned.has('G') && stage?.id === 'w1'
+    ? mechanicByStage.w2
+    : mechanicByStage[stage?.id] || mechanicByStage.w1;
+  const mechanics = { id: 'mechanics', min: 3, ...chosenMechanic };
 
   const music = playable[0]
     ? { id: 'music', ico: '🎵', min: 8, title: `Play ${playable[0].title}`, href: `#/songs/${playable[0].id}`,
@@ -56,10 +76,10 @@ export default {
     const draw = () => {
       const doneN = steps.filter((step) => isRoutineStepDone(step.id)).length;
       root.innerHTML = `
-        <p class="eyebrow">Daily plan · ~${total} minutes</p>
+        <p class="eyebrow">${stage?.label || 'Daily plan'} · ~${total} minutes</p>
         <h1>Today's practice</h1>
-        <p class="lead">Not sure what to practice? Do these four, in order. Small and daily beats long and rare —
-        this is the whole routine.</p>
+        <p class="lead">Do these four in order: tune, learn, isolate the mechanical problem, then make music.
+        Repeat this stage until its checkpoint is dependable; the calendar never pushes you forward.</p>
 
         <div class="progress-track" style="margin:0 0 1.2rem"><div class="progress-fill" style="width:${Math.round((doneN / steps.length) * 100)}%"></div></div>
 

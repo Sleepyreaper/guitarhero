@@ -363,3 +363,48 @@ export const CURRICULUM = [
 
 export const ALL_LESSONS = CURRICULUM.flatMap((u) => u.lessons.map((l) => ({ ...l, unitId: u.id })));
 export const LESSON_BY_ID = Object.fromEntries(ALL_LESSONS.map((l) => [l.id, l]));
+
+// Suggested pacing, never calendar locks. A learner advances on the checkpoint, not because a
+// date changed. Keeping this separate from units lets the app show a realistic first-week split.
+export const LEARNING_STAGES = [
+  { id: 'w1', label: 'Stage 1 · roughly week 1', title: 'Make the guitar cooperate',
+    lessonIds: ['l0-1', 'l0-2', 'l0-3', 'l1-0', 'l1-1'],
+    practice: 'Tune · clean-note pressure test · Em string check · relaxed down-strums',
+    checkpoint: 'Tune all six strings, make one clear fretted note three times, and ring every string of Em.' },
+  { id: 'w2', label: 'Stage 2 · roughly week 2', title: 'G, changes, time, first song',
+    lessonIds: ['l1-2', 'l1-fingers', 'l1-3', 'l1-4', 'l1-5'],
+    practice: 'Tune · G string check · Em↔G changes · steady downs · one complete song',
+    checkpoint: 'Five clean Em↔G changes, 20 seconds of steady time, and Row Your Boat without stopping.' },
+  { id: 'w3', label: 'Stage 3 · roughly week 3', title: 'Add C and D',
+    lessonIds: ['l2-1', 'l2-2'],
+    practice: 'Tune · C and D one string at a time · G→C and G→D · slow 1–4–5 loop',
+    checkpoint: 'C and D both ring correctly and can be formed twice from the air.' },
+  { id: 'w4', label: 'Stage 4 · roughly week 4', title: 'Play full two- and three-chord songs',
+    lessonIds: ['l2-shady', 'l2-3', 'l2-4'],
+    practice: 'Tune · one change pair · one lyric-timed verse · repeat once without backing',
+    checkpoint: 'Finish a complete verse without stopping and change where the lyric cue says.' },
+  { id: 'w5', label: 'Stage 5 · roughly week 5', title: 'Give each style its groove',
+    lessonIds: ['l3-1', 'l3-2', 'l3-country', 'l3-3', 'l3-4'],
+    practice: 'Down-up motion · folk pattern · boom-chuck · waltz or 2/4 song',
+    checkpoint: 'Keep four boom-chuck bars and demonstrate that 4/4, waltz, and 2/4 feel different.' },
+  { id: 'w6', label: 'Stage 6 · roughly week 6', title: 'More chords and first TAB',
+    lessonIds: ['l4-1', 'l4-2', 'l4-tab', 'l4-3'],
+    practice: 'Am/E/A shapes · one change pair · three-note TAB fill · Home on the Range',
+    checkpoint: 'Read a short TAB fill, return on beat 1, and play one full country-waltz verse.' },
+  { id: 'w7', label: 'Stage 7 · roughly week 7', title: 'Capo and portable numbers',
+    lessonIds: ['l5-1', 'l5-2', 'l5-3'],
+    practice: 'Place and retune capo · call 1–4–5 and 1–5–6m–4 · compare two singing keys',
+    checkpoint: 'Explain the sounding key, choose a comfortable capo fret, and play the same song in two keys.' },
+  { id: 'w8', label: 'Stage 8 · roughly week 8', title: 'Fingerstyle foundations',
+    lessonIds: ['l6-1', 'l6-2', 'l6-3'],
+    practice: 'Thumb alone · alternating bass · add one upper note · fingerpicked waltz',
+    checkpoint: 'Keep the thumb even through a chord change and fingerpick one Amazing Grace verse.' },
+  { id: 'w9', label: 'Stage 9 · roughly week 9+', title: 'Accompany another person',
+    lessonIds: ['l7-1', 'l7-2', 'l7-3', 'l7-lead', 'l7-4', 'l7-5'],
+    practice: 'Protect time · test vocal key · leave space · one fill · count-in and ending',
+    checkpoint: 'Count in, support one complete vocal, recover from a miss, and end together.' },
+];
+
+export const STAGE_BY_LESSON = Object.fromEntries(
+  LEARNING_STAGES.flatMap((stage) => stage.lessonIds.map((lessonId) => [lessonId, stage])),
+);

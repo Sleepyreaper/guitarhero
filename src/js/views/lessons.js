@@ -1,4 +1,6 @@
-import { CURRICULUM, ALL_LESSONS, LESSON_BY_ID } from '../data/curriculum.js';
+import {
+  CURRICULUM, ALL_LESSONS, LESSON_BY_ID, LEARNING_STAGES, STAGE_BY_LESSON,
+} from '../data/curriculum.js';
 import { CHORD_BY_NAME } from '../data/chords.js';
 import { SONG_BY_ID } from '../data/songs.js';
 import { chordSVG } from '../components/chordDiagram.js';
@@ -41,11 +43,34 @@ function proofBlock(proof) {
 }
 
 function overview(root) {
+  const stageCards = LEARNING_STAGES.map((stage) => {
+    const lessons = stage.lessonIds.map((id) => LESSON_BY_ID[id]);
+    const completed = lessons.filter((lesson) => isDone(lesson.id)).length;
+    const proofs = lessons.filter((lesson) => lesson.proof);
+    const passed = proofs.filter((lesson) => isSkillProven(lesson.proof.id)).length;
+    const next = lessons.find((lesson) => !isDone(lesson.id)) || lessons.at(-1);
+    const pct = Math.round((completed / lessons.length) * 100);
+    return `
+      <article class="panel stage-card ${completed === lessons.length ? 'done' : ''}">
+        <div class="stage-head"><div><p class="eyebrow">${stage.label}</p><h3>${stage.title}</h3></div>
+          <span class="pill ${completed === lessons.length ? 'green' : ''}">${completed}/${lessons.length}</span></div>
+        <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+        <p><strong>Practice:</strong> ${stage.practice}</p>
+        <p class="muted"><strong>Ready when:</strong> ${stage.checkpoint}</p>
+        <div class="stage-foot"><span class="faint">${proofs.length ? `${passed}/${proofs.length} skill checks passed` : 'Song performance is the checkpoint'}</span>
+          <a class="btn" href="#/learn/${next.id}">${completed ? 'Review' : 'Continue'} →</a></div>
+      </article>`;
+  }).join('');
   root.innerHTML = `
     <p class="eyebrow">Your path from zero</p>
     <h1>Learn guitar</h1>
-    <p class="lead">Eight short units. The early units end on real, playable songs so you always have something
-    to show for your practice. Do a little every day — 15–20 minutes beats one long weekly session.</p>
+    <p class="lead">Nine flexible stages from first touch to accompanying a singer. “Week” is a pacing guide,
+    never a deadline: repeat a stage until its ready-when checkpoint feels dependable.</p>
+    <div class="callout mastery-note">Progress has two layers: <strong>Completed</strong> means you worked through a lesson;
+      <strong>skill passed</strong> means you demonstrated its checkpoint. Slow, honest progress wins.</div>
+    <div class="stage-grid">${stageCards}</div>
+
+    <p class="eyebrow" style="margin-top:1.6rem">All lessons by unit</p>
     ${CURRICULUM.map((u) => {
       const allDone = u.lessons.every((l) => isDone(l.id));
       return `
@@ -78,6 +103,7 @@ function detail(root, lessonId) {
   const song = lesson.songId ? SONG_BY_ID[lesson.songId] : null;
   const done = isDone(lessonId);
   const feedback = getFeedback(lessonId);
+  const stage = STAGE_BY_LESSON[lessonId];
   const leftHanded = getProfile()?.hand === 'left';
   const steps = lesson.steps.map((step) => leftHanded
     ? step.replace('low E on the left', 'low E on the right').replace('low-E on the left', 'low-E on the right')
@@ -85,9 +111,10 @@ function detail(root, lessonId) {
 
   root.innerHTML = `
     <a class="back-link" href="#/learn">← All lessons</a>
-    <p class="eyebrow">Lesson ${idx + 1} of ${ALL_LESSONS.length} · ${lesson.min} min</p>
+    <p class="eyebrow">${stage?.label || ''} · Lesson ${idx + 1} of ${ALL_LESSONS.length} · ${lesson.min} min</p>
     <h1>${lesson.title}</h1>
     <p class="lead">${lesson.objective}</p>
+    ${stage ? `<p class="faint stage-context"><strong>${stage.title}:</strong> ${stage.checkpoint}</p>` : ''}
 
     ${[lesson.video, ...(lesson.extraVideos || [])].filter(Boolean).map(videoBlock).join('')}
 

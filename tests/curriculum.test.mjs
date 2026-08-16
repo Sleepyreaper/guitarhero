@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { ALL_LESSONS } from '../src/js/data/curriculum.js';
+import { ALL_LESSONS, LEARNING_STAGES, STAGE_BY_LESSON } from '../src/js/data/curriculum.js';
 import { SONG_BY_ID } from '../src/js/data/songs.js';
 
 const learned = new Set();
@@ -53,5 +53,17 @@ assert.match(lessonText('l7-2'), /capo only raises/i,
   'capo guidance must never tell a strained-high singer to move the capo upward');
 assert.match(lessonText('l7-4'), /waltz/i,
   'count-ins must respect the song meter rather than always counting four');
+
+const stagedIds = LEARNING_STAGES.flatMap((stage) => stage.lessonIds);
+assert.deepEqual(stagedIds, ALL_LESSONS.map((lesson) => lesson.id),
+  'the flexible stage plan must contain every lesson exactly once and preserve teaching order');
+assert.equal(new Set(stagedIds).size, ALL_LESSONS.length,
+  'a lesson must not silently appear in two different learning stages');
+assert.equal(LEARNING_STAGES.length, 9, 'the shipped plan must cover the complete nine-stage path');
+for (const stage of LEARNING_STAGES) {
+  assert.ok(stage.practice.length > 30, `${stage.id} needs an actionable daily practice recipe`);
+  assert.ok(stage.checkpoint.length > 40, `${stage.id} needs a meaningful mastery checkpoint`);
+  for (const id of stage.lessonIds) assert.equal(STAGE_BY_LESSON[id], stage, `${id} stage lookup drifted`);
+}
 
 console.log('curriculum tests passed: song prerequisites and curated core-skill videos');

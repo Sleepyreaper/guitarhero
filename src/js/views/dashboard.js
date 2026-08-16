@@ -71,7 +71,7 @@ function renderOnboarding(root, owner) {
   const checked = (key, value, fallback) => (saved[key] || fallback) === value ? 'checked' : '';
   root.innerHTML = `
     <section class="panel onboarding-panel">
-      <p class="eyebrow">Build your first week</p>
+      <p class="eyebrow">Build your first practice block</p>
       <h1>What do you want guitar to do?</h1>
       <p class="lead">Four quick choices give you a starting path. Nothing here is public, and you can change it later.</p>
       <form id="onboarding-form" class="onboarding-form">
@@ -87,7 +87,7 @@ function renderOnboarding(root, owner) {
           ${Object.entries(GENRE_LABELS).map(([value, label]) => `<label><input type="radio" name="genre" value="${value}" ${checked('genre', value, 'mixed')}> ${label}</label>`).join('')}
         </div></fieldset>
         <label class="song-goal"><strong>First song you want to play</strong><input name="song" maxlength="80" value="${esc(saved.song || '')}" placeholder="A favorite song—or leave this blank" /></label>
-        <button class="btn btn-primary" type="submit">Make my seven-day path →</button>
+        <button class="btn btn-primary" type="submit">Make my seven-session path →</button>
       </form>
       <p class="faint">For younger learners: use Campfire with a parent or guardian. Campfire has no public profiles, chat, or shared recordings.</p>
     </section>`;
@@ -105,13 +105,13 @@ function weekHtml(profile) {
   const current = quickStart ? 2 : firstOpen < 0 ? WEEK.length - 1 : firstOpen;
   return `
     <section class="panel first-week">
-      <div class="week-head"><div><p class="eyebrow">Your seven-day start</p><h2>${GENRE_LABELS[profile.genre] || GENRE_LABELS.mixed}${profile.song ? ` · aiming for “${esc(profile.song)}”` : ''}</h2></div><button class="btn btn-ghost" id="edit-profile" type="button">Change goals</button></div>
+      <div class="week-head"><div><p class="eyebrow">Your first seven sessions</p><h2>${GENRE_LABELS[profile.genre] || GENRE_LABELS.mixed}${profile.song ? ` · aiming for “${esc(profile.song)}”` : ''}</h2></div><button class="btn btn-ghost" id="edit-profile" type="button">Change goals</button></div>
       <div class="week-grid">${WEEK.map((day, index) => {
         const done = isDone(day.doneId);
-        return `<a class="week-day ${done ? 'done' : ''} ${index === current ? 'current' : ''}" href="${day.href}"><span>Day ${index + 1}</span><strong>${done ? '✓ ' : ''}${day.title}</strong><small>${day.blurb}</small></a>`;
+        return `<a class="week-day ${done ? 'done' : ''} ${index === current ? 'current' : ''}" href="${day.href}"><span>Session ${index + 1}</span><strong>${done ? '✓ ' : ''}${day.title}</strong><small>${day.blurb}</small></a>`;
       }).join('')}</div>
       ${quickStart ? '<div class="callout"><strong>Quick start:</strong> Begin at Day 3 and prove one clean fretted note. Days 1–2 stay here whenever you want a setup or tuning review.</div>' : ''}
-      <p class="faint">Move faster if you are ready: skill lessons include a “Prove it” check so quick learners can skip ahead honestly.</p>
+      <p class="faint">A session is not a calendar day. Repeat one as often as needed; skill checks—not dates—show when to move on.</p>
     </section>`;
 }
 

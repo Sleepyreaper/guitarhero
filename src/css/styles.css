@@ -197,6 +197,16 @@ ol.steps li { margin: .3rem 0; }
 .video-privacy { margin: 0; font-size: .75rem; }
 .skill-proof.proven { border-color: var(--green-dk); }
 .lesson-feedback { box-shadow: none; }
+.mastery-note { margin: 1rem 0; }
+.stage-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem; }
+.stage-card { display: flex; flex-direction: column; gap: .55rem; box-shadow: none; }
+.stage-card.done { border-color: var(--green-dk); }
+.stage-card p, .stage-card h3 { margin: 0; }
+.stage-head, .stage-foot { display: flex; justify-content: space-between; align-items: center; gap: .75rem; }
+.stage-head .eyebrow { margin-bottom: .15rem; }
+.stage-card .progress-track { margin: .15rem 0; }
+.stage-foot { margin-top: auto; }
+.stage-context { margin-top: -.4rem; margin-bottom: 1rem; }
 .report-stats .panel { box-shadow: none; }
 .report-preview { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--muted); background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px; padding: .8rem; }
 .arrangement-roles { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
@@ -360,6 +370,7 @@ ol.steps li { margin: .3rem 0; }
   .tuner-note { font-size: 3.6rem; }
   .bpm-display { font-size: 3rem; }
   .week-grid { grid-template-columns: repeat(7, 145px); }
+  .stage-grid { grid-template-columns: 1fr; }
   .choice-grid { grid-template-columns: 1fr; }
   .mic-check-row { grid-template-columns: 1fr 1fr; }
   .chord-retest { min-height: 44px; }
