@@ -39,17 +39,17 @@ assert.deepEqual([24, 25, 26, 26.5, 28].map((beat) => wholeWorldLyrics.get(beat)
 assert.ok(SCORES['whole-world'].melody.at(-1).sustain > SCORES['whole-world'].melody.at(-1).duration,
   'Whole World must let the final hands breathe before the loop pickup');
 assert.equal(SCORES['amazing-grace'].melody[0].beat, -1, 'Amazing Grace must retain its one-beat pickup');
-const amazingGraceLyrics = new Map(SCORES['amazing-grace'].melody
-  .filter((event) => event.lyric).map((event) => [event.beat, event.lyric]));
+const amazingGraceLyricAt = (beat) => SCORES['amazing-grace'].melody
+  .find((event) => event.lyric && Math.abs(event.beat - beat) < 1e-9)?.lyric;
 assert.ok(SCORES['amazing-grace'].lyricSource?.url,
   'Amazing Grace needs lyric-bearing evidence in addition to its melody source');
 assert.ok(SCORES['amazing-grace'].melody.filter((event) => event.lyric)
   .every((event) => !/\s/.test(event.lyric.trim())),
   'Amazing Grace must not collapse several lyric words onto one melody note');
-assert.deepEqual([23, 24, 26, 26.5, 27, 29, 30, 32].map((beat) => amazingGraceLyrics.get(beat)),
+assert.deepEqual([23, 24, 26, 26.5, 27, 29, 30, 32].map(amazingGraceLyricAt),
   ['I', 'once', 'was', 'lost', 'but', 'now', 'am', 'found'],
   'Amazing Grace must begin I once after the held me and keep lost/but/now/am/found aligned');
-assert.deepEqual([33, 35, 36, 38, 39, 41].map((beat) => amazingGraceLyrics.get(beat)),
+assert.deepEqual([33, 35, 36, 38, 39, 41].map(amazingGraceLyricAt),
   ['was', 'blind', 'but', 'now—', 'I', 'see—'],
   'Amazing Grace must align the final was blind but now I see cadence note by note');
 assert.equal(Math.round(midiFrequency(69)), 440);
