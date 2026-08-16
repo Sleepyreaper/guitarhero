@@ -106,10 +106,10 @@ Do not call the catalog launch-ready until it has at least:
 
 ## Fourth certification batch
 
-17. Hush, Little Baby — complete selected sixteen-bar Singing Bell score, consistent “Mama” lyric variant, and source-locked G/D7 transposition; deployed timing trace pending.
-18. Streets of Laredo — complete CC0 anthology verse and chorus, one-beat pickup, and disclosed seven-open-shape transposition of the traditional harmony; deployed timing trace pending.
-19. Home on the Range — complete CC0 anthology verse and chorus, literal tied phrases, one-beat pickup, and disclosed four-open-shape reduction; deployed timing trace pending.
-20. Scarborough Fair — complete eighteen-bar CC0 anthology verse, literal rest and tied ending, and disclosed four-open-shape modal reduction; deployed timing trace pending.
+17. Hush, Little Baby — complete selected sixteen-bar Singing Bell score, consistent “Mama” lyric variant, source-locked G/D7 transposition, and deployed 16-bar timing trace complete; independent playback QA pending.
+18. Streets of Laredo — complete CC0 anthology verse and chorus, one-beat pickup, disclosed seven-open-shape transposition, and deployed 32-bar timing trace complete; independent playback QA pending.
+19. Home on the Range — complete CC0 anthology verse and chorus, literal tied phrases, one-beat pickup, disclosed four-open-shape reduction, and deployed 32-bar timing trace complete; independent playback QA pending.
+20. Scarborough Fair — complete eighteen-bar CC0 anthology verse, literal rest and tied ending, disclosed four-open-shape modal reduction, and deployed 18-bar timing trace complete; independent playback QA pending.
 
 The embedded catalog now contains 21 songs, and every one has a literal score. “If You’re Happy
 and You Know It” was removed because the available publication history did not meet Campfire’s

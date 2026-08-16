@@ -96,20 +96,24 @@ export const SONG_REVIEWS = Object.freeze({
     note: 'The source-locked CONVERSE first verse, disclosed open-chord reduction, and deployed timing trace pass. Independent playback recognition, expert guitar review, and student usability remain.',
   },
   'hush-little-baby': {
-    trace: 'pending', playback: 'pending', expert: 'pending', student: 'pending',
-    note: 'The complete selected sixteen-bar score, consistent lyric variant, and transposed two-chord harmony are source-locked. Deployed timing trace is next; independent playback recognition, expert guitar review, and student usability follow.',
+    trace: 'pass', tracedAt: '2026-08-16',
+    playback: 'pending', expert: 'pending', student: 'pending',
+    note: 'The complete selected sixteen-bar score, consistent lyric variant, transposed harmony, and deployed timing trace pass. Independent playback recognition, expert guitar review, and student usability remain.',
   },
   'streets-of-laredo': {
-    trace: 'pending', playback: 'pending', expert: 'pending', student: 'pending',
-    note: 'The complete CC0 verse and chorus, one-beat pickup, melody, and disclosed open-shape harmony are source-locked. Deployed timing trace is next; independent playback recognition, expert guitar review, and student usability follow.',
+    trace: 'pass', tracedAt: '2026-08-16',
+    playback: 'pending', expert: 'pending', student: 'pending',
+    note: 'The complete CC0 verse and chorus, one-beat pickup, disclosed open-shape harmony, and deployed 32-bar timing trace pass. Independent playback recognition, expert guitar review, and student usability remain.',
   },
   'home-on-the-range': {
-    trace: 'pending', playback: 'pending', expert: 'pending', student: 'pending',
-    note: 'The complete CC0 verse and chorus, tied phrases, pickup, and disclosed four-shape reduction are source-locked. Deployed timing trace is next; independent playback recognition, expert guitar review, and student usability follow.',
+    trace: 'pass', tracedAt: '2026-08-16',
+    playback: 'pending', expert: 'pending', student: 'pending',
+    note: 'The complete CC0 verse and chorus, tied phrases, pickup, disclosed four-shape reduction, and deployed 32-bar timing trace pass. Independent playback recognition, expert guitar review, and student usability remain.',
   },
   'scarborough-fair': {
-    trace: 'pending', playback: 'pending', expert: 'pending', student: 'pending',
-    note: 'The complete CC0 eighteen-bar modal verse, melody, rests, ties, and disclosed open-shape reduction are source-locked. Deployed timing trace is next; independent playback recognition, expert guitar review, and student usability follow.',
+    trace: 'pass', tracedAt: '2026-08-16',
+    playback: 'pending', expert: 'pending', student: 'pending',
+    note: 'The complete CC0 eighteen-bar modal verse, rests, ties, disclosed open-shape reduction, and deployed timing trace pass. Independent playback recognition, expert guitar review, and student usability remain.',
   },
 });
 
