@@ -163,10 +163,10 @@ assert.match(songViewText, /arrangement\.bpm/, 'sing-along tempo must come from 
 assert.match(songViewText, /groove\.events/, 'sing-along rhythm must come from the song groove');
 assert.match(songViewText, /groove\.barEvents/, 'action songs must be able to leave silence in specific bars');
 assert.match(songViewText, /barChangeBeats/, 'song playback must support chord changes on exact beats');
-assert.match(songViewText, /traditional songs do not have one mandatory guitar strum/,
-  'song pages must distinguish a Campfire accompaniment from an official song strum');
-assert.match(songViewText, /cited source supports the form and harmony/,
-  'song pages must explain exactly what their source verifies');
+assert.match(songViewText, /Scored melody \+ source-checked accompaniment/,
+  'certified pages must identify the stronger note-level musical evidence');
+assert.match(songViewText, /no note-by-note melody yet[\s\S]*accompaniment practice/,
+  'unaudited songs must never present generated chords as a reference performance');
 assert.match(songViewText, /Lyric \/ chord-change cue/, 'verified timed arrangements must expose synchronized lyric cues');
 assert.match(songViewText, /arrangement\.pickup\.beat \* seconds/,
   'songs whose vocals begin before beat 1 must schedule the pickup during the count-in');
