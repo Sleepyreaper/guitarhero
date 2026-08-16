@@ -234,7 +234,7 @@ function detail(root, id, self) {
         ? `Hear mode plays the public-domain melody from <a href="${score.source.url}" target="_blank" rel="noopener noreferrer">${score.source.label}</a> on the same clock as chords, lyrics, and guitar strokes.${score.lyricSource ? ` Chorus wording: <a href="${score.lyricSource.url}" target="_blank" rel="noopener noreferrer">${score.lyricSource.label}</a>.` : ''}`
         : 'This page has checked harmony and form, but no note-by-note melody yet. Treat its generated guitar as accompaniment practice—not a reference recording of the song.'}</div>
       <p class="faint"><strong>Quality gate:</strong> ${quality.label}. ${quality.scoreComplete
-        ? `The documented score is structurally certified. Playback recognition: ${quality.playbackPassed ? 'passed' : 'pending'}; expert guitar review: ${quality.expertReviewed ? 'passed' : 'pending'}; student usability: ${quality.student === 'pass' ? 'passed' : 'pending'}.`
+        ? `The documented score is structurally certified. Deployed timing trace: ${quality.tracePassed ? 'passed' : 'pending'}; playback recognition: ${quality.playbackPassed ? 'passed' : 'pending'}; expert guitar review: ${quality.expertReviewed ? 'passed' : 'pending'}; student usability: ${quality.student === 'pass' ? 'passed' : 'pending'}.`
         : 'A literal melody score and playback review are still required before this can become a reference performance.'}</p>
     </section>` : ''}
 

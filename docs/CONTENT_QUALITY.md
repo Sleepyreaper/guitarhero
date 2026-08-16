@@ -10,7 +10,8 @@ through explicit gates, and the interface must state the highest gate it has act
 2. **Harmony and form checked** — key, meter, complete section order, chord changes, and a dated
    source agree. This earns **Accompaniment only**, never reference-performance language.
 3. **Score complete** — literal pitches, rests, durations, pickups, and lyric syllables share the
-   arrangement clock. Structural tests pass and the source is displayed.
+   arrangement clock. Structural tests pass, the source is displayed, and a deployed timing trace
+   proves the complete form and loop execute in order.
 4. **Playback recognition passed** — a listener who already knows the song hears every mode from
    count-in through the loop. The melody is recognizable without reading the title, and the cues,
    ending, and loop can be followed. Guitar expertise is not implied. This earns **Pilot ready**.

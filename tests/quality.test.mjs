@@ -17,6 +17,8 @@ assert.equal(SONGS.filter((song) => songQuality(song).studentApproved).length, 0
 for (const id of Object.keys(SCORES)) {
   assert.ok(SONGS.some((song) => song.id === id), `${id} score must belong to a song`);
   assert.ok(SONG_REVIEWS[id], `${id} score needs a human review entry`);
+  assert.match(SONG_REVIEWS[id].trace, /^(pending|pass)$/,
+    `${id} needs a valid automated timing-trace state`);
   assert.match(SONG_REVIEWS[id].playback, /^(pending|in-progress|pass)$/,
     `${id} needs a valid playback-recognition state`);
   assert.match(SONG_REVIEWS[id].expert, /^(pending|pass)$/,
@@ -24,6 +26,10 @@ for (const id of Object.keys(SCORES)) {
   assert.match(SONG_REVIEWS[id].student, /^(pending|pass)$/,
     `${id} needs a valid student state`);
   assert.ok(SONG_REVIEWS[id].note, `${id} review must name the next concrete check`);
+  if (SONG_REVIEWS[id].trace === 'pass') {
+    assert.match(SONG_REVIEWS[id].tracedAt, /^\d{4}-\d{2}-\d{2}$/,
+      `${id} timing trace pass needs a date`);
+  }
   if (SONG_REVIEWS[id].playback === 'pass') {
     assert.ok(SONG_REVIEWS[id].playbackAt && SONG_REVIEWS[id].playbackReviewer,
       `${id} playback pass needs a date and accountable reviewer`);
@@ -36,8 +42,11 @@ for (const id of Object.keys(SCORES)) {
     assert.ok(SONG_REVIEWS[id].studentTestedAt && SONG_REVIEWS[id].studentTest,
       `${id} student pass needs a dated, behavior-based session note`);
   }
-  assert.equal(songQuality(id).pilotReady, SONG_REVIEWS[id].playback === 'pass',
-    `${id} cannot become pilot ready without a playback-recognition pass`);
+  assert.equal(songQuality(id).tracePassed, SONG_REVIEWS[id].trace === 'pass',
+    `${id} must expose its automated timing-trace state`);
+  assert.equal(songQuality(id).pilotReady,
+    SONG_REVIEWS[id].trace === 'pass' && SONG_REVIEWS[id].playback === 'pass',
+    `${id} cannot become pilot ready without timing and playback-recognition passes`);
   assert.equal(songQuality(id).expertReviewed, SONG_REVIEWS[id].expert === 'pass',
     `${id} must not imply an expert guitar review`);
   assert.equal(songQuality(id).studentApproved,
