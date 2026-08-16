@@ -176,6 +176,8 @@ assert.match(songViewText, /vocalCues\.filter\(\(item\) => !score && item\.bar =
   'unscored songs must schedule broad vocal entrances while scored songs preserve note-level syllable cues');
 assert.match(songViewText, /arrangement\.verification\.url/, 'verified timing claims must expose their evidence');
 assert.match(songViewText, /Checked:<\/strong> \$\{arrangement\.verification\.checked\}/, 'verified timing claims must show their review date');
+assert.match(songViewText, /Beginner harmony:[\s\S]*arrangement\.reduction/,
+  'source-derived open-chord reductions must disclose what was simplified');
 assert.match(songViewText, /Rehearse chord order/, 'mic chord rehearsal must not be mislabeled as a timed play-along');
 assert.match(songViewText, /Practice accompaniment/, 'unchecked arrangements must be labeled as accompaniment practice');
 assert.match(songViewText, /does not claim exact lyric timing/, 'practice reductions must state their timing limitation');

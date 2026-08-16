@@ -12,6 +12,8 @@ through explicit gates, and the interface must state the highest gate it has act
 3. **Score complete** — literal pitches, rests, durations, pickups, and lyric syllables share the
    arrangement clock. Structural tests pass, the source is displayed, and a deployed timing trace
    proves the complete form and loop execute in order.
+   If a source’s keyboard or choral harmony is simplified for a beginner, the page must name the
+   omitted colors and tests must pin every retained chord change to its source beat.
 4. **Playback recognition passed** — a listener who already knows the song hears every mode from
    count-in through the loop. The melody is recognizable without reading the title, and the cues,
    ending, and loop can be followed. Guitar expertise is not implied. This earns **Pilot ready**.
@@ -80,8 +82,8 @@ Do not call the catalog launch-ready until it has at least:
 2. Amazing Grace — church/americana anchor; audit every syllable and dominant-chord change.
 3. Shady Grove — source-locked Hindman/WSU E-minor score complete; automated and independent playback QA pending.
 4. Kumbaya — source-locked Musica Viva 3/4 score and deployed timing trace complete; independent playback QA pending.
-5. Will the Circle Be Unbroken — communal country/church chorus and first true boom-chuck test.
-6. What a Friend We Have in Jesus — slower vocal accompaniment and phrase-space test.
+5. Will the Circle Be Unbroken — public-domain Habershon/Gabriel hymn edition score complete; deployed timing trace and independent playback QA pending. The later Carter-family rewrite is explicitly excluded.
+6. What a Friend We Have in Jesus — complete CONVERSE first-verse score and disclosed open-chord reduction complete; deployed timing trace and independent playback QA pending.
 
 Row, Row, Row Your Boat remains valuable for 6/8 and rounds, but it is not a lead teen-engagement
 song. It should be certified as a teaching tool, not used as the beta’s headline repertoire.

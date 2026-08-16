@@ -21,3 +21,8 @@ Certification requires a dated source, chronological note/rest events, score-tim
 pickup preservation, and a melody duration that fits the arrangement's harmony clock. Automated
 tests enforce those structural facts; a familiar-listener playback pass remains mandatory before expanding the
 certified set.
+
+When the documented score contains harmony beyond the current learner’s chord vocabulary, Campfire
+may publish a source-derived open-chord reduction. The interface must disclose every omitted or
+substituted color, while the data and tests preserve the score’s meter, form, lyric placement, phrase
+rests, and all retained chord-change beats. A reduction is never labeled as the source’s full harmony.

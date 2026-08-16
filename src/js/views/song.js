@@ -230,6 +230,7 @@ function detail(root, id, self) {
       ${verifiedTiming
         ? `<p class="faint"><strong>Form checked:</strong> the bar order and chord changes are aligned to the displayed lyric cues. <strong>Source:</strong> <a href="${arrangement.verification.url}" target="_blank" rel="noopener noreferrer">${arrangement.verification.label}</a>. <strong>Checked:</strong> ${arrangement.verification.checked}.</p>`
         : '<p class="faint"><strong>Practice reduction:</strong> this teaches the song\'s chord vocabulary and feel, but it is not yet a lyric-synchronized transcription.</p>'}
+      ${arrangement.reduction ? `<p class="faint"><strong>Beginner harmony:</strong> ${arrangement.reduction}</p>` : ''}
       <div class="callout"><strong>${musicallyCertified ? 'Musical reference:' : 'About the groove:'}</strong> ${musicallyCertified
         ? `Hear mode plays the public-domain melody from <a href="${score.source.url}" target="_blank" rel="noopener noreferrer">${score.source.label}</a> on the same clock as chords, lyrics, and guitar strokes.${score.lyricSource ? ` Chorus wording: <a href="${score.lyricSource.url}" target="_blank" rel="noopener noreferrer">${score.lyricSource.label}</a>.` : ''}`
         : 'This page has checked harmony and form, but no note-by-note melody yet. Treat its generated guitar as accompaniment practice—not a reference recording of the song.'}</div>

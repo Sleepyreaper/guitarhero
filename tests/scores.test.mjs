@@ -2,7 +2,10 @@ import assert from 'node:assert/strict';
 import { SCORES, midiFrequency } from '../src/js/data/scores.js';
 import { ARRANGEMENTS } from '../src/js/data/arrangements.js';
 
-const certified = ['row-your-boat', 'whole-world', 'amazing-grace', 'shady-grove', 'kumbaya'];
+const certified = [
+  'row-your-boat', 'whole-world', 'amazing-grace', 'shady-grove', 'kumbaya',
+  'will-the-circle', 'what-a-friend',
+];
 assert.deepEqual(Object.keys(SCORES), certified, 'the first score-driven release must stay intentionally auditable');
 
 for (const id of certified) {
@@ -71,6 +74,33 @@ assert.deepEqual(SCORES.kumbaya.melody.filter((event) => event.lyric).map((event
   'Kum-', 'ba', 'yah', 'my', 'Lord', 'Kum-', 'ba', 'yah',
   'Oh', 'Lord', 'Kum-', 'ba', 'yah',
 ], 'Kumbaya must keep all four lyric phrases on the literal Musica Viva melody');
+assert.equal(SCORES['will-the-circle'].totalBeats, 32);
+assert.equal(SCORES['will-the-circle'].melody[0].beat, -1,
+  'the Habershon/Gabriel refrain must preserve its one-beat Will-the pickup');
+assert.equal(SCORES['will-the-circle'].melody.at(-1).beat + SCORES['will-the-circle'].melody.at(-1).duration, 31,
+  'the source final rest must lead directly into the next loop pickup');
+const circleLyrics = SCORES['will-the-circle'].melody.filter((event) => event.lyric).map((event) => event.lyric);
+assert.deepEqual(circleLyrics, [
+  'Will', 'the', 'cir-', 'cle', 'be', 'un-', 'bro-', 'ken',
+  'By', 'and', 'by—', 'by', 'and', 'by?—', 'In', 'a',
+  'bet-', 'ter', 'home', 'a-', 'wait-', 'ing', 'In', 'the', 'sky—', 'in', 'the', 'sky—',
+], 'Will the Circle must use the complete public-domain hymn refrain wording');
+assert.ok(!circleLyrics.some((lyric) => /Lord|There/.test(lyric)),
+  'the 1907 score must not mix in later Carter-family chorus words');
+assert.equal(SCORES['what-a-friend'].totalBeats, 64);
+assert.equal(SCORES['what-a-friend'].melody[0].beat, 0);
+assert.equal(SCORES['what-a-friend'].melody.at(-1).beat + SCORES['what-a-friend'].melody.at(-1).duration, 64,
+  'What a Friend must preserve every held cadence and phrase rest in sixteen bars');
+assert.deepEqual(SCORES['what-a-friend'].melody.filter((event) => event.lyric).map((event) => event.lyric), [
+  'What', 'a', 'friend', 'we', 'have', 'in', 'Je-', 'sus',
+  'All', 'our', 'sins', 'and', 'griefs', 'to', 'bear—',
+  'What', 'a', 'priv-', 'i-', 'lege', 'to', 'car-', 'ry',
+  'Ev-', '’ry', 'thing', 'to', 'God', 'in', 'prayer—',
+  'Oh', 'what', 'peace', 'we', 'of-', 'ten', 'for-', 'feit',
+  'Oh', 'what', 'need-', 'less', 'pain', 'we', 'bear—',
+  'All', 'be-', 'cause', 'we', 'do', 'not', 'car-', 'ry',
+  'Ev-', '’ry', 'thing', 'to', 'God', 'in', 'prayer—',
+], 'What a Friend must keep every first-verse syllable on the literal CONVERSE melody');
 assert.equal(Math.round(midiFrequency(69)), 440);
 
 console.log('score tests passed: certified melodies, pickups, lyrics, and harmony share one bounded clock');

@@ -87,6 +87,43 @@ export const SCORES = {
       [67, 2],
     ]),
   },
+  'will-the-circle': {
+    status: 'certified', unit: 'quarter', totalBeats: 32,
+    source: { label: 'Timeless Truths public-domain Habershon/Gabriel SATB soprano refrain, transposed A-flat to G', url: 'https://library.timelesstruths.org/library/music/W/Will_the_Circle_Be_Unbroken/Will_the_Circle_Be_Unbroken.pdf', checked: '2026-08-16' },
+    melody: line(-1, [
+      [67, .5, 'Will'], [null, .25], [69, .25, 'the'],
+      [71, 1, 'cir-'], [74, 2, 'cle'], [71, .5, 'be'], [null, .25], [69, .25, 'un-'],
+      [67, 1, 'bro-'], [71, 2, 'ken'], [67, .5, 'By'], [null, .25], [66, .25, 'and'],
+      [64, 1, 'by—'], [null, .5], [69, .5], [67, 1, 'by'], [64, 1, 'and'],
+      [62, 2, 'by?—'], [null, 1], [62, .5, 'In'], [null, .25], [62, .25, 'a'],
+      [64, 1, 'bet-'], [67, 2, 'ter'], [67, .5, 'home'], [null, .25], [69, .25, 'a-'],
+      [71, 1, 'wait-'], [71, 2, 'ing'], [71, .5, 'In'], [null, .25], [72, .25, 'the'],
+      [74, 2, 'sky—'], [null, 1], [71, .5, 'in'], [null, .25], [69, .25, 'the'],
+      [67, 2, 'sky—'], [null, 1],
+    ]),
+  },
+  'what-a-friend': {
+    status: 'certified', unit: 'quarter', totalBeats: 64,
+    source: { label: 'Lyric-bearing CONVERSE ABC melody and harmony, transposed D to G', url: 'https://abcnotation.com/tunePage?a=trillian.mit.edu%2F~jc%2Fmusic%2Fabc%2Fmirror%2Fgulfweb.net%3A34043%2F~rlwalker%2Fabc%2Fwhatafriend%2F0000', checked: '2026-08-16' },
+    melody: line(0, [
+      [74, 1.5, 'What'], [74, .5, 'a'], [76, .5, 'friend'], [74, .5, 'we'], [71, .5, 'have'], [67, .5, 'in'],
+      [67, 2, 'Je-'], [64, 1, 'sus'], [null, 1],
+      [62, 1.5, 'All'], [67, .5, 'our'], [71, .5, 'sins'], [67, .5, 'and'], [74, .5, 'griefs'], [71, .5, 'to'],
+      [69, 3, 'bear—'], [null, 1],
+      [74, 1.5, 'What'], [74, .5, 'a'], [76, .5, 'priv-'], [74, .5, 'i-'], [71, .5, 'lege'], [67, .5, 'to'],
+      [67, 2, 'car-'], [64, 1, 'ry'], [null, 1],
+      [62, 1.5, 'Ev-'], [67, .5, '’ry'], [71, .5, 'thing'], [69, .5, 'to'], [67, .5, 'God'], [66, .5, 'in'],
+      [67, 3, 'prayer—'], [null, 1],
+      [69, 1.5, 'Oh'], [67, .5, 'what'], [69, .5, 'peace'], [71, .5, 'we'], [72, .5, 'of-'], [69, .5, 'ten'],
+      [71, 2, 'for-'], [74, 1, 'feit'], [null, 1],
+      [76, 1.5, 'Oh'], [76, .5, 'what'], [74, .5, 'need-'], [71, .5, 'less'], [72, .5, 'pain'], [71, .5, 'we'],
+      [69, 3, 'bear—'], [null, 1],
+      [74, 1.5, 'All'], [74, .5, 'be-'], [76, .5, 'cause'], [74, .5, 'we'], [71, .5, 'do'], [67, .5, 'not'],
+      [67, 2, 'car-'], [64, 1, 'ry'], [null, 1],
+      [62, 1.5, 'Ev-'], [67, .5, '’ry'], [71, .5, 'thing'], [69, .5, 'to'], [67, .5, 'God'], [66, .5, 'in'],
+      [67, 3, 'prayer—'], [null, 1],
+    ]),
+  },
 };
 
 export const scoreFor = (songOrId) => SCORES[typeof songOrId === 'string' ? songOrId : songOrId.id] || null;

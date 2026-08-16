@@ -213,20 +213,25 @@ assert.equal(ARRANGEMENTS['streets-of-laredo'].meter, 3);
 assert.equal(ARRANGEMENTS['streets-of-laredo'].timing, 'verified');
 assert.equal(ARRANGEMENTS['streets-of-laredo'].cues.length, 16);
 assert.deepEqual(ARRANGEMENTS['will-the-circle'].bars, [
-  'G', 'G', 'G', 'G', 'C', 'C', 'G', 'G',
-  'G', 'G', 'G', 'G', 'G', 'D7', 'G', 'G',
-], 'Will the Circle must use its complete sixteen-bar bluegrass chorus');
-assert.equal(ARRANGEMENTS['will-the-circle'].bpm, 120);
+  'G', 'G', 'C', 'G', 'C', 'G', 'G', 'G',
+], 'Will the Circle must use the complete eight-bar Habershon/Gabriel refrain reduction');
+assert.deepEqual(SONGS.find((song) => song.id === 'will-the-circle').chords, ['G', 'C'],
+  'the 1907 hymn edition must not silently retain Carter-style dominant harmony');
+assert.equal(ARRANGEMENTS['will-the-circle'].bpm, 92);
+assert.deepEqual(ARRANGEMENTS['will-the-circle'].pickup, { beat: 3, text: 'Will the… (pickup)' });
+assert.match(ARRANGEMENTS['will-the-circle'].reduction, /No later Carter-family lyric or tune/);
 assert.equal(ARRANGEMENTS['will-the-circle'].timing, 'verified');
-assert.equal(ARRANGEMENTS['will-the-circle'].cues[3], 'breathe');
-assert.equal(ARRANGEMENTS['will-the-circle'].cues[15], 'hold G');
+assert.equal(ARRANGEMENTS['will-the-circle'].cues.length, 8);
 assert.deepEqual(ARRANGEMENTS['what-a-friend'].bars.map((bar) => barChords(bar)), [
-  ['G'], ['C'], ['G'], ['D'], ['G'], ['C'], ['G'], ['D7', 'G'],
-  ['D'], ['G'], ['C'], ['G', 'D'], ['G'], ['C'], ['G'], ['D7', 'G'],
-], 'What a Friend must contain its complete sixteen-bar first verse');
-assert.deepEqual(barChangeBeats(ARRANGEMENTS['what-a-friend'].bars[7], 4), [0, 2]);
-assert.deepEqual(barChangeBeats(ARRANGEMENTS['what-a-friend'].bars[11], 4), [0, 2]);
-assert.deepEqual(barChangeBeats(ARRANGEMENTS['what-a-friend'].bars[15], 4), [0, 2]);
+  ['G', 'G7'], ['C'], ['G'], ['D'], ['G', 'G7'], ['C'], ['G', 'D7'], ['G', 'C', 'G'],
+  ['D'], ['G'], ['C', 'G'], ['D'], ['G', 'G7'], ['C'], ['G', 'D7'], ['G', 'C', 'G'],
+], 'What a Friend must preserve the complete CONVERSE form and open-shape chord-change beats');
+assert.deepEqual(SONGS.find((song) => song.id === 'what-a-friend').chords, ['G', 'G7', 'C', 'D', 'D7']);
+assert.deepEqual(barChangeBeats(ARRANGEMENTS['what-a-friend'].bars[0], 4), [0, 2]);
+assert.deepEqual(barChangeBeats(ARRANGEMENTS['what-a-friend'].bars[7], 4), [0, 1, 2]);
+assert.deepEqual(barChangeBeats(ARRANGEMENTS['what-a-friend'].bars[10], 4), [0, 2]);
+assert.deepEqual(barChangeBeats(ARRANGEMENTS['what-a-friend'].bars[15], 4), [0, 1, 2]);
+assert.match(ARRANGEMENTS['what-a-friend'].reduction, /C-sharp diminished passing chord/);
 assert.equal(ARRANGEMENTS['what-a-friend'].timing, 'verified');
 assert.equal(ARRANGEMENTS['what-a-friend'].cues.length, 16);
 assert.equal(SONGS.find((song) => song.id === 'what-a-friend').body[0].lines.length, 8,
