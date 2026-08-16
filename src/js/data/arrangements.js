@@ -387,7 +387,7 @@ export const ARRANGEMENTS = {
     'Use single-note fills at the ends of lines, aiming for chord tones. Silence during the lyric is the professional choice.',
     ['val-ley they', 'say you are', 'go-ing—', '(rest); We will',
       'miss your bright', 'eyes and sweet', 'smile—', '(rest); For they',
-      'say you are', 'tak-ing the', 'sun-shine—', ['shine—', 'That has'],
+      'say you are', 'tak-ing the', 'sun-shine—', 'shine—; That has',
       'bright-ened our', 'path-ways a', 'while—', '(rest)'],
     'verified', { label: 'CC0 Public Domain Song Anthology first stanza, transposed D to G', url: 'https://dataverse.lib.virginia.edu/api/access/datafile/4619', checked: '2026-08-16' }, {
       pickup: { beat: 2, text: 'From this… (two-beat pickup)' },
