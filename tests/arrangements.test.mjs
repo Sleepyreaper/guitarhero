@@ -68,9 +68,22 @@ for (const song of SONGS) {
 
 assert.ok(new Set(Object.values(ARRANGEMENTS).map((item) => item.groove)).size >= 7,
   'the songbook must not collapse into one generic strum');
-assert.equal(ARRANGEMENTS['shady-grove'].groove, 'boomChuck');
-assert.deepEqual(ARRANGEMENTS['shady-grove'].bars, ['Em', 'D', 'Em', 'Em', 'Em', 'D', 'D', 'Em'],
-  'Shady Grove must use the traditional minor-home / lowered-seven chorus form');
+const shadyGrove = SONGS.find((song) => song.id === 'shady-grove');
+assert.equal(shadyGrove.time, '2/4');
+assert.deepEqual(shadyGrove.chords, ['Em', 'D', 'G']);
+assert.equal(ARRANGEMENTS['shady-grove'].groove, 'countryTwo');
+assert.deepEqual(ARRANGEMENTS['shady-grove'].bars,
+  ['Em', 'Em', 'D', 'D', 'Em', 'Em', 'Em', 'Em', 'G', 'G', 'D', 'D', 'Em', 'Em', 'Em', 'Em'],
+  'Shady Grove must retain the complete Hindman E-minor chorus form');
+assert.deepEqual(ARRANGEMENTS['shady-grove'].cues, [
+  'Shady Grove', '—', 'my little', 'love—',
+  'Shady Grove', '—', 'I', 'know—',
+  'Shady Grove', '—', 'my little', 'love—',
+  'Bound for', 'Shady', 'Grove—', '—',
+]);
+assert.match(shadyGrove.body[0].lines[1][0].t, /I know/,
+  'Shady Grove chorus must use the Hindman lyric variant instead of mixing versions');
+assert.equal(ARRANGEMENTS['shady-grove'].verification.url, 'https://hindmanathome.org/pick-and-bow/');
 assert.equal(ARRANGEMENTS['shady-grove'].timing, 'verified');
 assert.deepEqual(ARRANGEMENTS['row-your-boat'].cues, [
   'Row, row', 'row your boat', 'Gently down the', 'stream',

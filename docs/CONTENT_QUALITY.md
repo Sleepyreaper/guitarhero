@@ -74,7 +74,7 @@ Do not call the catalog launch-ready until it has at least:
 
 1. He’s Got the Whole World in His Hands — finish the active four-line phrasing review.
 2. Amazing Grace — church/americana anchor; audit every syllable and dominant-chord change.
-3. Shady Grove — compelling two-chord americana song; transcribe the modal melody.
+3. Shady Grove — compelling three-chord americana song; certify the Hindman E-minor melody without mixing folk variants.
 4. Will the Circle Be Unbroken — communal country/church chorus and first true boom-chuck test.
 5. What a Friend We Have in Jesus — slower vocal accompaniment and phrase-space test.
 

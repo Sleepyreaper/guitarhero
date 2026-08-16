@@ -6,8 +6,8 @@ import { scoreFor } from './scores.js';
 // `student: pass` means a pilot learner could recognize, follow, and finish the song.
 export const SONG_REVIEWS = Object.freeze({
   'row-your-boat': {
-    listening: 'pending', student: 'pending',
-    note: 'Run a full round-aware listening pass and verify the 6/8 two-pulse feel.',
+    listening: 'pass', listenedAt: '2026-08-15', listener: 'Project owner', student: 'pending',
+    note: 'Owner passed the complete melody, 6/8 two-pulse, and loop review; supervised student session is next.',
   },
   'whole-world': {
     listening: 'pass', listenedAt: '2026-08-15', listener: 'Project owner', student: 'pending',
