@@ -403,11 +403,11 @@ export const ARRANGEMENTS = {
     'Echo the descending shape of “Swing low” after the phrase; do not double every sung note.',
     [
       'Swing low, sweet', ['char-i-', 'ot,'], 'coming for to', 'carry me home—',
-      'Swing— low, sweet', ['char-i-', 'ot,'], 'Coming for to carry me', 'home; pickup: I',
-      'looked o-ver Jordan,', 'What did I see,', 'Coming for to', 'carry me home?; A',
-      'band of angels', 'coming after me,', 'Coming for to', 'carry me home.',
+      'Swing— low, sweet', ['char-i-', 'ot,'], ['Coming for to', 'carry me'], 'home; pickup: I',
+      'looked o-ver Jordan,', ['What', 'did I see,'], ['Coming for', 'to'], 'carry me home?; A',
+      ['band of', 'angels'], ['coming', 'after me,'], ['Coming for', 'to'], 'carry me home.',
       'Swing low, sweet', ['char-i-', 'ot,'], 'coming for to', 'carry me home—',
-      'Swing— low, sweet', ['char-i-', 'ot,'], 'Coming for to carry me', 'home— (rest)',
+      'Swing— low, sweet', ['char-i-', 'ot,'], ['Coming for to', 'carry me'], 'home— (rest)',
     ],
     'verified', { label: 'CC0 Public Domain Song Anthology chorus, verse, and D.C. al Fine chorus return, transposed A-flat to G', url: 'https://dataverse.lib.virginia.edu/api/access/datafile/4664', checked: '2026-08-16' }, {
       reduction: 'Campfire literal-expands the printed D.C. al Fine into chorus, verse, chorus. Secondary-dominant and diminished colors are reduced to open G, C, D7, and Em while the source chord boundaries, melody, lyrics, and form remain intact.',
@@ -419,8 +419,8 @@ export const ARRANGEMENTS = {
     ["'Tis the gift to be simple, 'tis a", 'gift to be free, ’tis a', 'gift to come down to',
       'where we ought to be; and', 'when we find ourselves in a', "place just right, 'twill",
       'be in the valley of', 'love and delight',
-      'When true sim-', 'plicity is gained, to', 'bow and to bend we', "shan't be ashamed; To",
-      'turn and to turn will', 'be our delight, till by', 'turning, turning, we', "come 'round right"],
+      'When true sim-', 'plicity is gained, to', 'bow and to bend we', ["shan't be", 'ashamed; To'],
+      'turn and to turn will', 'be our delight, till by', 'turning, turning, we', ["come 'round", 'right']],
     'verified', { label: 'CC0 Public Domain Song Anthology complete Brackett stanza, transposed F to G', url: 'https://dataverse.lib.virginia.edu/api/access/datafile/4644', checked: '2026-08-16' }, {
       pickup: { beat: 3, text: "'Tis the… (pickup)" },
       reduction: 'Campfire preserves the complete sixteen-bar melody and source G, C, and D harmony after transposition. It does not stop after the first half of the stanza.',
