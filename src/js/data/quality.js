@@ -44,20 +44,24 @@ export const SONG_REVIEWS = Object.freeze({
     note: 'The complete source-locked CC0 4/4 score, three-beat pickup, ties, disclosed reduction, and deployed 16-bar timing trace pass. Independent playback recognition, expert guitar review, and student usability remain.',
   },
   'oh-susanna': {
-    trace: 'pending', playback: 'pending', expert: 'pending', student: 'pending',
-    note: 'The complete source-locked 2/4 verse and chorus are encoded. A deployed 16-bar timing trace is the next gate.',
+    trace: 'pass', tracedAt: '2026-08-16',
+    playback: 'in-progress', expert: 'pending', student: 'pending',
+    note: 'The complete source-locked 2/4 verse and chorus and deployed 16-bar timing trace pass. Independent playback recognition, expert guitar review, and student usability remain.',
   },
   'red-river-valley': {
-    trace: 'pending', playback: 'pending', expert: 'pending', student: 'pending',
-    note: 'The complete source-locked CC0 first stanza and disclosed reduction are encoded. A deployed 16-bar timing trace is the next gate.',
+    trace: 'pass', tracedAt: '2026-08-16',
+    playback: 'in-progress', expert: 'pending', student: 'pending',
+    note: 'The complete source-locked CC0 first stanza, disclosed reduction, and deployed 16-bar timing trace pass. Independent playback recognition, expert guitar review, and student usability remain.',
   },
   'swing-low': {
-    trace: 'pending', playback: 'pending', expert: 'pending', student: 'pending',
-    note: 'The complete source-locked CC0 chorus, verse, and chorus return are encoded. A deployed 24-bar timing trace is the next gate.',
+    trace: 'pass', tracedAt: '2026-08-16',
+    playback: 'in-progress', expert: 'pending', student: 'pending',
+    note: 'The complete source-locked CC0 chorus, verse, chorus return, and deployed 24-bar timing trace pass. Independent playback recognition, expert guitar review, and student usability remain.',
   },
   'simple-gifts': {
-    trace: 'pending', playback: 'pending', expert: 'pending', student: 'pending',
-    note: 'The complete source-locked CC0 stanza is encoded. A deployed 16-bar timing trace is the next gate.',
+    trace: 'pass', tracedAt: '2026-08-16',
+    playback: 'in-progress', expert: 'pending', student: 'pending',
+    note: 'The complete source-locked CC0 stanza and deployed 16-bar timing trace pass. Independent playback recognition, expert guitar review, and student usability remain.',
   },
   'whole-world': {
     trace: 'pass', tracedAt: '2026-08-16',
