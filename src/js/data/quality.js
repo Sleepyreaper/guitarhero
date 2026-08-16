@@ -10,8 +10,8 @@ export const SONG_REVIEWS = Object.freeze({
     note: 'Run a full round-aware listening pass and verify the 6/8 two-pulse feel.',
   },
   'whole-world': {
-    listening: 'in-progress', student: 'pending',
-    note: 'Owner phrasing review is active; confirm all four lines after the ABAC lyric rebuild.',
+    listening: 'pass', listenedAt: '2026-08-15', listener: 'Project owner', student: 'pending',
+    note: 'Owner passed the complete two-loop ABAC phrasing review; supervised student session is next.',
   },
   'amazing-grace': {
     listening: 'pending', student: 'pending',
