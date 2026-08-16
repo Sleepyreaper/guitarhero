@@ -26,6 +26,12 @@ const demonstratedCoreChords = [chordPairLesson.video, ...(chordPairLesson.extra
   .map((video) => video.title);
 assert.ok(demonstratedCoreChords.some((title) => /C Chord/i.test(title)), 'the C + D lesson must demonstrate C');
 assert.ok(demonstratedCoreChords.some((title) => /D Chord/i.test(title)), 'the C + D lesson must demonstrate D');
+const firstSongLesson = ALL_LESSONS.find((item) => item.id === 'l1-5');
+assert.deepEqual(firstSongLesson.chords, ['D7'], 'the first song lesson must explicitly teach its required D7 shape');
+assert.match(firstSongLesson.goal, /ONE-and-a TWO-and-a/,
+  'Row Your Boat must teach the two large pulses of its 6/8 meter');
+assert.doesNotMatch(firstSongLesson.steps.join(' '), /four.*down-strums|chord never changes/i,
+  'the old contradictory 4/4 one-chord Row Your Boat instruction must never return');
 
 const lessonText = (id) => {
   const lesson = ALL_LESSONS.find((item) => item.id === id);

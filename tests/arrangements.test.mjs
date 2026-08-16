@@ -11,10 +11,13 @@ const [{ SONGS }, { ARRANGEMENTS, GROOVES, arrangementChordSequence, barChords, 
 
 assert.equal(Object.keys(ARRANGEMENTS).length, SONGS.length, 'every play-along song needs an arrangement');
 for (const song of SONGS) {
+  assert.equal(song.strum, undefined,
+    `${song.title} must use its arrangement groove as the single rhythm source of truth`);
   const arrangement = ARRANGEMENTS[song.id];
   assert.ok(arrangement, `${song.title} is missing an arrangement`);
   assert.ok(['practice', 'verified'].includes(arrangement.timing), `${song.title} needs an honest timing status`);
   assert.ok(GROOVES[arrangement.groove], `${song.title} has an unknown groove`);
+  assert.ok(GROOVES[arrangement.groove].count, `${song.title} groove needs an explicit spoken count`);
   assert.ok(GROOVES[arrangement.groove].events.every((event) => event.beat >= 0 && event.beat < arrangement.meter),
     `${song.title} groove events must stay inside its ${arrangement.meter}-beat bar`);
   assert.ok(arrangement.bpm >= 50 && arrangement.bpm <= 130, `${song.title} tempo is unreasonable`);
@@ -70,11 +73,16 @@ assert.deepEqual(ARRANGEMENTS['shady-grove'].bars, ['Em', 'D', 'Em', 'Em', 'Em',
   'Shady Grove must use the traditional minor-home / lowered-seven chorus form');
 assert.equal(ARRANGEMENTS['shady-grove'].timing, 'verified');
 assert.deepEqual(ARRANGEMENTS['row-your-boat'].cues, [
-  'Row, row, row your boat',
-  'Gently down the stream',
-  'Merrily, merrily, merrily, merrily',
-  'Life is but a dream',
+  'Row, row', 'row your boat', 'Gently down the', 'stream',
+  'Merrily, merrily', 'merrily, merrily', 'Life is but a', 'dream',
 ]);
+assert.equal(SONGS.find((song) => song.id === 'row-your-boat').time, '6/8');
+assert.deepEqual(SONGS.find((song) => song.id === 'row-your-boat').chords, ['G', 'D7']);
+assert.deepEqual(ARRANGEMENTS['row-your-boat'].bars, ['G', 'G', 'G', 'G', 'G', 'G', 'D7', 'G']);
+assert.equal(ARRANGEMENTS['row-your-boat'].meter, 6);
+assert.equal(ARRANGEMENTS['row-your-boat'].groove, 'compoundTwo');
+assert.deepEqual(GROOVES.compoundTwo.events.map(({ beat }) => beat), [0, 3],
+  'Row Your Boat must emphasize the two dotted-quarter pulses of 6/8');
 assert.equal(ARRANGEMENTS['row-your-boat'].timing, 'verified');
 assert.deepEqual(ARRANGEMENTS['down-in-the-valley'].bars,
   ['G', 'D7', 'D7', 'G', 'G', 'D7', 'D7', 'G'],
@@ -86,6 +94,8 @@ assert.deepEqual(ARRANGEMENTS['whole-world'].bars,
   ['G', 'G', 'D7', 'D7', 'G', 'G', 'D7', 'G'],
   'Whole World must use the sourced two-chord beginner verse form');
 assert.equal(ARRANGEMENTS['whole-world'].timing, 'verified');
+assert.equal(ARRANGEMENTS['whole-world'].groove, 'steadyDownUp',
+  'Whole World must use the sourced down, down-up, down, down-up accompaniment');
 assert.equal(ARRANGEMENTS.clementine.bpm, 90);
 assert.deepEqual(ARRANGEMENTS.clementine.bars,
   ['G', 'G', 'G', 'D7', 'D7', 'G', 'D7', 'G'],
@@ -197,8 +207,10 @@ assert.equal(SONGS.find((song) => song.id === 'what-a-friend').body[0].lines.len
   'What a Friend must display the complete first verse');
 assert.deepEqual(ARRANGEMENTS['amazing-grace'].bars.map((bar) => barChords(bar)), [
   ['G'], ['G7'], ['C'], ['G'], ['G'], ['G'], ['D'], ['D'],
-  ['G'], ['G7'], ['C'], ['G'], ['Em'], ['G', 'D7'], ['G'], ['G'],
+  ['G'], ['G7'], ['C'], ['G'], ['G'], ['G', 'D7'], ['G'], ['G'],
 ], 'Amazing Grace must contain the complete sixteen-bar NEW BRITAIN form');
+assert.deepEqual(SONGS.find((song) => song.id === 'amazing-grace').chords, ['G', 'G7', 'C', 'D', 'D7'],
+  'Amazing Grace must not add an unsourced Em substitution to the verified beginner chart');
 assert.deepEqual(barChangeBeats(ARRANGEMENTS['amazing-grace'].bars[13], 3), [0, 2]);
 assert.equal(ARRANGEMENTS['amazing-grace'].timing, 'verified');
 assert.equal(ARRANGEMENTS['amazing-grace'].cues.length, 16);
@@ -233,5 +245,7 @@ assert.equal(Object.values(ARRANGEMENTS).filter((item) => item.timing === 'verif
 assert.equal(ARRANGEMENTS['house-of-the-rising-sun'].groove, 'sixEight');
 assert.ok(Object.values(ARRANGEMENTS).some((item) => item.bars.some(Array.isArray)),
   'arrangements must support mid-bar chord changes');
+assert.ok(Object.values(GROOVES).every((groove) => groove.count),
+  'every generated accompaniment groove must expose the count a learner should say aloud');
 
 console.log('arrangement tests passed: every song has meter, tempo, form, distinct groove, dynamics, and lead coaching');

@@ -121,6 +121,9 @@ function detail(root, id, self) {
   cleanup(self);
   const arrangement = arrangementFor(song);
   const groove = arrangement && GROOVES[arrangement.groove];
+  const tempoText = arrangement?.meter === 6
+    ? `${arrangement.bpm} dotted-quarter BPM`
+    : `${arrangement?.bpm} BPM`;
   const verifiedTiming = arrangement?.timing === 'verified';
   const capo = self._capoBySong?.[song.id] ?? song.capo ?? 0;
 
@@ -143,17 +146,18 @@ function detail(root, id, self) {
       <p class="faint">Move one fret at a time until the first line feels comfortable to sing. The diagrams and chord names stay the same; Campfire's listening and backing follow your capo choice.</p>
     </section>
     ${arrangement ? `<section class="panel arrangement-guide" style="margin-top:1rem">
-      <p class="eyebrow">${verifiedTiming ? 'Verified singable arrangement' : 'Beginner accompaniment practice'}</p>
+      <p class="eyebrow">${verifiedTiming ? 'Source-checked form · Campfire accompaniment' : 'Beginner accompaniment practice'}</p>
       <div class="grid arrangement-roles">
-        <div><h3>Accompany the singer</h3><p><strong>${groove.label}</strong> at about ${arrangement.bpm} BPM.</p><p class="muted">${arrangement.dynamics}</p></div>
+        <div><h3>Accompany the singer</h3><p><strong>${groove.label}</strong> at about ${tempoText}.</p>
+          <p><strong>Count:</strong> ${groove.count}</p><p class="muted">${arrangement.dynamics}</p></div>
         <div><h3>Play lead without crowding</h3><p class="muted">${arrangement.lead}</p></div>
       </div>
       <p class="faint" style="margin-bottom:.35rem"><strong>${arrangement.section}:</strong></p>
       <div class="arrangement-bars">${arrangement.bars.map((bar, index) => `<span><small>${index + 1}</small>${barChords(bar).join(' / ')}</span>`).join('')}</div>
       ${verifiedTiming
-        ? `<p class="faint"><strong>Timing checked:</strong> the chord changes are aligned to the displayed lyric cues. <strong>Source:</strong> <a href="${arrangement.verification.url}" target="_blank" rel="noopener noreferrer">${arrangement.verification.label}</a>. <strong>Checked:</strong> ${arrangement.verification.checked}.</p>`
+        ? `<p class="faint"><strong>Form checked:</strong> the bar order and chord changes are aligned to the displayed lyric cues. <strong>Source:</strong> <a href="${arrangement.verification.url}" target="_blank" rel="noopener noreferrer">${arrangement.verification.label}</a>. <strong>Checked:</strong> ${arrangement.verification.checked}.</p>`
         : '<p class="faint"><strong>Practice reduction:</strong> this teaches the song\'s chord vocabulary and feel, but it is not yet a lyric-synchronized transcription.</p>'}
-      <div class="callout"><strong>Important:</strong> accompaniment supplies harmony, pulse, and feel—the voice carries the recognizable melody. A lead intro or fill supplies melody only in the spaces.</div>
+      <div class="callout"><strong>About the groove:</strong> traditional songs do not have one mandatory guitar strum. Campfire supplies a meter-correct, playable beginner accompaniment; the cited source supports the form and harmony. The voice carries the melody.</div>
     </section>` : ''}
 
     <div class="btn-row" style="margin:1rem 0">
@@ -387,7 +391,7 @@ function singAlong(root, song, self) {
         <button class="btn btn-primary" id="sa-toggle" style="min-width:120px">▶ Play</button>
         <button class="btn" id="sa-restart">↻ Restart</button>
       </div>
-      <p class="faint" style="margin:.7rem 0 0;font-size:.8rem"><strong>${groove.label}.</strong> ${arrangement.dynamics}</p>
+      <p class="faint" style="margin:.7rem 0 0;font-size:.8rem"><strong>${groove.label} · count ${groove.count}.</strong> ${arrangement.dynamics}</p>
     </section>
   `;
 

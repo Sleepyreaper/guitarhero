@@ -96,6 +96,10 @@ assert.match(songViewText, /isGuidedMatch\(target, evaluation, GUIDED_SIM_OK, be
   'song rehearsal must use the same calibrated target-aware policy as the Chord Coach');
 assert.match(songViewText, /evaluateChord\(judge\.profile\(\), expected/,
   'song target-note coverage must use the same smoothed ringing chord as similarity');
+assert.match(songViewText, /groove\.count/,
+  'every song page must show the exact spoken count used by its generated groove');
+assert.match(songViewText, /dotted-quarter BPM/,
+  'compound-meter tempo must identify the dotted-quarter pulse instead of showing an ambiguous BPM');
 assert.match(chordsViewText, /evaluateChord\(judge\.profile\(\), expectedPCs/,
   'Coach target-note coverage must not flicker with a single microphone frame');
 assert.match(songViewText, /const confident = isConfidentMatch\(best, OPEN_SIM_OK\)/,

@@ -10,9 +10,8 @@ assert.doesNotMatch(newPlayer[3].title, /^Play /,
 
 const firstChords = buildRoutine(['l1-1', 'l1-2'], 'mixed');
 assert.equal(firstChords[2].href, '#/train', 'Em and G should unlock a real chord-change drill');
-assert.equal(firstChords[3].href, '#/songs/row-your-boat');
-assert.match(firstChords[3].title, /Row, Row, Row Your Boat/,
-  'the music step must choose a song whose required shapes are explicitly learned');
+assert.notEqual(firstChords[3].href, '#/songs/row-your-boat',
+  'the real Row Your Boat arrangement must stay locked until D7 is explicitly learned');
 
 const core = buildRoutine(['l1-1', 'l1-2', 'l2-1'], 'church');
 assert.ok(core[3].href.startsWith('#/songs/'));

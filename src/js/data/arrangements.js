@@ -5,6 +5,7 @@
 export const GROOVES = {
   waltz: {
     label: 'Country waltz: bass, brush, brush',
+    count: '1 2 3',
     events: [
       { beat: 0, kind: 'bass', gain: .22 },
       { beat: 1, kind: 'brush', gain: .10 },
@@ -13,10 +14,12 @@ export const GROOVES = {
   },
   straight: {
     label: 'Beginner pulse: four relaxed down-strums',
+    count: '1 2 3 4',
     events: [0, 1, 2, 3].map((beat) => ({ beat, kind: 'full', gain: beat === 0 ? .19 : .11 })),
   },
   boomChuck: {
     label: 'Country boom-chuck: bass on 1 and 3, chord on 2 and 4',
+    count: '1 2 3 4',
     events: [
       { beat: 0, kind: 'bass', gain: .23 }, { beat: 1, kind: 'brush', gain: .12 },
       { beat: 2, kind: 'bass', gain: .18 }, { beat: 3, kind: 'brush', gain: .12 },
@@ -24,6 +27,7 @@ export const GROOVES = {
   },
   countryTwo: {
     label: 'Quick country 2/4: bass on 1, short chord on 2',
+    count: '1 2',
     events: [
       { beat: 0, kind: 'bass', gain: .21 },
       { beat: 1, kind: 'brush', gain: .11 },
@@ -31,14 +35,26 @@ export const GROOVES = {
   },
   folk: {
     label: 'Folk down-up: D, D-U, U-D-U',
+    count: '1-and-2-and-3-and-4-and',
     events: [
       { beat: 0, kind: 'full', gain: .18 }, { beat: 1, kind: 'full', gain: .12 },
       { beat: 1.5, kind: 'up', gain: .08 }, { beat: 2.5, kind: 'up', gain: .08 },
       { beat: 3, kind: 'full', gain: .12 }, { beat: 3.5, kind: 'up', gain: .08 },
     ],
   },
+  steadyDownUp: {
+    label: 'Steady 4/4: down, down-up, down, down-up',
+    count: '1-and-2-and-3-and-4-and',
+    events: [
+      { beat: 0, kind: 'full', gain: .18 },
+      { beat: 1, kind: 'full', gain: .11 }, { beat: 1.5, kind: 'up', gain: .08 },
+      { beat: 2, kind: 'full', gain: .13 },
+      { beat: 3, kind: 'full', gain: .11 }, { beat: 3.5, kind: 'up', gain: .08 },
+    ],
+  },
   actionClap: {
     label: 'Action-song pulse: steady phrases, then open beats for claps',
+    count: '1 2 3 4',
     events: [
       { beat: 0, kind: 'full', gain: .18 },
       { beat: 1, kind: 'brush', gain: .10 },
@@ -56,17 +72,28 @@ export const GROOVES = {
   },
   sparse: {
     label: 'Vocal space: full chord on 1, light brush on 3',
+    count: '1 2 3 4',
     events: [{ beat: 0, kind: 'full', gain: .18 }, { beat: 2, kind: 'brush', gain: .08 }],
   },
   lullabyTwo: {
     label: 'Gentle 2/4: warm chord on 1, quiet brush on 2',
+    count: '1 2',
     events: [
       { beat: 0, kind: 'full', gain: .16 },
       { beat: 1, kind: 'brush', gain: .06 },
     ],
   },
+  compoundTwo: {
+    label: '6/8 sway: bass on ONE, light brush on TWO',
+    count: 'ONE-and-a TWO-and-a',
+    events: [
+      { beat: 0, kind: 'bass', gain: .19 },
+      { beat: 3, kind: 'brush', gain: .08 },
+    ],
+  },
   gospel: {
     label: 'Gospel sway: bass, brush, bass, brush',
+    count: '1 2 3 4',
     events: [
       { beat: 0, kind: 'bass', gain: .22 }, { beat: 1, kind: 'brush', gain: .10 },
       { beat: 2, kind: 'bass', gain: .17 }, { beat: 3, kind: 'up', gain: .09 },
@@ -74,6 +101,7 @@ export const GROOVES = {
   },
   sixEight: {
     label: 'Rolling 6/8: bass-to-treble and back, six even eighth-notes',
+    count: 'ONE-and-a TWO-and-a',
     events: [
       { beat: 0, kind: 'pick', string: 0, gain: .18 },
       { beat: 1, kind: 'pick', string: 1, gain: .10 },
@@ -85,6 +113,7 @@ export const GROOVES = {
   },
   fingerWaltz: {
     label: 'Fingerpicked 3/4: bass, high, middle',
+    count: '1 2 3',
     events: [
       { beat: 0, kind: 'bass', gain: .19 },
       { beat: 1, kind: 'pick', fromTop: 1, gain: .10 },
@@ -130,16 +159,16 @@ export const ARRANGEMENTS = {
       'Shady Grove, my', 'little love',
       "I'm bound to go", 'away',
     ], 'verified', { label: 'Heartwood traditional modal chart', url: 'https://www.heartwoodguitar.com/chords/garcia-jerry-and-david-grisman-shady-grove/', checked: '2026-08-10' }),
-  'row-your-boat': a(92, 4, 'sparse', 'One-chord verse',
-    ['G', 'G', 'G', 'G'],
-    'Stay quiet enough to hear both parts if you sing it as a round.',
+  'row-your-boat': a(76, 6, 'compoundTwo', 'Complete eight-bar verse',
+    ['G', 'G', 'G', 'G', 'G', 'G', 'D7', 'G'],
+    'Feel two large pulses per bar—not six separate down-strums. Stay quiet enough to hear both parts if you sing it as a round.',
     'Pick the familiar melody one note at a time on the top two strings; when voices enter as a round, return to simple G backing.',
     [
-      'Row, row, row your boat',
-      'Gently down the stream',
-      'Merrily, merrily, merrily, merrily',
-      'Life is but a dream',
-    ], 'verified', { label: 'Public-domain 1917 sheet music', url: 'https://commons.wikimedia.org/wiki/File%3A28_Row_Row_Row_Your_Boat.png', checked: '2026-08-10' }),
+      'Row, row', 'row your boat',
+      'Gently down the', 'stream',
+      'Merrily, merrily', 'merrily, merrily',
+      'Life is but a', 'dream',
+    ], 'verified', { label: 'Singing Bell G-major guitar score in 6/8', url: 'https://www.singing-bell.com/wp-content/uploads/2022/01/Row-Row-Row-your-Boat-Guitar-Chords-Sheet-Music_Singing-Bell.pdf', checked: '2026-08-15' }),
   'hush-little-baby': a(70, 2, 'lullabyTwo', 'Verse',
     ['G', 'D7', 'D7', 'G', 'G', 'D7', 'D7', 'G'],
     'Let chords ring and make every change quieter than you think.',
@@ -150,7 +179,7 @@ export const ARRANGEMENTS = {
       "And if that mockingbird won't", 'sing',
       "Papa's gonna buy you a", 'diamond ring',
     ], 'verified', { label: 'Singing Bell G / D7 guitar sheet', url: 'https://www.singing-bell.com/wp-content/uploads/2022/01/Hush-Little-Baby-Guitar-Chords-Sheet-Music_Singing-Bell.pdf', checked: '2026-08-10' }),
-  'twinkle-twinkle': a(92, 4, 'straight', 'Complete short verse (ABBA)',
+  'twinkle-twinkle': a(100, 4, 'straight', 'Complete short verse (ABBA)',
     ['G', ['C', 'G'], ['C', 'G'], ['D', 'G'], ['G', 'C'], ['G', 'D'], ['G', 'C'], ['G', 'D'], 'G', ['C', 'G'], ['C', 'G'], ['D', 'G']],
     'Use plain quarter-note downs first; the melody supplies the interest.',
     'Learn the melody before fills: begin on open G, repeat it, then move upward. Play melody alone or chords under a singer—not both at first.',
@@ -202,7 +231,7 @@ export const ARRANGEMENTS = {
       'Kumbaya my', ['Lord, kumba', 'ya'],
       ['Oh', 'Lord, kumba'], ['ya', '(let it ring)'],
     ], 'verified', { label: 'RiffSpot traditional chord-and-lyric chart', url: 'https://riffspot.com/music/chords-and-lyrics/kumbaya/120/', checked: '2026-08-10' }),
-  'whole-world': a(96, 4, 'gospel', 'Verse loop',
+  'whole-world': a(96, 4, 'steadyDownUp', 'Verse loop',
     ['G', 'G', 'D7', 'D7', 'G', 'G', 'D7', 'G'],
     'Lean slightly into beats 2 and 4 for a congregational gospel sway.',
     'Answer “in His hands” with a tiny G-major lick, then get out of the way before the next line.',
@@ -304,9 +333,9 @@ export const ARRANGEMENTS = {
     'The title phrase makes a natural intro. Play it once, then return to bass-brush-brush accompaniment.',
     ['Oh give me a', 'home where the', 'buffalo', 'roam', 'Where the deer and', 'the antelope', 'play', 'breathe',
       'Where seldom is', 'heard a dis-', 'couraging', 'word', 'And the skies are not', 'cloudy all', 'day', 'hold G'],
-    'verified', { label: 'TraditionalSongs G-major 3/4 guitar score', url: 'https://www.traditionalsongs.org/home-on-the-range.html', checked: '2026-08-10' }),
+    'verified', { label: 'Ballad of America G-major 3/4 lead sheet with A7', url: 'https://balladofamerica.org/downloads/lead-sheets/Home%20on%20the%20Range.pdf', checked: '2026-08-15' }),
   'amazing-grace': a(76, 3, 'waltz', 'Complete first verse',
-    ['G', 'G7', 'C', 'G', 'G', 'G', 'D', 'D', 'G', 'G7', 'C', 'G', 'Em', at([0, 'G'], [2, 'D7']), 'G', 'G'],
+    ['G', 'G7', 'C', 'G', 'G', 'G', 'D', 'D', 'G', 'G7', 'C', 'G', 'G', at([0, 'G'], [2, 'D7']), 'G', 'G'],
     'Let the singer lead phrase length while you protect the underlying 1-2-3 pulse.',
     'Play the opening melody as an intro. During the verse, answer only after “sound,” “me,” “found,” and “see.”',
     ['Amazing', 'grace, how', 'sweet the', 'sound', 'That saved a', 'wretch like', 'me', 'breathe',

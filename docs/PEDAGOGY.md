@@ -32,7 +32,7 @@ open chords, which is exactly why beginners can succeed in them fast.
 
 ## Expected timeline
 
-- **Week 1–2:** clean first chords (Em, G), first two-chord song (*Down in the Valley*).
+- **Week 1–2:** clean first chords (Em, G), add D7, first two-chord song (*Row, Row, Row Your Boat*).
 - **Week 3–4:** G–C–D changes, a steady strum, first three-chord songs.
 - **Month 2:** a common down-up strum plus song-specific grooves, several full songs, minor chords.
 - **Month 3+:** capo/number system, first fingerpicking — americana territory.
@@ -40,6 +40,10 @@ open chords, which is exactly why beginners can succeed in them fast.
 These are pacing guides, not promises. A learner may play a one-chord song on day one; clean chord
 changes and full-song time develop at different rates depending on practice, instrument setup, and
 physical comfort.
+
+Song harmony and form are checked against the source linked on each song page. Campfire's strumming
+is a playable, meter-correct beginner arrangement—not a claim that a traditional song has one
+official guitar pattern. See `RHYTHM_AUDIT.md` for the content and playback safeguards.
 
 ## Curriculum map (see `src/js/data/curriculum.js`)
 
