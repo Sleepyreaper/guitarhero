@@ -7,6 +7,14 @@ import { scoreFor } from './scores.js';
 // `expert: pass` is reserved for an experienced guitar teacher/player reviewing the arrangement.
 // `student: pass` means a pilot learner could understand, follow, and finish the song.
 export const SONG_REVIEWS = Object.freeze({
+  'down-in-the-valley': {
+    trace: 'pending', playback: 'pending', expert: 'pending', student: 'pending',
+    note: 'The complete 24-bar CC0 anthology stanza is source-locked. Deploy and trace its long tied notes, four harmony changes, ending, and loop before independent playback recognition.',
+  },
+  clementine: {
+    trace: 'pending', playback: 'pending', expert: 'pending', student: 'pending',
+    note: 'The complete CC0 anthology verse and chorus plus the disclosed two-chord reduction are source-locked. Deploy and trace the pickup, sixteen bars, ending, and loop before independent playback recognition.',
+  },
   'row-your-boat': {
     trace: 'pass', tracedAt: '2026-08-16',
     playback: 'pass', playbackAt: '2026-08-15', playbackReviewer: 'Project owner',

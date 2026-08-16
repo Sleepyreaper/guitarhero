@@ -3,6 +3,7 @@ import { SCORES, midiFrequency } from '../src/js/data/scores.js';
 import { ARRANGEMENTS } from '../src/js/data/arrangements.js';
 
 const certified = [
+  'down-in-the-valley', 'clementine',
   'row-your-boat', 'whole-world', 'amazing-grace', 'shady-grove', 'kumbaya',
   'will-the-circle', 'what-a-friend',
 ];
@@ -21,9 +22,67 @@ for (const id of certified) {
   assert.ok(score.melody.filter((event) => event.midi != null).every((event) => event.midi >= 48 && event.midi <= 84),
     `${id} guide melody must remain in a comfortable audible register`);
   const last = score.melody.at(-1);
+  assert.equal(score.totalBeats, arrangement.bars.length * arrangement.meter,
+    `${id} score and harmony must declare the same complete form length`);
   assert.ok(last.beat + last.duration <= arrangement.bars.length * arrangement.meter,
     `${id} melody must fit the same clock as its harmony form`);
 }
+
+assert.equal(SCORES['down-in-the-valley'].totalBeats, 72);
+assert.equal(SCORES['down-in-the-valley'].melody[0].beat, 0);
+assert.equal(SCORES['down-in-the-valley'].melody.at(-1).beat + SCORES['down-in-the-valley'].melody.at(-1).duration, 72,
+  'Down in the Valley must preserve all twenty-four anthology measures through the tied final blow');
+assert.equal(SCORES['down-in-the-valley'].source.dataUrl,
+  'https://dataverse.lib.virginia.edu/api/access/datafile/3898',
+  'Down in the Valley must retain the exact machine-readable CC0 source');
+assert.deepEqual(SCORES['down-in-the-valley'].melody.filter((event) => event.lyric).map((event) => event.lyric), [
+  'Down', 'in', 'the', 'val—', '—ley,', 'val-', 'ley', 'so', 'low—',
+  'Hang', 'your', 'head', 'o-', '—ver,', 'hear', 'the', 'wind', 'blow—',
+  'Hear', 'the', 'wind', 'blow', 'dear,', 'hear', 'the', 'wind', 'blow—',
+  'Hang', 'your', 'head', 'o-', '—ver,', 'hear', 'the', 'wind', 'blow—',
+], 'Down in the Valley must keep every anthology syllable and repeated phrase in order');
+assert.deepEqual(SCORES['down-in-the-valley'].melody.map(({ midi, duration }) => [midi, duration]), [
+  [62, 1], [67, 1], [69, 1], [71, 3], [67, 3], [71, 1], [69, 1], [67, 1], [69, 6],
+  [62, 1], [66, 1], [69, 1], [72, 3], [69, 3], [72, 1], [71, 1], [69, 1], [71, 6],
+  [62, 1], [67, 1], [69, 1], [71, 3], [67, 3], [71, 1], [69, 1], [67, 1], [69, 6],
+  [62, 1], [66, 1], [69, 1], [74, 3], [74, 3], [72, 1], [71, 1], [69, 1], [67, 6],
+], 'Down in the Valley pitches and tied durations must match the CC0 MusicXML transcription');
+assert.deepEqual(SCORES['down-in-the-valley'].melody.slice(0, 3).map(({ midi }) => midi), [62, 67, 69],
+  'the disclosed opening G extension must support the source D-G-A opening melody');
+
+assert.equal(SCORES.clementine.totalBeats, 48);
+assert.equal(SCORES.clementine.melody[0].beat, -1,
+  'Clementine must sing In a on beat 3 of the count-in');
+assert.equal(SCORES.clementine.melody.at(-1).beat + SCORES.clementine.melody.at(-1).duration, 47,
+  'Clementine must leave the final beat for the next loop pickup');
+assert.equal(SCORES.clementine.source.dataUrl,
+  'https://dataverse.lib.virginia.edu/api/access/datafile/3924',
+  'Clementine must retain the exact machine-readable CC0 source');
+assert.deepEqual(SCORES.clementine.melody.filter((event) => event.lyric).map((event) => event.lyric), [
+  'In', 'a', 'cav-', 'ern,', 'in', 'a', 'can-', 'yon,', 'Ex-', 'ca-', 'va-', 'ting', 'for', 'a',
+  'mine,', 'Dwelt', 'a', 'min-', 'er,', 'for-', 'ty-', 'nin-', 'er,', 'And', 'his', 'daugh-', 'ter', 'Clem-', 'en-', 'tine.',
+  'Oh,', 'my', 'dar-', 'ling,', 'oh,', 'my', 'dar-', 'ling,', 'Oh,', 'my', 'dar-', 'ling', 'Clem-', 'en-', 'tine:',
+  'Thou', 'art', 'lost', 'and', 'gone', 'for-', 'ev-', 'er,', 'Dread-', 'ful', 'sor-', 'ry,', 'Clem-', 'en-', 'tine.',
+], 'Clementine must keep the complete anthology verse and chorus on the literal melody');
+assert.deepEqual(SCORES.clementine.melody.map(({ midi, duration }) => [midi, duration]), [
+  [67, .75], [67, .25],
+  [67, 1], [62, 1], [71, .75], [71, .25],
+  [71, 1], [67, 1], [67, .75], [71, .25],
+  [74, 1.5], [74, .5], [72, .5], [71, .5],
+  [69, 2], [69, .75], [71, .25],
+  [72, 1], [72, 1], [71, .75], [69, .25],
+  [71, 1], [67, 1], [67, .5], [71, .5],
+  [69, 1.5], [62, .5], [66, .5], [69, .5],
+  [67, 2], [67, .75], [67, .25],
+  [67, 1], [62, 1], [71, .75], [71, .25],
+  [71, 1], [67, 1], [67, .75], [71, .25],
+  [74, 1.5], [74, .5], [72, .5], [71, .5],
+  [69, 2], [69, .75], [71, .25],
+  [72, 1], [72, 1], [71, .75], [69, .25],
+  [71, 1], [67, 1], [67, .5], [71, .5],
+  [69, 1.5], [62, .5], [66, .5], [69, .5],
+  [67, 2],
+], 'Clementine pitches, pickup subdivisions, and syllable durations must match the transposed CC0 MusicXML');
 
 assert.equal(SCORES['row-your-boat'].unit, 'eighth');
 assert.equal(SCORES['row-your-boat'].totalBeats, 48);

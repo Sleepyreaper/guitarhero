@@ -138,26 +138,45 @@ const a = (bpm, meter, groove, section, bars, dynamics, lead, cues = null, timin
 const at = (...changes) => ({ changes: changes.map(([beat, chord]) => ({ beat, chord })) });
 
 export const ARRANGEMENTS = {
-  'down-in-the-valley': a(72, 3, 'waltz', 'Verse',
-    ['G', 'D7', 'D7', 'G', 'G', 'D7', 'D7', 'G'],
-    'Keep beat 1 firm and beats 2–3 soft; never rush the singer at the end of a line.',
-    'Between sung lines, answer with three notes from the G major scale; stop as soon as the next lyric begins.',
+  'down-in-the-valley': a(72, 3, 'waltz', 'Complete CC0 anthology stanza · twenty-four 3/4 bars',
     [
-      'Down in the valley, the', 'valley so low',
-      'Hang your head over, hear the', 'wind blow',
-      'Hear the wind blow, dear', 'hear the wind blow',
-      'Hang your head over, hear the', 'wind blow',
-    ], 'verified', { label: 'Songdrops G / D7 chart', url: 'https://www.songdrops.com/classic-childrens-songs-lyrics-guitar-chords/down-in-the-valley-guitar-chords-and-lyrics-to-the-old-classic-children%E2%80%99s-song.html', checked: '2026-08-10' }),
-  clementine: a(90, 3, 'waltz', 'Verse / chorus',
-    ['G', 'G', 'G', 'D7', 'D7', 'G', 'D7', 'G'],
-    'Give it a light bounce, with a stronger first beat and short brushes on 2 and 3.',
-    'The title melody begins on repeated notes. Find it on the B string and play only that short answer between phrases.',
+      'G', 'G', 'G', 'G', 'D7', 'D7', 'D7', 'D7', 'D7', 'D7', 'G', 'G',
+      'G', 'G', 'G', 'G', 'D7', 'D7', 'D7', 'D7', 'D7', 'D7', 'G', 'G',
+    ],
+    'Use bass-brush-brush and trust the space. Change to D7 on the first “low,” back to G on the first line-ending “blow,” then repeat that same D7-to-G journey.',
+    'Play the printed melody alone as an introduction. During singing, do not fill the two-bar held “low” and “blow” notes; those long tones teach you to keep time without chasing words.',
     [
-      'In a cavern, in a', 'canyon',
-      'Excavating for a', 'mine',
-      'Dwelt a miner, forty-', 'niner',
-      'And his daughter, Clemen', 'tine',
-    ], 'verified', { label: 'TraditionalSongs G / D7 chart', url: 'https://traditionalsongs.org/oh-my-darling-clementine.html', checked: '2026-08-10' }),
+      'Down in the', 'val—', '—ley,', 'val-ley so', 'low—', '(hold low)',
+      'Hang your head', 'o—', '—ver,', 'hear the wind', 'blow—', '(hold blow)',
+      'Hear the wind', 'blow', 'dear,', 'hear the wind', 'blow—', '(hold blow)',
+      'Hang your head', 'o—', '—ver,', 'hear the wind', 'blow—', '(hold blow)',
+    ], 'verified', {
+      label: 'CC0 Public Domain Song Anthology, Down in the Valley page 81',
+      url: 'https://upload.wikimedia.org/wikipedia/commons/c/cc/The_Public_Domain_Song_Anthology_with_Modern_and_Traditional_Harmonization.pdf#page=101',
+      checked: '2026-08-16',
+    }, {
+      reduction: 'Campfire retains the anthology’s traditional G and D7 harmony and omits its italic jazz-color suggestions. The printed first G symbol arrives on “val”; Campfire extends G under the opening three-beat “Down in the” bar so a beginner has a stable count from the first beat.',
+    }),
+  clementine: a(90, 3, 'waltz', 'Complete CC0 verse and chorus · sixteen 3/4 bars plus pickup',
+    [
+      'G', 'G', 'G', 'D7', 'D7', 'G', 'D7', 'G',
+      'G', 'G', 'G', 'D7', 'D7', 'D7', 'D7', 'G',
+    ],
+    'Sing “In a” on beat 3 of the count-in, then land “cav-” on beat 1. Keep beat 1 buoyant and make brushes 2 and 3 short enough to hear every lyric pickup.',
+    'Use the complete printed melody for an intro. Under the singer, leave the title phrase alone and save any two-note G-major answer for the final held “-tine.”',
+    [
+      'cav-ern, in a', 'can-yon, Ex-ca-', 'va-ting for a', 'mine; Dwelt a',
+      'min-er, for-ty-', 'nin-er, And his', 'daugh-ter Clem-en-', 'tine; Oh, my',
+      'dar-ling, oh, my', 'dar-ling, Oh, my', 'dar-ling Clem-en-', 'tine; Thou art',
+      'lost and gone for-', 'ev-er, Dread-ful', 'sor-ry, Clem-en-', 'tine—; then pickup: In a',
+    ], 'verified', {
+      label: 'CC0 Public Domain Song Anthology, Oh, My Darling Clementine page 232',
+      url: 'https://upload.wikimedia.org/wikipedia/commons/c/cc/The_Public_Domain_Song_Anthology_with_Modern_and_Traditional_Harmonization.pdf#page=252',
+      checked: '2026-08-16',
+    }, {
+      pickup: { beat: 2, text: 'In a… (pickup)' },
+      reduction: 'Campfire transposes the anthology’s F/C7 foundation to open G/D7. Its italic jazz reharmonization and the traditional B7/D-sharp → Em → A7 turnaround are omitted; D7 continues through “lost and gone forever, dreadful sorry” before resolving to G on the final “-tine.”',
+    }),
   'shady-grove': a(100, 2, 'countryTwo', 'Complete Hindman E-minor chorus · eight 2/4 bars',
     ['Em', 'D', 'Em', 'Em', 'G', 'D', 'Em', 'Em'],
     'Count a quick “ONE two.” Play a low bass note on ONE and a short chord on two; each displayed Hindman chord pair is one complete 2/4 measure.',

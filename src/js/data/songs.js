@@ -20,13 +20,13 @@ export const SONGS = [
     time: '3/4 (waltz)',
     difficulty: 'First song',
     chords: ['G', 'D7'],
-    note: 'Only TWO chords. This is the one to nail first — a slow 3/4 waltz strum (one down-strum per beat).',
+    note: 'The CC0 Public Domain Song Anthology version in G: a spacious 24-bar waltz with only G and D7. The melody, long held words, and four chord changes now follow that one printed edition.',
     body: [
       { section: 'Verse', lines: [
-        [{ c: 'G', t: 'Down in the ' }, { t: 'valley, the ' }, { c: 'D7', t: 'valley so low' }],
-        [{ c: 'D7', t: 'Hang your head ' }, { t: 'over, hear the ' }, { c: 'G', t: 'wind blow' }],
-        [{ c: 'G', t: 'Hear the wind ' }, { t: 'blow, dear, ' }, { c: 'D7', t: 'hear the wind blow' }],
-        [{ c: 'D7', t: 'Hang your head ' }, { t: 'over, hear the ' }, { c: 'G', t: 'wind blow' }],
+        [{ c: 'G', t: 'Down in the valley, valley so ' }, { c: 'D7', t: 'low' }],
+        [{ c: 'D7', t: 'Hang your head over, hear the wind ' }, { c: 'G', t: 'blow' }],
+        [{ c: 'G', t: 'Hear the wind blow, dear, hear the wind ' }, { c: 'D7', t: 'blow' }],
+        [{ c: 'D7', t: 'Hang your head over, hear the wind ' }, { c: 'G', t: 'blow' }],
       ] },
     ],
   },
@@ -41,7 +41,7 @@ export const SONGS = [
     time: '3/4 (waltz)',
     difficulty: 'First song',
     chords: ['G', 'D7'],
-    note: 'A two-chord Gold Rush singalong (1884). Same easy G ↔ D7 change as Down in the Valley, in a lilting 3/4.',
+    note: 'The CC0 Public Domain Song Anthology verse and chorus, transposed F to G. Sing “In a” on beat 3 of the count-in; Campfire keeps a disclosed two-chord reduction of the source harmony.',
     body: [
       { section: 'Verse', lines: [
         [{ c: 'G', t: 'In a cavern, in a canyon' }],
@@ -52,7 +52,7 @@ export const SONGS = [
       { section: 'Chorus', lines: [
         [{ c: 'G', t: 'Oh my darling, oh my darling' }],
         [{ c: 'G', t: 'Oh my darling, Clemen' }, { c: 'D7', t: 'tine' }],
-        [{ c: 'D7', t: 'You are lost and gone for' }, { c: 'G', t: 'ever' }],
+        [{ c: 'D7', t: 'You are lost and gone forever' }],
         [{ c: 'D7', t: 'Dreadful sorry, Clemen' }, { c: 'G', t: 'tine' }],
       ] },
     ],

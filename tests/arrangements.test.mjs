@@ -96,10 +96,20 @@ assert.deepEqual(GROOVES.compoundTwo.events.map(({ beat }) => beat), [0, 3],
   'Row Your Boat must emphasize the two dotted-quarter pulses of 6/8');
 assert.equal(ARRANGEMENTS['row-your-boat'].timing, 'verified');
 assert.deepEqual(ARRANGEMENTS['down-in-the-valley'].bars,
-  ['G', 'D7', 'D7', 'G', 'G', 'D7', 'D7', 'G'],
-  'Down in the Valley must change with each sung half-line, not group dominant bars together');
-assert.deepEqual(ARRANGEMENTS['down-in-the-valley'].cues.slice(0, 4),
-  ['Down in the valley, the', 'valley so low', 'Hang your head over, hear the', 'wind blow']);
+  [
+    'G', 'G', 'G', 'G', 'D7', 'D7', 'D7', 'D7', 'D7', 'D7', 'G', 'G',
+    'G', 'G', 'G', 'G', 'D7', 'D7', 'D7', 'D7', 'D7', 'D7', 'G', 'G',
+  ],
+  'Down in the Valley must preserve the anthology’s spacious twenty-four-bar traditional harmony');
+assert.deepEqual(ARRANGEMENTS['down-in-the-valley'].cues.slice(0, 12), [
+  'Down in the', 'val—', '—ley,', 'val-ley so', 'low—', '(hold low)',
+  'Hang your head', 'o—', '—ver,', 'hear the wind', 'blow—', '(hold blow)',
+]);
+assert.equal(ARRANGEMENTS['down-in-the-valley'].cues.length, 24);
+assert.match(ARRANGEMENTS['down-in-the-valley'].reduction, /extends G under the opening three-beat/,
+  'the added opening G bar must be disclosed rather than implied to be printed harmony');
+assert.match(SONGS.find((song) => song.id === 'down-in-the-valley').body[0].lines[0][1].t, /^low$/,
+  'the readable chart must change to D7 exactly on the first low');
 assert.equal(ARRANGEMENTS['down-in-the-valley'].timing, 'verified');
 assert.deepEqual(ARRANGEMENTS['whole-world'].bars,
   ['G', 'G', 'D', 'D', 'G', 'G', 'D', 'G'],
@@ -117,8 +127,20 @@ assert.equal(ARRANGEMENTS['whole-world'].vocalCues.filter((cue) => cue.text.incl
   'each repeated line after the first must cue its pickup before the next downbeat');
 assert.equal(ARRANGEMENTS.clementine.bpm, 90);
 assert.deepEqual(ARRANGEMENTS.clementine.bars,
-  ['G', 'G', 'G', 'D7', 'D7', 'G', 'D7', 'G'],
-  'Clementine must return to G for forty-niner before its final D7-G phrase');
+  [
+    'G', 'G', 'G', 'D7', 'D7', 'G', 'D7', 'G',
+    'G', 'G', 'G', 'D7', 'D7', 'D7', 'D7', 'G',
+  ],
+  'Clementine must preserve the complete anthology verse and chorus in its disclosed two-chord reduction');
+assert.deepEqual(ARRANGEMENTS.clementine.pickup, { beat: 2, text: 'In a… (pickup)' });
+assert.equal(ARRANGEMENTS.clementine.cues.length, 16);
+assert.deepEqual(ARRANGEMENTS.clementine.cues.slice(11), [
+  'tine; Thou art', 'lost and gone for-', 'ev-er, Dread-ful', 'sor-ry, Clem-en-', 'tine—; then pickup: In a',
+]);
+assert.match(ARRANGEMENTS.clementine.reduction, /B7\/D-sharp → Em → A7 turnaround/,
+  'Clementine must name the source cadence omitted from its two-chord first version');
+assert.deepEqual(SONGS.find((song) => song.id === 'clementine').body[1].lines[2].map(({ c }) => c), ['D7'],
+  'the chart must not reintroduce the old unsourced G change on forever');
 assert.equal(ARRANGEMENTS.clementine.timing, 'verified');
 assert.deepEqual(ARRANGEMENTS['hush-little-baby'].bars,
   ['G', 'D7', 'D7', 'G', 'G', 'D7', 'D7', 'G']);

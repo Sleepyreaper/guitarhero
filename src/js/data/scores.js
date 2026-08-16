@@ -12,6 +12,57 @@ const line = (start, notes) => {
 };
 
 export const SCORES = {
+  'down-in-the-valley': {
+    status: 'certified', unit: 'quarter', totalBeats: 72,
+    source: {
+      label: 'CC0 Public Domain Song Anthology melody, lyrics, and traditional harmony in G, page 81',
+      url: 'https://upload.wikimedia.org/wikipedia/commons/c/cc/The_Public_Domain_Song_Anthology_with_Modern_and_Traditional_Harmonization.pdf#page=101',
+      dataUrl: 'https://dataverse.lib.virginia.edu/api/access/datafile/3898',
+      checked: '2026-08-16',
+    },
+    melody: line(0, [
+      [62, 1, 'Down'], [67, 1, 'in'], [69, 1, 'the'],
+      [71, 3, 'val—'], [67, 3, '—ley,'],
+      [71, 1, 'val-'], [69, 1, 'ley'], [67, 1, 'so'], [69, 6, 'low—'],
+      [62, 1, 'Hang'], [66, 1, 'your'], [69, 1, 'head'],
+      [72, 3, 'o-'], [69, 3, '—ver,'],
+      [72, 1, 'hear'], [71, 1, 'the'], [69, 1, 'wind'], [71, 6, 'blow—'],
+      [62, 1, 'Hear'], [67, 1, 'the'], [69, 1, 'wind'],
+      [71, 3, 'blow'], [67, 3, 'dear,'],
+      [71, 1, 'hear'], [69, 1, 'the'], [67, 1, 'wind'], [69, 6, 'blow—'],
+      [62, 1, 'Hang'], [66, 1, 'your'], [69, 1, 'head'],
+      [74, 3, 'o-'], [74, 3, '—ver,'],
+      [72, 1, 'hear'], [71, 1, 'the'], [69, 1, 'wind'], [67, 6, 'blow—'],
+    ]),
+  },
+  clementine: {
+    status: 'certified', unit: 'quarter', totalBeats: 48,
+    source: {
+      label: 'CC0 Public Domain Song Anthology verse and chorus, transposed F to G, page 232',
+      url: 'https://upload.wikimedia.org/wikipedia/commons/c/cc/The_Public_Domain_Song_Anthology_with_Modern_and_Traditional_Harmonization.pdf#page=252',
+      dataUrl: 'https://dataverse.lib.virginia.edu/api/access/datafile/3924',
+      checked: '2026-08-16',
+    },
+    melody: line(-1, [
+      [67, .75, 'In'], [67, .25, 'a'],
+      [67, 1, 'cav-'], [62, 1, 'ern,'], [71, .75, 'in'], [71, .25, 'a'],
+      [71, 1, 'can-'], [67, 1, 'yon,'], [67, .75, 'Ex-'], [71, .25, 'ca-'],
+      [74, 1.5, 'va-'], [74, .5, 'ting'], [72, .5, 'for'], [71, .5, 'a'],
+      [69, 2, 'mine,'], [69, .75, 'Dwelt'], [71, .25, 'a'],
+      [72, 1, 'min-'], [72, 1, 'er,'], [71, .75, 'for-'], [69, .25, 'ty-'],
+      [71, 1, 'nin-'], [67, 1, 'er,'], [67, .5, 'And'], [71, .5, 'his'],
+      [69, 1.5, 'daugh-'], [62, .5, 'ter'], [66, .5, 'Clem-'], [69, .5, 'en-'],
+      [67, 2, 'tine.'], [67, .75, 'Oh,'], [67, .25, 'my'],
+      [67, 1, 'dar-'], [62, 1, 'ling,'], [71, .75, 'oh,'], [71, .25, 'my'],
+      [71, 1, 'dar-'], [67, 1, 'ling,'], [67, .75, 'Oh,'], [71, .25, 'my'],
+      [74, 1.5, 'dar-'], [74, .5, 'ling'], [72, .5, 'Clem-'], [71, .5, 'en-'],
+      [69, 2, 'tine:'], [69, .75, 'Thou'], [71, .25, 'art'],
+      [72, 1, 'lost'], [72, 1, 'and'], [71, .75, 'gone'], [69, .25, 'for-'],
+      [71, 1, 'ev-'], [67, 1, 'er,'], [67, .5, 'Dread-'], [71, .5, 'ful'],
+      [69, 1.5, 'sor-'], [62, .5, 'ry,'], [66, .5, 'Clem-'], [69, .5, 'en-'],
+      [67, 2, 'tine.'],
+    ]),
+  },
   'row-your-boat': {
     status: 'certified', unit: 'eighth', totalBeats: 48,
     source: { label: 'Traditional 6/8 melody in LilyPond notation', url: 'https://en.wikipedia.org/wiki/Row,_Row,_Row_Your_Boat', checked: '2026-08-16' },
