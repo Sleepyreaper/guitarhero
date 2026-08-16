@@ -13,6 +13,7 @@ import { listAudioInputs, activeDeviceId } from '../lib/devices.js';
 import { transposeFrequencies, transposeKey } from '../lib/capo.js';
 import { isFavorite, toggleFavorite } from '../lib/storage.js';
 import { midiFrequency, scoreFor } from '../data/scores.js';
+import { guidedTarget, songQuality } from '../data/quality.js';
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const cap = (s) => s[0].toUpperCase() + s.slice(1);
@@ -62,29 +63,38 @@ function chordSequence(song) {
 
 const byLearningOrder = (a, b) => a.level - b.level || a.title.localeCompare(b.title);
 
-function renderCards(genre) {
+function renderCards(genre, group) {
   const songs = [...SONGS]
     .filter((s) => genre === 'favorites' ? isFavorite(`song:${s.id}`) : genre === 'all' || s.genres.includes(genre))
+    .filter((s) => {
+      const quality = songQuality(s);
+      if (group === 'pilot') return quality.pilotReady;
+      if (group === 'review') return quality.scoreComplete && !quality.pilotReady;
+      return !quality.scoreComplete;
+    })
     .sort(byLearningOrder);
-  if (!songs.length) return `<p class="muted">No ${genre} songs in the play-along set yet.</p>`;
+  if (!songs.length) return `<p class="muted">${group === 'pilot' ? 'No songs have passed this gate yet.' : 'No matching songs in this part of the catalog yet.'}</p>`;
   return `<div class="grid song-list">
-    ${songs.map((s) => `
+    ${songs.map((s) => {
+      const quality = songQuality(s);
+      return `
       <article class="panel song-card">
         <button class="favorite-btn ${isFavorite(`song:${s.id}`) ? 'liked' : ''}" data-favorite="song:${s.id}" aria-label="${isFavorite(`song:${s.id}`) ? 'Remove from' : 'Add to'} favorites">${isFavorite(`song:${s.id}`) ? '♥' : '♡'}</button>
         <a href="#/songs/${s.id}">
-        <div class="tag-row"><span class="pill gold">${s.style}</span><span class="pill">${s.chords.length} chords</span></div>
+        <div class="tag-row"><span class="pill gold">${s.style}</span><span class="pill">${s.chords.length} chords</span><span class="pill ${quality.tone}">${quality.label}</span></div>
         <h3 style="margin:.3rem 0 0">${s.title}</h3>
         <div class="faint" style="font-size:.85rem">${s.chords.join(' · ')} · ${s.time}</div>
         </a>
-      </article>`).join('')}
+      </article>`;
+    }).join('')}
   </div>`;
 }
 
-function renderTargets(genre) {
+function renderTargets(genre, guided) {
   const items = TARGET_SONGS.filter((t) => genre === 'favorites'
     ? isFavorite(`target:${t.title}:${t.artist}`)
-    : genre === 'all' || t.genres.includes(genre));
-  if (!items.length) return `<p class="muted">No ${genre} target songs yet.</p>`;
+    : genre === 'all' || t.genres.includes(genre)).filter((target) => guidedTarget(target) === guided);
+  if (!items.length) return `<p class="muted">No matching songs in this part of the catalog yet.</p>`;
   return `<div class="grid song-list">
     ${items.map((t) => `
       <div class="panel song-card target-card">
@@ -110,6 +120,18 @@ function renderTargets(genre) {
 function list(root, self) {
   cleanup(self);
   const genre = self._genre || 'all';
+  const songMatches = (song) => genre === 'favorites'
+    ? isFavorite(`song:${song.id}`)
+    : genre === 'all' || song.genres.includes(genre);
+  const targetMatches = (target) => genre === 'favorites'
+    ? isFavorite(`target:${target.title}:${target.artist}`)
+    : genre === 'all' || target.genres.includes(genre);
+  const pilotCount = SONGS.filter(songMatches).filter((song) => songQuality(song).pilotReady).length;
+  const reviewCount = SONGS.filter(songMatches)
+    .filter((song) => songQuality(song).scoreComplete && !songQuality(song).pilotReady).length;
+  const accompanimentCount = SONGS.filter(songMatches).length - pilotCount - reviewCount;
+  const guidedCount = TARGET_SONGS.filter(targetMatches).filter(guidedTarget).length;
+  const ideaCount = TARGET_SONGS.filter(targetMatches).length - guidedCount;
   const countFor = (g) => SONGS.filter((s) => s.genres.includes(g)).length + TARGET_SONGS.filter((t) => t.genres.includes(g)).length;
   root.innerHTML = `
     <p class="eyebrow">Songs</p>
@@ -123,14 +145,25 @@ function list(root, self) {
       ${GENRES.map((g) => `<button class="chip-btn ${genre === g ? 'sel' : ''}" data-genre="${g}">${cap(g)} (${countFor(g)})</button>`).join('')}
     </div>
 
-    <h2 style="margin-top:.5rem">🪕 Play-along songbook</h2>
-    <p class="muted" style="margin-top:0">All public domain — full chords &amp; words, and the app can listen along. Ordered easiest first.</p>
-    <div id="song-cards">${renderCards(genre)}</div>
+    <h2 style="margin-top:.5rem">✅ Pilot-ready studio (${pilotCount})</h2>
+    <p class="muted" style="margin-top:0">Only songs whose complete playback has passed a human musician’s listening review appear here.</p>
+    <div id="pilot-song-cards">${renderCards(genre, 'pilot')}</div>
 
-    <h2 style="margin-top:2rem">🎯 Real songs to aim for</h2>
-    <p class="muted" style="margin-top:0">On-the-radio songs you can already play with these chords. They're
-    copyrighted, so we can't print the words here — here are the chords &amp; capo; tap to find a full chart.</p>
-    <div id="target-cards">${renderTargets(genre)}</div>
+    <h2 style="margin-top:2rem">🎧 Score-complete, listening QA (${reviewCount})</h2>
+    <p class="muted" style="margin-top:0">Public-domain melody, lyrics, chords, and strums share one clock, but these are still being heard and corrected end to end.</p>
+    <div id="song-cards">${renderCards(genre, 'review')}</div>
+
+    <h2 style="margin-top:2rem">🪕 Accompaniment library (${accompanimentCount})</h2>
+    <p class="muted" style="margin-top:0">Source-checked chords and form for practicing under a singer. These are not reference performances until their note-by-note score and listening review are complete.</p>
+    <div id="accompaniment-cards">${renderCards(genre, 'accompaniment')}</div>
+
+    <h2 style="margin-top:2rem">🎯 Guided modern-song bridges (${guidedCount})</h2>
+    <p class="muted" style="margin-top:0">A curated external lesson plus Campfire's chord, groove, and accompaniment game plan. Copyrighted lyrics and charts stay with their licensed source.</p>
+    <div id="target-cards">${renderTargets(genre, true)}</div>
+
+    <h2 style="margin-top:2rem">🧭 More songs to aim for (${ideaCount})</h2>
+    <p class="muted" style="margin-top:0">Good destinations, but not yet curated lessons. Treat these as requests—not finished Campfire content.</p>
+    <div id="target-ideas">${renderTargets(genre, false)}</div>
   `;
 
   self._listClick = (e) => {
@@ -162,6 +195,7 @@ function detail(root, id, self) {
   const verifiedTiming = arrangement?.timing === 'verified';
   const score = scoreFor(song);
   const musicallyCertified = score?.status === 'certified';
+  const quality = songQuality(song);
   const capo = self._capoBySong?.[song.id] ?? song.capo ?? 0;
 
   root.innerHTML = `
@@ -169,6 +203,7 @@ function detail(root, id, self) {
     <div class="tag-row">
       ${song.genres.map((g) => `<span class="pill gold">${cap(g)}</span>`).join('')}
       <span class="pill">${song.difficulty}</span>
+      <span class="pill ${quality.tone}">${quality.label}</span>
     </div>
     <h1 style="margin-top:.4rem">${song.title}</h1>
     <button class="btn favorite-detail ${isFavorite(`song:${song.id}`) ? 'liked' : ''}" id="song-favorite">${isFavorite(`song:${song.id}`) ? '♥ In my songbook' : '♡ Add to my songbook'}</button>
@@ -198,6 +233,7 @@ function detail(root, id, self) {
       <div class="callout"><strong>${musicallyCertified ? 'Musical reference:' : 'About the groove:'}</strong> ${musicallyCertified
         ? `Hear mode plays the public-domain melody from <a href="${score.source.url}" target="_blank" rel="noopener noreferrer">${score.source.label}</a> on the same clock as chords, lyrics, and guitar strokes.${score.lyricSource ? ` Chorus wording: <a href="${score.lyricSource.url}" target="_blank" rel="noopener noreferrer">${score.lyricSource.label}</a>.` : ''}`
         : 'This page has checked harmony and form, but no note-by-note melody yet. Treat its generated guitar as accompaniment practice—not a reference recording of the song.'}</div>
+      <p class="faint"><strong>Quality gate:</strong> ${quality.label}. ${quality.scoreComplete ? 'The source-aligned score still needs the recorded human listening and student checks shown in Campfire’s release standard.' : 'A literal melody score and listening review are still required before this can become a reference performance.'}</p>
     </section>` : ''}
 
     <div class="btn-row" style="margin:1rem 0">
