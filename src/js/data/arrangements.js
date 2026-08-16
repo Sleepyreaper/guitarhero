@@ -122,9 +122,9 @@ export const GROOVES = {
   },
 };
 
-const a = (bpm, meter, groove, section, bars, dynamics, lead, cues = null, timing = 'practice', verification = null) => ({
+const a = (bpm, meter, groove, section, bars, dynamics, lead, cues = null, timing = 'practice', verification = null, guide = null) => ({
   bpm, meter, groove, section, bars, dynamics, lead, timing,
-  ...(cues ? { cues } : {}), ...(verification ? { verification } : {}),
+  ...(cues ? { cues } : {}), ...(verification ? { verification } : {}), ...(guide || {}),
 });
 const at = (...changes) => ({ changes: changes.map(([beat, chord]) => ({ beat, chord })) });
 
@@ -231,16 +231,27 @@ export const ARRANGEMENTS = {
       'Kumbaya my', ['Lord, kumba', 'ya'],
       ['Oh', 'Lord, kumba'], ['ya', '(let it ring)'],
     ], 'verified', { label: 'RiffSpot traditional chord-and-lyric chart', url: 'https://riffspot.com/music/chords-and-lyrics/kumbaya/120/', checked: '2026-08-10' }),
-  'whole-world': a(96, 4, 'steadyDownUp', 'Verse loop',
-    ['G', 'G', 'D7', 'D7', 'G', 'G', 'D7', 'G'],
-    'Lean slightly into beats 2 and 4 for a congregational gospel sway.',
+  'whole-world': a(120, 4, 'straight', 'Verse loop with vocal pickups',
+    ['G', 'G', 'D', 'D', 'G', 'G', 'D', 'G'],
+    'Use four relaxed quarter-note downs. The voice begins “He’s got the” before beat 1; do not chase its syllables with extra strums.',
     'Answer “in His hands” with a tiny G-major lick, then get out of the way before the next line.',
     [
-      "He's got the whole world", 'in His hands',
-      "He's got the whole world", 'in His hands',
-      "He's got the whole world", 'in His hands',
-      "He's got the whole world", 'in His hands',
-    ], 'verified', { label: 'Primeau two-chord beginner chart', url: 'https://www.primeauguitar.com/hes-got-the-whole-world-in-his-hands-guitar-chord-chart/', checked: '2026-08-10' }),
+      'whole world in His hands', "hold; then: He's got the…",
+      'whole world in His hands', "hold; then: He's got the…",
+      'whole world in His hands', "hold; then: He's got the…",
+      'whole world in His hands', 'hold the final G',
+    ], 'verified', { label: 'Wikibooks public-domain D / A score in 4/4, transposed to G / D', url: 'https://de.wikibooks.org/wiki/Gitarre%3A_Liedbeispiel_1b', checked: '2026-08-16' }, {
+      pickup: { beat: 2.5, text: "He's got the… (pickup)" },
+      vocalCues: [
+        { bar: 0, beat: 0, text: 'whole world in His hands' },
+        { bar: 1, beat: 2.5, text: "He's got the… (pickup)" },
+        { bar: 2, beat: 0, text: 'whole world in His hands' },
+        { bar: 3, beat: 2.5, text: "He's got the… (pickup)" },
+        { bar: 4, beat: 0, text: 'whole world in His hands' },
+        { bar: 5, beat: 2.5, text: "He's got the… (pickup)" },
+        { bar: 6, beat: 0, text: 'whole world in His hands' },
+      ],
+    }),
   'she-ll-be-comin': a(116, 4, 'boomChuck', 'Complete eight-bar verse',
     ['G', 'G', 'D7', 'D7', 'G', 'C', at([0, 'G'], [3, 'D7']), 'G'],
     'Short bass notes and crisp off-beat chords create the train-like country drive.',

@@ -221,14 +221,14 @@ export const SONGS = [
     capo: 0,
     time: '4/4',
     difficulty: 'Easy',
-    chords: ['G', 'D7'],
-    note: 'A traditional spiritual in a beginner two-chord form: G and D7. The voice repeats the hook while the harmony answers and resolves.',
+    chords: ['G', 'D'],
+    note: 'A traditional spiritual in G and D. The voice starts “He’s got the” as a pickup before beat 1; your guitar keeps four steady beats underneath it.',
     body: [
       { section: 'Verse', lines: [
         [{ c: 'G', t: "He's got the whole world in his hands" }],
-        [{ c: 'D7', t: "He's got the whole world in his hands" }],
+        [{ c: 'D', t: "He's got the whole world in his hands" }],
         [{ c: 'G', t: "He's got the whole world in his hands" }],
-        [{ c: 'D7', t: "He's got the whole world in his " }, { c: 'G', t: 'hands' }],
+        [{ c: 'D', t: "He's got the whole world in his " }, { c: 'G', t: 'hands' }],
       ] },
     ],
   },

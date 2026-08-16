@@ -160,6 +160,10 @@ assert.match(songViewText, /traditional songs do not have one mandatory guitar s
 assert.match(songViewText, /cited source supports the form and harmony/,
   'song pages must explain exactly what their source verifies');
 assert.match(songViewText, /Lyric \/ chord-change cue/, 'verified timed arrangements must expose synchronized lyric cues');
+assert.match(songViewText, /arrangement\.pickup\.beat \* seconds/,
+  'songs whose vocals begin before beat 1 must schedule the pickup during the count-in');
+assert.match(songViewText, /vocalCues\.filter\(\(item\) => item\.bar === idx\)/,
+  'within-song vocal entrances must be scheduled independently from chord changes');
 assert.match(songViewText, /arrangement\.verification\.url/, 'verified timing claims must expose their evidence');
 assert.match(songViewText, /Checked:<\/strong> \$\{arrangement\.verification\.checked\}/, 'verified timing claims must show their review date');
 assert.match(songViewText, /Rehearse chord order/, 'mic chord rehearsal must not be mislabeled as a timed play-along');

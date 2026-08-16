@@ -91,11 +91,17 @@ assert.deepEqual(ARRANGEMENTS['down-in-the-valley'].cues.slice(0, 4),
   ['Down in the valley, the', 'valley so low', 'Hang your head over, hear the', 'wind blow']);
 assert.equal(ARRANGEMENTS['down-in-the-valley'].timing, 'verified');
 assert.deepEqual(ARRANGEMENTS['whole-world'].bars,
-  ['G', 'G', 'D7', 'D7', 'G', 'G', 'D7', 'G'],
+  ['G', 'G', 'D', 'D', 'G', 'G', 'D', 'G'],
   'Whole World must use the sourced two-chord beginner verse form');
 assert.equal(ARRANGEMENTS['whole-world'].timing, 'verified');
-assert.equal(ARRANGEMENTS['whole-world'].groove, 'steadyDownUp',
-  'Whole World must use the sourced down, down-up, down, down-up accompaniment');
+assert.equal(ARRANGEMENTS['whole-world'].groove, 'straight',
+  'Whole World must begin with recognizable quarter-note accompaniment before adding syncopation');
+assert.equal(ARRANGEMENTS['whole-world'].bpm, 120);
+assert.deepEqual(SONGS.find((song) => song.id === 'whole-world').chords, ['G', 'D']);
+assert.deepEqual(ARRANGEMENTS['whole-world'].pickup, { beat: 2.5, text: "He's got the… (pickup)" },
+  'Whole World must cue its vocal pickup before the first guitar downbeat');
+assert.equal(ARRANGEMENTS['whole-world'].vocalCues.filter((cue) => cue.text.includes('pickup')).length, 3,
+  'each repeated line after the first must cue its pickup before the next downbeat');
 assert.equal(ARRANGEMENTS.clementine.bpm, 90);
 assert.deepEqual(ARRANGEMENTS.clementine.bars,
   ['G', 'G', 'G', 'D7', 'D7', 'G', 'D7', 'G'],

@@ -397,6 +397,7 @@ function singAlong(root, song, self) {
   const groove = GROOVES[arrangement.groove];
   const grid = rhythmGrid(beatsPerBar, groove);
   const lyricCues = arrangement.cues || [];
+  const vocalCues = arrangement.vocalCues || [];
   let bpm = arrangement.bpm;
   let playing = false;
   let barIndex = 0;
@@ -501,6 +502,10 @@ function singAlong(root, song, self) {
         const countBeats = beatsPerBar === 6 ? [0, 3] : Array.from({ length: beatsPerBar }, (_, i) => i);
         countBeats.forEach((beat) => strumAt([880], nextBarTime + beat * seconds, beat === 0 ? .07 : .04, 0));
         uiQueue.push({ time: nextBarTime, count: true });
+        if (arrangement.pickup) uiQueue.push({
+          time: nextBarTime + arrangement.pickup.beat * seconds,
+          vocal: arrangement.pickup.text,
+        });
         countIn = false;
       } else {
         const idx = barIndex % bars.length;
@@ -527,6 +532,9 @@ function singAlong(root, song, self) {
           const cue = cueParts[Math.min(slot, cueParts.length - 1)] || null;
           uiQueue.push({ time: nextBarTime + changeBeats[slot] * seconds, idx, chordName, cue });
         });
+        vocalCues.filter((item) => item.bar === idx).forEach((item) => {
+          uiQueue.push({ time: nextBarTime + item.beat * seconds, vocal: item.text });
+        });
         barIndex++;
       }
       uiQueue.sort((a, b) => a.time - b.time);
@@ -538,7 +546,8 @@ function singAlong(root, song, self) {
         nameEl.textContent = 'Count in…';
         diagramEl.innerHTML = '';
         if (cueEl) cueEl.textContent = 'Get ready...';
-      } else if (item.stroke) drawStroke(item.beat, item.stroke, item.cue);
+      } else if (item.vocal) { if (cueEl) cueEl.textContent = item.vocal; }
+      else if (item.stroke) drawStroke(item.beat, item.stroke, item.cue);
       else drawUI(item.idx, item.chordName, item.cue);
     }
   };
