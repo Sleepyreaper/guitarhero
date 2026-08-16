@@ -217,40 +217,51 @@ assert.equal(ARRANGEMENTS['when-the-saints'].cues[13], 'march-ing');
 assert.match(ARRANGEMENTS['when-the-saints'].reduction, /minor-iv bar/,
   'When the Saints must disclose the anthology colors omitted from its three-shape reduction');
 assert.equal(ARRANGEMENTS['when-the-saints'].timing, 'verified');
-assert.deepEqual(ARRANGEMENTS['oh-susanna'].bars, [
-  'G', 'G', 'G', 'D7', 'G', 'G', 'D7', 'G',
-  'C', 'C', 'G', 'D7', 'G', 'G', 'D7', 'G',
-], 'Oh Susanna must contain its complete 2/4 verse excerpt and chorus');
+assert.deepEqual(ARRANGEMENTS['oh-susanna'].bars.map((bar) => barChords(bar)), [
+  ['G'], ['G'], ['G'], ['D7'], ['G'], ['G'], ['G', 'D7'], ['G'],
+  ['C'], ['C'], ['G'], ['D7'], ['G'], ['G'], ['G', 'D7'], ['G'],
+], 'Oh Susanna must preserve all sixteen source bars and its beat-2 dominant changes');
+assert.deepEqual(barChangeBeats(ARRANGEMENTS['oh-susanna'].bars[6], 2), [0, 1]);
+assert.deepEqual(barChangeBeats(ARRANGEMENTS['oh-susanna'].bars[14], 2), [0, 1]);
+assert.deepEqual(ARRANGEMENTS['oh-susanna'].pickup, { beat: 1.5, text: 'Oh, I… (half-beat pickup)' });
 assert.equal(ARRANGEMENTS['oh-susanna'].meter, 2);
 assert.equal(ARRANGEMENTS['oh-susanna'].groove, 'countryTwo');
 assert.equal(ARRANGEMENTS['oh-susanna'].timing, 'verified');
 const ohSusannaSong = SONGS.find(song => song.id === 'oh-susanna');
 assert.equal(ohSusannaSong.time, '2/4');
-assert.match(ohSusannaSong.note, /Quick 2\/4/);
+assert.match(ohSusannaSong.note, /source bars/i);
 assert.doesNotMatch(ohSusannaSong.note, /4\/4/);
 assert.deepEqual(ARRANGEMENTS['red-river-valley'].bars.map((bar) => barChords(bar)), [
-  ['G'], ['G'], ['D7'], ['D7'], ['G'], ['C'], ['G'], ['D7', 'G'],
-  ['G'], ['G'], ['D7'], ['D7'], ['G'], ['C'], ['G'], ['D7', 'G'],
-], 'Red River Valley must contain the complete eight-bar verse and repeated chorus form');
-assert.deepEqual(barChangeBeats(ARRANGEMENTS['red-river-valley'].bars[7], 4), [0, 2]);
+  ['G'], ['G'], ['G'], ['G'], ['G'], ['G'], ['D7'], ['D7'],
+  ['G'], ['G'], ['C'], ['C'], ['D7'], ['D7'], ['G'], ['G'],
+], 'Red River Valley must preserve the selected source stanza without inventing a chorus');
+assert.deepEqual(ARRANGEMENTS['red-river-valley'].pickup, { beat: 2, text: 'From this… (two-beat pickup)' });
 assert.equal(ARRANGEMENTS['red-river-valley'].timing, 'verified');
 assert.equal(ARRANGEMENTS['red-river-valley'].cues.length, 16);
-assert.deepEqual(ARRANGEMENTS['red-river-valley'].cues[7], ['pathway a', 'while']);
-assert.deepEqual(ARRANGEMENTS['red-river-valley'].cues[15], ['loved you so', 'true']);
+assert.equal(SONGS.find((song) => song.id === 'red-river-valley').body.length, 1);
+assert.match(ARRANGEMENTS['red-river-valley'].reduction, /not mislabeled as a chorus/);
 assert.deepEqual(ARRANGEMENTS['swing-low'].bars.map((bar) => barChords(bar)), [
-  ['G'], ['C', 'G'], ['G'], ['D7'], ['G'], ['C', 'G'], ['G'], ['D7', 'G'],
-], 'Swing Low must follow its complete eight-bar refrain cadence');
+  ['G'], ['C', 'G'], ['G'], ['D7'], ['G'], ['C', 'G'], ['G', 'D7'], ['G'],
+  ['G'], ['C', 'D7'], ['Em', 'G'], ['D7'], ['G', 'Em'], ['C', 'D7'], ['G', 'D7'], ['G'],
+  ['G'], ['C', 'G'], ['G'], ['D7'], ['G'], ['C', 'G'], ['G', 'D7'], ['G'],
+], 'Swing Low must literal-expand the source chorus, verse, and D.C. al Fine return');
 assert.deepEqual(barChangeBeats(ARRANGEMENTS['swing-low'].bars[1], 4), [0, 2]);
-assert.deepEqual(barChangeBeats(ARRANGEMENTS['swing-low'].bars[7], 4), [0, 2]);
+assert.deepEqual(barChangeBeats(ARRANGEMENTS['swing-low'].bars[9], 4), [0, 1]);
+assert.deepEqual(barChangeBeats(ARRANGEMENTS['swing-low'].bars[22], 4), [0, 2]);
 assert.equal(ARRANGEMENTS['swing-low'].timing, 'verified');
-assert.equal(ARRANGEMENTS['swing-low'].cues.length, 8);
-assert.deepEqual(ARRANGEMENTS['simple-gifts'].bars, [
-  'G', 'G', 'D', 'D', 'G', 'G', 'D', 'G',
-], 'Simple Gifts first stanza must use its complete eight-bar two-chord form');
-assert.deepEqual(SONGS.find((song) => song.id === 'simple-gifts').chords, ['G', 'D']);
+assert.equal(ARRANGEMENTS['swing-low'].cues.length, 24);
+assert.deepEqual(SONGS.find((song) => song.id === 'swing-low').chords, ['G', 'C', 'D7', 'Em']);
+assert.deepEqual(ARRANGEMENTS['simple-gifts'].bars.map((bar) => barChords(bar)), [
+  ['G'], ['G'], ['D'], ['D'], ['G'], ['G'], ['D'], ['G'],
+  ['G'], ['G'], ['G'], ['C', 'D'], ['G'], ['G'], ['D'], ['C', 'G'],
+], 'Simple Gifts must preserve the complete sixteen-bar source stanza');
+assert.deepEqual(SONGS.find((song) => song.id === 'simple-gifts').chords, ['G', 'C', 'D']);
 assert.equal(ARRANGEMENTS['simple-gifts'].bpm, 100);
 assert.equal(ARRANGEMENTS['simple-gifts'].timing, 'verified');
-assert.equal(ARRANGEMENTS['simple-gifts'].cues.length, 8);
+assert.equal(ARRANGEMENTS['simple-gifts'].cues.length, 16);
+assert.deepEqual(ARRANGEMENTS['simple-gifts'].pickup, { beat: 3, text: "'Tis the… (pickup)" });
+assert.deepEqual(barChangeBeats(ARRANGEMENTS['simple-gifts'].bars[11], 4), [0, 2]);
+assert.deepEqual(barChangeBeats(ARRANGEMENTS['simple-gifts'].bars[15], 4), [0, 2]);
 assert.deepEqual(ARRANGEMENTS['streets-of-laredo'].bars, [
   'G', 'G', 'G', 'D7', 'G', 'G', 'G', 'D7',
   'G', 'G', 'G', 'D7', 'G', 'G', 'D7', 'G',

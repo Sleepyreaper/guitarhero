@@ -97,5 +97,12 @@ Do not call the catalog launch-ready until it has at least:
 11. She’ll Be Comin’ ’Round the Mountain — complete CC0 anthology 2/4 melody, pickup, phrase rests, disclosed three-shape reduction, and deployed 16-bar timing trace complete; independent playback QA pending.
 12. When the Saints Go Marching In — complete CC0 anthology 4/4 melody, three-beat pickup, tied notes, disclosed G/C/D7 reduction, and deployed 16-bar timing trace complete; independent playback QA pending.
 
+## Third certification batch
+
+13. Oh! Susanna — complete lyric-bearing 2/4 verse and chorus, half-beat pickup, transposed three-chord harmony, and exact beat-2 dominant changes encoded; deployed timing trace pending.
+14. Red River Valley — complete CC0 anthology first stanza, two-beat pickup, and disclosed G/C/D7 reduction encoded. The unrelated second stanza is no longer mislabeled as a chorus; deployed timing trace pending.
+15. Swing Low, Sweet Chariot — complete CC0 anthology chorus, verse, and literal D.C. al Fine chorus return with disclosed G/C/D7/Em reduction encoded; deployed timing trace pending.
+16. Simple Gifts — complete CC0 anthology Brackett stanza, one-beat pickup, and all sixteen bars of G/C/D harmony encoded; deployed timing trace pending.
+
 Row, Row, Row Your Boat remains valuable for 6/8 and rounds, but it is not a lead teen-engagement
 song. It should be certified as a teaching tool, not used as the beta’s headline repertoire.

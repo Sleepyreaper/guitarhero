@@ -5,6 +5,7 @@ import { ARRANGEMENTS } from '../src/js/data/arrangements.js';
 const certified = [
   'down-in-the-valley', 'clementine',
   'row-your-boat', 'twinkle-twinkle', 'old-macdonald', 'she-ll-be-comin', 'when-the-saints',
+  'oh-susanna', 'red-river-valley', 'swing-low', 'simple-gifts',
   'whole-world', 'amazing-grace', 'shady-grove', 'kumbaya',
   'will-the-circle', 'what-a-friend',
 ];
@@ -175,6 +176,30 @@ assert.deepEqual(SCORES['when-the-saints'].melody.filter(({ lyric }) => lyric).m
   'When', 'the', 'saints', 'go', 'march-', 'ing', 'in.',
 ], 'When the Saints must preserve the complete lyric-bearing anthology verse');
 
+assert.equal(SCORES['oh-susanna'].source.dataUrl, 'https://abcnotation.com/tunePage?a=trillian.mit.edu%2F~jc%2Fmusic%2Fabc%2Fmirror%2Fkirby98.fsnet.co.uk%2Foh%2FOh_Susanna_1%2F0000');
+assert.equal(SCORES['oh-susanna'].melody[0].beat, -.5);
+assert.equal(SCORES['oh-susanna'].melody.at(-1).beat + SCORES['oh-susanna'].melody.at(-1).duration, 32);
+assert.equal(SCORES['oh-susanna'].melody.filter(({ lyric }) => lyric).map(({ lyric }) => lyric).join(' '),
+  "Oh, I come from A- la- ba- ma with a ban- jo on my knee. I am goin' to Lou' si- a- na, my true love for to see. Oh, Su- san- na! Don't you cry for me! For I come from A- la- ba- ma with a ban- jo on my knee.");
+
+assert.equal(SCORES['red-river-valley'].source.dataUrl, 'https://dataverse.lib.virginia.edu/api/access/datafile/4176');
+assert.equal(SCORES['red-river-valley'].melody[0].beat, -2);
+assert.equal(SCORES['red-river-valley'].melody.at(-1).beat + SCORES['red-river-valley'].melody.at(-1).duration, 64);
+assert.equal(SCORES['red-river-valley'].melody.filter(({ lyric }) => lyric).map(({ lyric }) => lyric).join(' '),
+  'From this val- ley they say you are go- ing. We will miss your bright eyes and sweet smile. For they say you are tak- ing the sun- shine— That has bright- ened our path- ways a while.');
+
+assert.equal(SCORES['simple-gifts'].source.dataUrl, 'https://dataverse.lib.virginia.edu/api/access/datafile/4119');
+assert.equal(SCORES['simple-gifts'].melody[0].beat, -1);
+assert.equal(SCORES['simple-gifts'].melody.at(-1).beat + SCORES['simple-gifts'].melody.at(-1).duration, 63);
+assert.equal(SCORES['simple-gifts'].melody.filter(({ lyric }) => lyric).map(({ lyric }) => lyric).join(' '),
+  "'Tis the gift to be sim- ple, 'Tis the gift to be free, 'Tis the gift to come down where we ought to be, and When we find our- selves in the place just right, It will be in the val- ley of love and de- light. When true sim- plic- i- ty is gained, to bow and to bend we shan't be a- shamed. To turn and to turn will be our de- light, till by turn- ing, turn- ing, we come 'round right.");
+
+assert.equal(SCORES['swing-low'].source.dataUrl, 'https://dataverse.lib.virginia.edu/api/access/datafile/3672');
+assert.equal(SCORES['swing-low'].totalBeats, 96);
+assert.equal(SCORES['swing-low'].melody.at(-1).beat + SCORES['swing-low'].melody.at(-1).duration, 96);
+assert.equal(SCORES['swing-low'].melody.find(({ beat }) => beat === 31)?.lyric, 'I');
+assert.deepEqual(SCORES['swing-low'].melody.filter(({ beat }) => beat >= 64 && beat < 95).map(({ midi, duration }) => [midi, duration]),
+  SCORES['swing-low'].melody.filter(({ beat }) => beat >= 0 && beat < 31).map(({ midi, duration }) => [midi, duration]));
 assert.equal(SCORES['whole-world'].melody[0].beat, -1.5, 'Whole World must sing before beat 1');
 const wholeWorldLyrics = new Map(SCORES['whole-world'].melody
   .filter((event) => event.lyric).map((event) => [event.beat, event.lyric]));

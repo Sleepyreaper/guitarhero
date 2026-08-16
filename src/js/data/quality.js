@@ -43,6 +43,22 @@ export const SONG_REVIEWS = Object.freeze({
     playback: 'in-progress', expert: 'pending', student: 'pending',
     note: 'The complete source-locked CC0 4/4 score, three-beat pickup, ties, disclosed reduction, and deployed 16-bar timing trace pass. Independent playback recognition, expert guitar review, and student usability remain.',
   },
+  'oh-susanna': {
+    trace: 'pending', playback: 'pending', expert: 'pending', student: 'pending',
+    note: 'The complete source-locked 2/4 verse and chorus are encoded. A deployed 16-bar timing trace is the next gate.',
+  },
+  'red-river-valley': {
+    trace: 'pending', playback: 'pending', expert: 'pending', student: 'pending',
+    note: 'The complete source-locked CC0 first stanza and disclosed reduction are encoded. A deployed 16-bar timing trace is the next gate.',
+  },
+  'swing-low': {
+    trace: 'pending', playback: 'pending', expert: 'pending', student: 'pending',
+    note: 'The complete source-locked CC0 chorus, verse, and chorus return are encoded. A deployed 24-bar timing trace is the next gate.',
+  },
+  'simple-gifts': {
+    trace: 'pending', playback: 'pending', expert: 'pending', student: 'pending',
+    note: 'The complete source-locked CC0 stanza is encoded. A deployed 16-bar timing trace is the next gate.',
+  },
   'whole-world': {
     trace: 'pass', tracedAt: '2026-08-16',
     playback: 'pass', playbackAt: '2026-08-15', playbackReviewer: 'Project owner',
