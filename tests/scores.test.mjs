@@ -25,6 +25,9 @@ for (const id of certified) {
 assert.equal(SCORES['row-your-boat'].unit, 'eighth');
 assert.equal(SCORES['row-your-boat'].totalBeats, 48);
 assert.equal(SCORES['whole-world'].melody[0].beat, -1.5, 'Whole World must sing before beat 1');
+assert.ok(SCORES['whole-world'].melody.filter((event) => event.lyric === 'in His hands')
+  .every((event) => event.sustain > event.duration),
+  'Whole World must let “hands” ring toward the next pickup instead of clipping the phrase');
 assert.equal(SCORES['amazing-grace'].melody[0].beat, -1, 'Amazing Grace must retain its one-beat pickup');
 assert.equal(Math.round(midiFrequency(69)), 440);
 

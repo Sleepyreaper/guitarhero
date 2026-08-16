@@ -4,8 +4,8 @@
 
 const line = (start, notes) => {
   let beat = start;
-  return notes.map(([midi, duration, lyric = '']) => {
-    const event = { beat, duration, midi, lyric };
+  return notes.map(([midi, duration, lyric = '', sustain = null]) => {
+    const event = { beat, duration, midi, lyric, ...(sustain ? { sustain } : {}) };
     beat += duration;
     return event;
   });
@@ -28,13 +28,13 @@ export const SCORES = {
     source: { label: 'Public-domain 4/4 melody, transposed D to G', url: 'https://de.wikibooks.org/wiki/Gitarre%3A_Liedbeispiel_1b', checked: '2026-08-16' },
     melody: line(-1.5, [
       [74, .5, "He's"], [74, .5, 'got'], [71, .5, 'the'],
-      [74, 2, 'whole'], [71, .5, 'world'], [67, 1.5, 'in His hands'],
+      [74, 2, 'whole'], [71, .5, 'world'], [67, 1.5, 'in His hands', 1.9],
       [null, .5], [74, .5, "He's"], [76, .5, 'got'], [74, 1, 'the whole'], [74, .5, 'world'], [74, .5, 'in His'], [71, .5, 'hands'],
-      [72, 2, "He's got the whole"], [69, .5, 'world'], [66, 1.5, 'in His hands'],
+      [72, 2, "He's got the whole"], [69, .5, 'world'], [66, 1.5, 'in His hands', 1.9],
       [null, .5], [74, .5, "He's"], [76, .5, 'got'], [74, 1, 'the whole'], [74, .5, 'world'], [74, .5, 'in His'], [71, .5, 'hands'],
-      [74, 2, "He's got the whole"], [71, .5, 'world'], [67, 1.5, 'in His hands'],
+      [74, 2, "He's got the whole"], [71, .5, 'world'], [67, 1.5, 'in His hands', 1.9],
       [null, .5], [74, .5, "He's"], [76, .5, 'got'], [74, 1, 'the whole'], [74, .5, 'world'], [74, .5, 'in His'], [71, .5, 'hands'],
-      [74, 1, "He's got"], [74, 1, 'the whole'], [72, .5, 'world'], [69, 1.5, 'in His hands'], [67, 2, 'hands'],
+      [74, 1, "He's got"], [74, 1, 'the whole'], [72, .5, 'world'], [69, 1.5, 'in His hands', 1.9], [67, 2, 'hands'],
     ]),
   },
   'amazing-grace': {

@@ -526,7 +526,7 @@ function singAlong(root, song, self) {
           const verseStart = nextBarTime + beatsPerBar * seconds;
           score.melody.filter((event) => event.beat < 0).forEach((event) => {
             if (event.midi != null && studioMode !== 'perform') melodyAt(
-              midiFrequency(event.midi), verseStart + event.beat * seconds, event.duration * seconds,
+              midiFrequency(event.midi), verseStart + event.beat * seconds, (event.sustain || event.duration) * seconds,
             );
             if (event.lyric) uiQueue.push({ time: verseStart + event.beat * seconds, vocal: event.lyric });
           });
@@ -549,7 +549,7 @@ function singAlong(root, song, self) {
             .forEach((event) => {
               const atTime = nextBarTime + (event.beat - barStart) * seconds;
               if (event.midi != null && studioMode !== 'perform') {
-                melodyAt(midiFrequency(event.midi), atTime, event.duration * seconds);
+                melodyAt(midiFrequency(event.midi), atTime, (event.sustain || event.duration) * seconds);
               }
               if (event.lyric) uiQueue.push({ time: atTime, vocal: event.lyric });
             });
@@ -558,7 +558,7 @@ function singAlong(root, song, self) {
             score.melody.filter((event) => event.beat < 0).forEach((event) => {
               const atTime = nextVerse + event.beat * seconds;
               if (event.midi != null && studioMode !== 'perform') {
-                melodyAt(midiFrequency(event.midi), atTime, event.duration * seconds);
+                melodyAt(midiFrequency(event.midi), atTime, (event.sustain || event.duration) * seconds);
               }
               if (event.lyric) uiQueue.push({ time: atTime, vocal: event.lyric });
             });
