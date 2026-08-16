@@ -24,20 +24,24 @@ export const SONG_REVIEWS = Object.freeze({
     note: 'Owner recognized and followed the complete melody and 6/8 loop. Expert guitar review and a supervised student session remain.',
   },
   'twinkle-twinkle': {
-    trace: 'pending', playback: 'pending', expert: 'pending', student: 'pending',
-    note: 'The complete CC0 2/4 score and disclosed three-shape reduction are source-locked. A deployed full-form timing trace is next; human playback, expert, and student gates remain separate.',
+    trace: 'pass', tracedAt: '2026-08-16',
+    playback: 'in-progress', expert: 'pending', student: 'pending',
+    note: 'The complete source-locked CC0 2/4 score and deployed 24-bar timing trace pass. Independent playback recognition, expert guitar review, and student usability remain.',
   },
   'old-macdonald': {
-    trace: 'pending', playback: 'pending', expert: 'pending', student: 'pending',
-    note: 'The complete CC0 cut-time duck verse, rests, and traditional harmony are source-locked. A deployed full-form timing trace is next; human playback, expert, and student gates remain separate.',
+    trace: 'pass', tracedAt: '2026-08-16',
+    playback: 'in-progress', expert: 'pending', student: 'pending',
+    note: 'The complete source-locked CC0 cut-time duck verse and deployed 16-bar timing trace pass. Independent playback recognition, expert guitar review, and student usability remain.',
   },
   'she-ll-be-comin': {
-    trace: 'pending', playback: 'pending', expert: 'pending', student: 'pending',
-    note: 'The complete CC0 2/4 score, pickup, rests, and disclosed open-chord reduction are source-locked. A deployed full-form timing trace is next; human playback, expert, and student gates remain separate.',
+    trace: 'pass', tracedAt: '2026-08-16',
+    playback: 'in-progress', expert: 'pending', student: 'pending',
+    note: 'The complete source-locked CC0 2/4 score, pickup, rests, disclosed reduction, and deployed 16-bar timing trace pass. Independent playback recognition, expert guitar review, and student usability remain.',
   },
   'when-the-saints': {
-    trace: 'pending', playback: 'pending', expert: 'pending', student: 'pending',
-    note: 'The complete CC0 4/4 score, three-beat pickup, tied notes, and disclosed open-chord reduction are source-locked. A deployed full-form timing trace is next; human playback, expert, and student gates remain separate.',
+    trace: 'pass', tracedAt: '2026-08-16',
+    playback: 'in-progress', expert: 'pending', student: 'pending',
+    note: 'The complete source-locked CC0 4/4 score, three-beat pickup, ties, disclosed reduction, and deployed 16-bar timing trace pass. Independent playback recognition, expert guitar review, and student usability remain.',
   },
   'whole-world': {
     trace: 'pass', tracedAt: '2026-08-16',

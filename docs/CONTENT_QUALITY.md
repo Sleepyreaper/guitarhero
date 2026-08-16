@@ -92,10 +92,10 @@ Do not call the catalog launch-ready until it has at least:
 
 ## Second certification batch
 
-9. Twinkle, Twinkle, Little Star — complete CC0 anthology 2/4 verse, transposed melody, and disclosed G/C/D7 reduction encoded; deployed timing trace pending.
-10. Old MacDonald Had a Farm — complete CC0 anthology cut-time duck verse, literal rests, and traditional G/C/D7 harmony encoded; deployed timing trace pending.
-11. She’ll Be Comin’ ’Round the Mountain — complete CC0 anthology 2/4 melody, pickup, phrase rests, and disclosed three-shape reduction encoded; deployed timing trace pending.
-12. When the Saints Go Marching In — complete CC0 anthology 4/4 melody, three-beat pickup, tied notes, and disclosed G/C/D7 reduction encoded; deployed timing trace pending.
+9. Twinkle, Twinkle, Little Star — complete CC0 anthology 2/4 verse, transposed melody, disclosed G/C/D7 reduction, and deployed 24-bar timing trace complete; independent playback QA pending.
+10. Old MacDonald Had a Farm — complete CC0 anthology cut-time duck verse, literal rests, traditional G/C/D7 harmony, and deployed 16-bar timing trace complete; independent playback QA pending.
+11. She’ll Be Comin’ ’Round the Mountain — complete CC0 anthology 2/4 melody, pickup, phrase rests, disclosed three-shape reduction, and deployed 16-bar timing trace complete; independent playback QA pending.
+12. When the Saints Go Marching In — complete CC0 anthology 4/4 melody, three-beat pickup, tied notes, disclosed G/C/D7 reduction, and deployed 16-bar timing trace complete; independent playback QA pending.
 
 Row, Row, Row Your Boat remains valuable for 6/8 and rounds, but it is not a lead teen-engagement
 song. It should be certified as a teaching tool, not used as the beta’s headline repertoire.
