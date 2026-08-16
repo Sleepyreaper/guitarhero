@@ -108,6 +108,8 @@ assert.match(songViewText, /toggleFavorite/,
   'play-along and target songs must support a persistent personal songbook');
 assert.match(songViewText, /scoreFor\(song\)/,
   'song pages must distinguish scored references from chord-only accompaniment practice');
+assert.match(songViewText, /function singAlong\(root, song, self\)[\s\S]{0,180}const score = scoreFor\(song\)/,
+  'Song Studio must load its score inside the playback scope');
 assert.match(songViewText, /data-mode="reference"[\s\S]*data-mode="play"[\s\S]*data-mode="perform"/,
   'certified songs must separate hearing, playing with melody, and performing alone');
 assert.match(songViewText, /studioMode === 'reference' \? \.45 : 1/,

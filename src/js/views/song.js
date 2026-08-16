@@ -255,7 +255,6 @@ function detail(root, id, self) {
 function playAlong(root, song, self) {
   cleanup(self);
   const arrangement = arrangementFor(song);
-  const score = scoreFor(song);
   const seq = arrangementChordSequence(song).length ? arrangementChordSequence(song) : chordSequence(song);
   let idx = 0;
   let okStreak = 0;
@@ -397,6 +396,7 @@ function playAlong(root, song, self) {
 function singAlong(root, song, self) {
   cleanup(self);
   const arrangement = arrangementFor(song);
+  const score = scoreFor(song);
   const capo = self._capoBySong?.[song.id] ?? song.capo ?? 0;
   const bars = arrangement.bars;
   const beatsPerBar = arrangement.meter;
