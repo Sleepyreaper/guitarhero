@@ -36,7 +36,7 @@ assert.match(lessonText('l1-0'), /cannot certify that a note is buzz-free/i,
   'the pitch tuner must not be presented as a substitute for listening to tone quality');
 assert.match(lessonText('l1-fingers'), /sharp, burning, joint, wrist, or persistent pain/i,
   'finger soreness guidance must distinguish adaptation from pain that means stop');
-assert.match(lessonText('l3-2'), /not (?:treating it as )?the right groove for every song/i,
+assert.match(lessonText('l3-2'), /without treating it as the right groove for every song/i,
   'the common folk strum must not be sold as a universal accompaniment');
 assert.match(lessonText('l3-country'), /bass on 1 and 3/i,
   'country learners need an executable boom-chuck lesson before song-specific accompaniment');
